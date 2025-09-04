@@ -17,6 +17,7 @@ typedef struct s_list
     struct s_list   *previous;
 } t_list;
 
+Structure pour les infos concernant les fichiers
 typedef struct s_file_info
 {
     int type;
