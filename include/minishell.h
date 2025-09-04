@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
 /*   Updated: 2025/09/04 18:37:29 by fmotte           ###   ########.fr       */
@@ -47,5 +47,7 @@ typedef struct s_list_env
 	char			*file_name;
 	int				fd;
 }					t_list_env;
+
+
 
 #endif
