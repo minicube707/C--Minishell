@@ -25,7 +25,7 @@ HEA_PATH = include
 SRC_FILES = $(FILE_NAMES:%=$(SRC_PATH)/%.c)
 OBJ_FILES = $(FILE_NAMES:%=$(OBJ_PATH)/%.o)
 DEP_FILES = $(OBJ_FILES:.o=.d)
-HEA_FILES = $(HEA_PATH)/pipex.h
+HEA_FILES = $(HEA_PATH)/minishell.h
 
 INCLUDE = -I $(HEA_PATH) -I libft/include -I gnl/include
 ARCHIVE = -L libft -l ft -L gnl -l gnl
