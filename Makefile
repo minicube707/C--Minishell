@@ -30,7 +30,7 @@ HEA_FILES = $(HEA_PATH)/minishell.h
 INCLUDE = -I $(HEA_PATH) -I libft/include -I gnl/include
 ARCHIVE = -L libft -l ft -L gnl -l gnl
 
-NAME = pipex
+NAME = minishell
 NAME_FOLDER := $(shell basename $(CURDIR))
 
 MAKEFLAGS += --no-print-directory
