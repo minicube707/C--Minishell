@@ -28,7 +28,7 @@ DEP_FILES = $(OBJ_FILES:.o=.d)
 HEA_FILES = $(HEA_PATH)/minishell.h
 
 INCLUDE = -I $(HEA_PATH) -I libft/include -I gnl/include
-ARCHIVE = -L libft -l ft -L gnl -l gnl
+ARCHIVE = -L libft -l ft -L gnl -l gnl -lreadline
 
 NAME = minishell
 NAME_FOLDER := $(shell basename $(CURDIR))
