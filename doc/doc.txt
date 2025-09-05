@@ -1,26 +1,67 @@
+===============
+ DOCUMENTATION
+===============
 
-Doc pour le minishell
+
+===============
+  STRUCTURE
+===============
 
 
-STRUCTURE
+t_file_info:
+=========DESCRIPTION=========
+Structure permentant de stocker, les noms de fichiers ou le mot limiter pour les here_doc
 
-Structure pour la liste
-typedef struct s_list
-{
-    t_env           **enviroment;
-    int             next_redir  
-    int             mypipe[2];
-    char            *command
-    char            **option;
-    t_file_info     **tab_file;
-    struct s_list   *next;
-    struct s_list   *previous;
-} t_list;
+int     type :          Definit le type de document (convention a definir) (<, >, <<, >>)
+char    *file_name :    String qui suit la redirection (le type)
+int     fd :            Int qui peremt a l'executor de stocker le fd du fichier une fois ouvert. (Ne pas remplir)
 
-Structure pour les infos concernant les fichiers
 typedef struct s_file_info
 {
-    int type;
-    char *file_name;
-    int fd;
-} t_file_info
+	int				type;
+	char			*file_name;
+	int				fd;
+}					t_file_info;
+
+
+t_list_env:
+=========DESCRIPTION=========
+Structure permentant de stocker l'enviroment de l'ordinateur
+
+char	            *name:          Nom de l'enviroment (Ex: HOME)
+char	            *content:       Contenue de l'enviroment (Ex: /home/user)
+struct s_list_env	*next:          Pointer to the next node
+
+typedef struct s_list_env
+{
+	char			    *name;
+	char			    *content;
+    struct s_list_env	*next;
+}					t_list_env;
+
+
+t_list:
+=========DESCRIPTION=========
+Structure permentant de passer les infos entre le parsing et l'execution
+
+t_list_env			**enviroment:   Structure contenant une copie de l'enviroment
+int					next_redir:     Type de la prochaine redirection (convention a definir) (NULL, |, ||, &&)
+int					mypipe[2]:      Tableau de deux permentant a l'executor de faire passer l'information entre les pipe (Ne pas toucher)
+char				*command:       Nom de la commande rentrer par l'utilisateur
+char				**option:       Tableau de string contenant les options de la commande
+t_file_info			**tab_file:     Structure a remplir par le parseur avec tout les fichiers et les here_doc
+struct s_list		*next:          Prochain pointer
+struct s_list		*previous:      Precendant pointer
+
+typedef struct s_list
+{
+	t_list_env			**enviroment;
+	int					next_redir;
+	int					mypipe[2];
+	char				*command;
+	char				**option;
+	t_file_info			**tab_file;
+	struct s_list		*next;
+	struct s_list		*previous;
+}						t_list;
+
