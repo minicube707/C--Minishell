@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/05 15:17:02 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/05 17:25:12 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	sighandler(int signal)
 {
+	(void) signal;
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -33,7 +34,7 @@ void	set_signal_action(void)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_list	**head;
+	t_list	*head;
 	char	*line;
 
 	(void)argc;
@@ -49,7 +50,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(line);
 			head = parsing(argc, argv, envp);
-			execution(head);
+			execution(&head);
 			free(line);
 		}
 	}
