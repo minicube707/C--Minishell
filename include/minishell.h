@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/05 15:17:14 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/05 15:51:15 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,8 @@ typedef struct s_file_info
 // Strucuture to containt the environnement
 typedef struct s_list_env
 {
-	int				type;
-	char			*file_name;
-	int				fd;
+	char			*name;
+	char			*content;
 }					t_list_env;
 
 // Strucuture to containt the info of the commande line
