@@ -12,8 +12,8 @@ CC = cc -Wall -Wextra -Werror -MMD -MP
 # =======================================
 #              FILE
 # =======================================
-FILE_NAMES =	main
-			
+FILE_NAMES =	main \
+				here_doc			
 
 # =======================================
 #              VARIABLE

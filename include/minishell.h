@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/05 13:20:01 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/05 14:41:10 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-// STRUCTURE
 
+// STRUCTURE
 // Structure to containt the file info
 typedef struct s_file_info
 {
@@ -52,5 +52,13 @@ typedef struct s_list
 	struct s_list	*next;
 	struct s_list	*previous;
 }					t_list;
+
+
+/*===================*/
+/*=====EXECUTION=====*/
+/*===================*/
+
+/*Here_doc*/
+int					here_doc(int *file_fd, char *limiter);
 
 #endif
