@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/05 16:14:17 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/05 17:24:39 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,15 @@ typedef struct s_list
 
 /*Here_doc*/
 int						here_doc(int *file_fd, char *limiter);
+
+/*Execution*/
+void					execution(t_list **head);
+
+/*===================*/
+/*======PARSING======*/
+/*===================*/
+
+/*Parsing*/
+t_list					*parsing(int argc, char **argv, char **envp);
 
 #endif
