@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/06 14:12:25 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/06 14:54:23 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include "get_next_line_bonus.h"
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
