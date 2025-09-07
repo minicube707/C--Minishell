@@ -1,0 +1,12 @@
+
+===============
+    TARGET
+===============
+Pour chaque etape enregistrer l exit code dans un tableau et que le tableau persite a travers les prompts
+Faire les heredocs de tout le prompt
+
+Pour chaque simple commande line (entre pipe)
+Parcourir les redirections et etablir le In/OUT (stdout default pipe)
+Faire le subshell, s'il y a 
+Savoir si c'est une commande ou un built-in (built-in prio sur commande)
+Executer la 'commande'
