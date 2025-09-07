@@ -1,0 +1,105 @@
+===============
+  DEFINITION
+===============
+
+
+POSIX:
+C’est une famille de normes qui définissent comment les systèmes Unix doivent fonctionner.
+Elle permet de garantir une certaine compatibilité entre différents systèmes.
+👉 Bash suit en particulier la norme POSIX 1003.1, qui définit le comportement du shell et des utilitaires de base.
+
+
+blank:
+Un caractère d’espacement, soit un espace ou une tabulation (\t).
+👉 Utilisé pour séparer des mots dans une commande.
+
+
+builtin:
+Une commande interne au shell.
+👉 Elle n’est pas un fichier exécutable indépendant, mais une fonction directement intégrée dans Bash (ex. : cd, echo, pwd).
+
+
+control operator:
+Un symbole spécial qui permet de contrôler le flux d’exécution des commandes.
+Exemples :
+
+    ; pour exécuter plusieurs commandes à la suite
+    && pour exécuter la commande suivante seulement si la précédente réussit
+    || pour exécuter la commande suivante seulement si la précédente échoue
+    & pour exécuter une commande en arrière-plan
+    | pour faire un pipe
+
+exit status:
+Le code de retour d’une commande.
+👉 Il indique si une commande s’est exécutée correctement (0) ou non (différent de 0, jusqu’à 255).
+
+
+field:
+Une partie de texte résultant d'une expansion du shell.
+👉 Par exemple, après substitution de variables ou découpage d’une ligne de commande, chaque élément (commande, arguments...) est un "champ".
+
+
+filename:
+Une chaîne de caractères utilisée pour désigner un fichier.
+
+
+job:
+Un groupe de processus liés, souvent issus d’un pipeline (|) ou d’une commande complexe.
+
+
+job control:
+Le mécanisme qui permet à l’utilisateur de mettre en pause (suspendre) ou reprendre (reprendre) l’exécution d’un processus.
+👉 Par exemple : Ctrl+Z suspend un job, et fg le reprend.
+
+
+metacharacter:
+Un caractère spécial qui a un sens particulier pour le shell s’il n’est pas entre guillemets.
+Exemples : |, &, ;, (, ), <, >, ou un espace.
+👉 Ils sont utilisés pour séparer ou contrôler des commandes.
+
+
+name:
+Un mot qui commence par une lettre ou un underscore (_), suivi éventuellement de lettres, chiffres ou underscores.
+👉 Utilisé comme nom de variable ou de fonction dans Bash.
+
+
+operator:
+Un opérateur peut être soit un control operator (comme &&, ;, etc.), soit un redirection operator (comme >, <, >>).
+👉 Il contient au moins un metacharacter non cité.
+
+
+process group:
+Un groupe de processus liés ensemble et partageant le même ID de groupe de processus.
+👉 Utilisé pour gérer plusieurs processus comme un seul job.
+
+
+process group ID:
+Un identifiant unique associé à un groupe de processus.
+
+
+reserved word:
+Un mot réservé avec une signification spéciale pour le shell.
+👉 Souvent utilisé pour les structures de contrôle (if, while, for, etc.).
+
+
+return status:
+Synonyme de exit status.
+
+
+signal:
+Un mécanisme d’interruption.
+Le noyau du système envoie un signal à un processus pour lui indiquer qu’un événement est survenu (ex. : SIGINT envoyé par Ctrl+C).
+
+
+special builtin:
+Une commande builtin classée comme spéciale par la norme POSIX.
+👉 Elle peut avoir des règles particulières (ex. : break, continue, eval, exec, export...).
+
+
+token:
+Une séquence de caractères que le shell traite comme une unité.
+👉 Peut être un mot ou un opérateur.
+
+word:
+Une séquence de caractères traitée comme une unité par le shell.
+👉 Ne doit pas contenir de metacharacter non cité.

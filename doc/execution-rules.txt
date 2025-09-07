@@ -1,0 +1,54 @@
+
+===============
+    RULE
+===============
+🔁 1. Faire les redirection
+   a. Faire les heredocs de tout le prompt
+   
+   b. Parcourir les redirections et etablir le In/OUT (stdout default pipe)
+
+   2.p Faire le subshell, s'il y a 
+
+📌 2. Recherche de la commande
+    a. Si la commande ne contient pas de / (slash)
+
+        Exemple : ls, echo, python
+
+        Étape 1 : Bash regarde si c’est une fonction shell définie par l'utilisateur.
+        👉 Si oui, il l’exécute.
+
+        Étape 2 : Sinon, Bash regarde si c’est une commande interne (builtin) de Bash.
+        👉 Par exemple, cd, echo, exit sont des builtins.
+
+        Étape 3 : Si ce n’est ni une fonction, ni un builtin, 
+        Bash cherche dans les dossiers listés dans $PATH (la liste des chemins où chercher les programmes).
+        👉 Il regarde s’il y a un fichier exécutable qui porte ce nom.
+
+        Si Bash ne trouve pas la commande :
+
+        Il regarde s’il existe une fonction spéciale appelée command_not_found_handle.
+        👉 Si oui, il l’exécute avec le nom de la commande inconnue en argument.
+
+        Sinon, Bash affiche une erreur (command not found) et retourne le code d’erreur 127.
+
+    b. Si la commande contient un ou plusieurs /
+
+        Exemple : ./script.sh ou /usr/bin/python
+
+        Bash considère que c’est un chemin explicite vers un fichier et essaie de l’exécuter tel quel.
+
+🚀 3. Exécution de la commande
+
+    Bash lance le programme dans un nouvel environnement d’exécution.
+    Le premier argument ($0) est le nom donné à la commande.
+    Les autres arguments ($1, $2, …) sont ceux passés par l’utilisateur.
+
+⚠️ 4. Si le fichier n’est pas exécutable…
+
+    Si Bash essaie d’exécuter le fichier mais qu’il n’est pas au format exécutable (ex. : un script texte), alors :
+    S’il ne s’agit pas d’un dossier, Bash suppose que c’est un script shell et l’exécute comme tel.
+
+🕒 5. Attente de la fin de la commande
+
+    Si la commande n’est pas lancée en arrière-plan (i.e. sans &), 
+    Bash attend qu’elle se termine et récupère son code de retour (exit status).
