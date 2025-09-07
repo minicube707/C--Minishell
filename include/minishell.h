@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/05 16:14:17 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/06 14:54:23 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include "get_next_line_bonus.h"
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -55,11 +56,31 @@ typedef struct s_list
 	struct s_list		*previous;
 }						t_list;
 
+
+/*===================*/
+/*=======COMMUN======*/
+/*===================*/
+
+/*Manage Error*/
+void						print_error(char *string);
+void						print_error_unknow_cmd(char *string);
+
 /*===================*/
 /*=====EXECUTION=====*/
 /*===================*/
 
+/*Execution*/
+void					execution(t_list **head);
+
+/*===================*/
+/*======PARSING======*/
+/*===================*/
+
 /*Here_doc*/
 int						here_doc(int *file_fd, char *limiter);
+
+/*Parsing*/
+t_list					*parsing(int argc, char **argv, char **envp);
+
 
 #endif

@@ -13,7 +13,8 @@ CC = cc -Wall -Wextra -Werror -MMD -MP
 #              FILE
 # =======================================
 FILE_NAMES =	main \
-				here_doc			
+				here_doc \
+				manage_error		
 
 # =======================================
 #              VARIABLE
@@ -45,7 +46,7 @@ RED         = \033[31m
 GREEN       = \033[32m
 YELLOW      = \033[38;5;227m
 BLUE        = \033[38;5;26m
-MANGENTA    = \033[35m
+MAGENTA    = \033[35m
 CYAN        = \033[38;5;51m	
 
 
@@ -92,7 +93,7 @@ fclean : clean
 re : fclean all
 
 intro :
-	@printf "\n$(MANGENTA)📦 Compilation de $(shell basename $(CURDIR))$(RESET)\n"
+	@printf "\n$(MAGENTA)📦 Compilation de $(shell basename $(CURDIR))$(RESET)\n"
 
 # Inclusion automatique des fichiers .d s’ils existent
 -include $(DEP_FILES)
