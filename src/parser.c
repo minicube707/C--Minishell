@@ -28,30 +28,30 @@ int	strlenc(char *str, const char c)
 	i = 0;
 	if (!str)
 		return (-1);
-	while (*str++ && *str != c)
+	while (*str && *str != c)
+	{
 		i++;
+		str++;
+	}
 	return (i);
 }
 
 t_list_env	*set_env(char **envp)
 {
 	t_list_env	*new;
-	t_list_env	*tmp;
+	t_list_env	*head;
 	int		len;
-	int		i;
 
 	new = NULL;
 	while (*envp)
 	{
 		len = strlenc(*envp, '=');
-		if (!new)
+		if (!head)
 			new = malloc(sizeof(t_list_env));
 		else
 		{
 			new->next = malloc(sizeof(t_list_env));
-			tmp = new;
 			new = new->next;
-			new->prev = tmp;
 			new->next = NULL;
 		}
 		new->name = ft_substr(*envp, 0, len);
@@ -71,10 +71,10 @@ t_list	*parser(int argc, char **argv, char **envp)
 	if (!list)
 		return (NULL);
 	list->enviroment = set_env(envp);
-	t_list_env	p = *list->enviroment;
+	t_list_env	p = list->enviroment;
 	while (p)
 	{
-		ft_printf("%s = %s\n", p->name, p->content);
+		printf("%s = %s\n", p->name, p->content);
 		p = p->next;
 	}
 	return (list);
