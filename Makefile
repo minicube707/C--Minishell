@@ -14,7 +14,8 @@ CC = cc -Wall -Wextra -Werror -MMD -MP
 # =======================================
 FILE_NAMES =	main \
 				here_doc \
-				manage_error		
+				manage_error \
+				execution	
 
 # =======================================
 #              VARIABLE

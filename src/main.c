@@ -35,12 +35,15 @@ void	set_signal_action(void)
 int	main(int argc, char **argv, char **envp)
 {
 	t_list	*head;
+	t_channel *shell_channel;
 	char	*line;
 
 	(void)argc;
 	(void)argv;
 	(void)envp;
 	set_signal_action();
+	shell_channel->in = 0;
+	shell_channel->out = 1;
 	while (1)
 	{
 		line = readline("Minishell > ");
@@ -50,7 +53,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(line);
 			head = parsing(argc, argv, envp);
-			execution(&head);
+			execution(head, 0, shell_channel);
 			free(line);
 		}
 	}

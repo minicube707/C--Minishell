@@ -182,9 +182,9 @@ typedef struct s_list
     previous        > *pointer
 }						t_list;
 
-1. Ouvrir les fichiers              > Il n'y en a pas
 2 .Verifier la redirection d'avant  > IL y a un precedant
 3 .Execution du pipe                > Oui pipe
+1. Ouvrir les fichiers              > Il n'y en a pas
 4. Verifier les subshell            > Il n'y en a pas
 5. Buil-in ou commande              > C'est une commande
 6. Executer la commande             > (stdin=pipe, stdout=stdout)
