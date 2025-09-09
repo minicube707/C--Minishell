@@ -3,7 +3,11 @@
 ===============
 
 --------------------------------------------------------------
+IN:
 ls
+
+OUT:
+?
 
 typedef struct s_list
 {
@@ -27,8 +31,19 @@ typedef struct s_list
 
 
 --------------------------------------------------------------
+FILE:
+text.txt ->
+les chats
+les chiens
+
+IN:
 cat -e text.txt
 
+OUT:
+les chats$
+les chiens$
+
+===============================================================
 typedef struct s_list
 {
 	pre_redir       > NULL
@@ -53,8 +68,23 @@ typedef struct s_list
 
 
 --------------------------------------------------------------
+FILE:
+text.txt ->
+les chats
+les chiens
+
+IN:
 < text.txt cat -e > out.txt
 
+OUT:
+
+
+FILE CREATE:
+out.txt ->
+les chats$
+les chiens$
+
+===============================================================
 typedef struct s_list
 {
 	pre_redir       > NULL
@@ -81,8 +111,31 @@ typedef struct s_list
 
 
 --------------------------------------------------------------
+FILE:
+infile ->
+les chats
+les chiens
+
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
 cat > out1 > out2 < infile << here_doc
 
+
+OUT:
+
+FILE CREATE:
+out1 ->
+
+out2 ->
+I am
+inside the 
+heredoc
+
+===============================================================
 typedef struct s_list
 {
 	pre_redir       > NULL
@@ -117,6 +170,30 @@ typedef struct s_list
 --------------------------------------------------------------
 cat > out1 > out2 << here_doc < infile 
 
+FILE:
+infile ->
+les chats
+les chiens
+
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
+cat > out1 > out2 << here_doc < infile 
+
+
+OUT:
+
+FILE CREATE:
+out1 ->
+
+out2 ->
+les chats
+les chiens
+
+===============================================================
 typedef struct s_list
 {
 	pre_redir       > NULL
@@ -149,8 +226,13 @@ typedef struct s_list
 
 
 --------------------------------------------------------------
+IN:
 ls | wc -l
 
+OUT:
+?
+
+===============================================================
 typedef struct s_list
 {
 	pre_redir       > NULL
@@ -193,8 +275,21 @@ typedef struct s_list
 
 
 --------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
 (echo hello && cat -e) << stop 
 
+OUT:
+hello
+I am$
+inside the$
+heredoc$
+
+===============================================================
 typedef struct s_list
 {
 	pre_redir       > NULL
@@ -264,8 +359,26 @@ typedef struct s_list
 
 
 --------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
 (echo hello && cat -e) << stop > out1 > out2
 
+OUT:
+
+FILE CREATE:
+out1 ->
+
+out2 ->
+hello
+I am$
+inside the$
+heredoc$
+
+===============================================================
 typedef struct s_list
 {
 	pre_redir       > NULL
@@ -339,8 +452,24 @@ typedef struct s_list
 
 
 --------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
 (echo hello && cat -e) << stop > out | cat -n
 
+OUT:
+
+FILE CREATE:
+out ->
+hello
+I am$
+inside the$
+heredoc$
+
+===============================================================
 typedef struct s_list
 {
 	pre_redir       > NULL
@@ -431,8 +560,20 @@ typedef struct s_list
 
 
 --------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
 (cat -e | cat -n) << stop
 
+OUT:
+     1	I am$
+     2	inside the $
+     3	heredoc$
+
+===============================================================
 typedef struct s_list
 {
 	pre_redir       > NULL
@@ -501,8 +642,20 @@ typedef struct s_list
 
 
 --------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
 (cat -e && cat -n) << stop
 
+OUT:
+I am$
+inside the $
+heredoc$
+
+===============================================================
 typedef struct s_list
 {
 	pre_redir       > NULL
@@ -571,8 +724,18 @@ typedef struct s_list
 
 
 --------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
 (cat -e | cat -n) << stop | wc -l
 
+OUT:
+4
+
+===============================================================
 typedef struct s_list
 {
 	pre_redir       > NULL
@@ -661,9 +824,17 @@ typedef struct s_list
 
 
 --------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
 echo hello | cat | << stop | cat
 
+OUT:
 
+===============================================================
 typedef struct s_list
 {
 	pre_redir       > NULL
@@ -747,9 +918,20 @@ typedef struct s_list
 
 
 --------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
 echo hello | cat | << stop cat| cat
 
+OUT:
+I am
+inside the 
+heredoc
 
+===============================================================
 typedef struct s_list
 {
 	pre_redir       > NULL
@@ -833,8 +1015,15 @@ typedef struct s_list
 
 
 --------------------------------------------------------------
+
+IN:
 < infile && echo "Sucess" || echo "Fail"
 
+OUT:
+bash: infile: No such file or directory
+Fail
+
+===============================================================
 typedef struct s_list
 {
 	pre_redir       > NULL
@@ -891,8 +1080,20 @@ typedef struct s_list
 
 
 --------------------------------------------------------------
+IN:
 (echo hello && (echo world && echo next > outfile)) > out
 
+OUT:
+
+FILE CREATE:
+out ->
+hello
+world
+
+outfile ->
+next
+
+===============================================================
 typedef struct s_list
 {
 	pre_redir       > NULL
