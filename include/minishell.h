@@ -47,15 +47,21 @@ typedef struct s_list_env
 typedef struct s_list
 {
 	t_list_env			**enviroment;
-	int					next_redir;
+	int					pre_redir;
 	int					mypipe[2];
 	char				*command;
 	char				**option;
 	t_file_info			**tab_file;
+	char				*subshell;
 	struct s_list		*next;
 	struct s_list		*previous;
 }						t_list;
 
+typedef struct s_channel
+{
+    int    				*in;
+    int    				*out;
+}  	 					t_channel;
 
 /*===================*/
 /*=======COMMUN======*/
@@ -67,17 +73,17 @@ void						print_error_unknow_cmd(char *string);
 
 /*===================*/
 /*=====EXECUTION=====*/
+
 /*===================*/
+/*Here_doc*/
+int						here_doc(int *file_fd, char *limiter);
 
 /*Execution*/
-void					execution(t_list **head);
+void    					execution(t_list *head, int subshell, t_channel shell_channel);
 
 /*===================*/
 /*======PARSING======*/
 /*===================*/
-
-/*Here_doc*/
-int						here_doc(int *file_fd, char *limiter);
 
 /*Parsing*/
 t_list					*parsing(int argc, char **argv, char **envp);
