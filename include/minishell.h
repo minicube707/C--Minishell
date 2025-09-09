@@ -6,15 +6,15 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/06 14:54:23 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/09 18:34:32 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft.h"
 # include "get_next_line_bonus.h"
+# include "libft.h"
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -59,17 +59,17 @@ typedef struct s_list
 
 typedef struct s_channel
 {
-    int    				*in;
-    int    				*out;
-}  	 					t_channel;
+	int					*in;
+	int					*out;
+}						t_channel;
 
 /*===================*/
 /*=======COMMUN======*/
 /*===================*/
 
 /*Manage Error*/
-void						print_error(char *string);
-void						print_error_unknow_cmd(char *string);
+void					print_error(char *string);
+void					print_error_unknow_cmd(char *string);
 
 /*===================*/
 /*=====EXECUTION=====*/
@@ -78,8 +78,12 @@ void						print_error_unknow_cmd(char *string);
 /*Here_doc*/
 int						here_doc(int *file_fd, char *limiter);
 
+/*Execute_here_doc*/
+void					execute_here_doc(t_list **head);
+
 /*Execution*/
-void    					execution(t_list *head, int subshell, t_channel shell_channel);
+void					execution(t_list *head, int subshell,
+							t_channel shell_channel);
 
 /*===================*/
 /*======PARSING======*/
@@ -87,6 +91,5 @@ void    					execution(t_list *head, int subshell, t_channel shell_channel);
 
 /*Parsing*/
 t_list					*parsing(int argc, char **argv, char **envp);
-
 
 #endif
