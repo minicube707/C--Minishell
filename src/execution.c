@@ -6,19 +6,24 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/09/09 18:22:49 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/10 11:59:54 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    execution(t_list *head, int subshell, t_channel shell_channel)
+void    execution(t_list *head, int subshell, t_channel *shell_channel)
 {
     (void)head;
 
-    t_list *tmphead;
+    t_list *tmphead = NULL;
     int     *exit_tabe;
-
+    
+    /**/
+    (void)shell_channel;
+    (void)exit_tabe;
+    (void)subshell;
+    
     /*Creation de la pseudo structure*/
     tmphead->pre_redir = 0;
     tmphead->command = "ls";
