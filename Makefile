@@ -48,7 +48,7 @@ RED         = \033[31m
 GREEN       = \033[32m
 YELLOW      = \033[38;5;227m
 BLUE        = \033[38;5;26m
-MAGENTA    = \033[35m
+MAGENTA    =  \033[35m
 CYAN        = \033[38;5;51m	
 
 

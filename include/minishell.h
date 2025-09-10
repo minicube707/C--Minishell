@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/09 18:34:32 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/10 11:57:27 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ typedef struct s_list
 
 typedef struct s_channel
 {
-	int					*in;
-	int					*out;
+	int					in;
+	int					out;
 }						t_channel;
 
 /*===================*/
@@ -83,7 +83,7 @@ void					execute_here_doc(t_list **head);
 
 /*Execution*/
 void					execution(t_list *head, int subshell,
-							t_channel shell_channel);
+							t_channel *shell_channel);
 
 /*===================*/
 /*======PARSING======*/
