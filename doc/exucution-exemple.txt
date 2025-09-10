@@ -1,0 +1,1199 @@
+===============
+  COMMANDE
+===============
+
+--------------------------------------------------------------
+IN:
+ls
+
+OUT:
+?
+
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > ls
+	option          > NULL
+	tab_file        > NULL
+    subshell        > NULL  
+    next            > NULL
+    previous        > NULL    
+}						t_list;
+
+1. Creer les here_doc               > Il n'y en a pas
+2 .Verifier la redirection d'avant  > Pas de precedant
+3. Ouvrir les fichiers              > Il n'y en a pas
+4. Verifier les subshell            > Il n'y en a pas
+5. Buil-in ou commande              > C'est une commande
+6. Executer la commande             > (stdin=stdin, stdout=sdtout)
+7. Stocker l'exit code              >
+8. Nouveau noeud                    > Il n'y pas de prochain noeud
+
+
+--------------------------------------------------------------
+FILE:
+text.txt ->
+les chats
+les chiens
+
+IN:
+cat -e text.txt
+
+OUT:
+les chats$
+les chiens$
+
+===============================================================
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > cat
+	option          > [-e] [text.txt] [NULL]
+	tab_file        > NULL
+    subshell        > NULL  
+    next            > NULL
+    previous        > NULL
+}						t_list;
+
+1. Creer les here_doc               > Il n'y en a pas
+2 .Verifier la redirection d'avant  > Pas de precedant
+3. Ouvrir les fichiers              > Il n'y en a pas
+4. Verifier les subshell            > Il n'y en a pas
+5. Buil-in ou commande              > C'est une commande
+6. Executer la commande             > (stdin=stdin, stdout=sdtout)
+7. Stocker l'exit code              >
+8. Nouveau noeud                    > Il n'y pas de prochain noeud
+
+
+
+
+--------------------------------------------------------------
+FILE:
+text.txt ->
+les chats
+les chiens
+
+IN:
+< text.txt cat -e > out.txt
+
+OUT:
+
+
+FILE CREATE:
+out.txt ->
+les chats$
+les chiens$
+
+===============================================================
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > cat
+	option          > [-e] [NULL]
+	tab_file        >   [type= <, file_name=text.txt, fd=?],
+                        [type= >, file_name=out.txt, fd=?]
+    subshell        > NULL  
+    next            > NULL
+    previous        > NULL
+}						t_list;
+
+1. Creer les here_doc               > Il n'y en a pas
+2 .Verifier la redirection d'avant  > Pas de precedant
+3. Ouvrir les fichiers              > Ouvrir le premier fichier et faire les redirection (stdin=text.txt)
+4. Stocker l'exit code              >
+5. Ouvrir les fichiers              > Ouvrir le deuxine fichier et faire les redirection (stdout=out.txt)
+6. Stocker l'exit code              >
+7. Verifier les subshell            > Il n'y en a pas
+8. Buil-in ou commande              > C'est une commande
+9. Executer la commande             > (stdin=text.txt, stdout=out.txt)
+10. Stocker l'exit code             >
+11. Nouveau noeud                   > Il n'y pas de prochain noeud
+
+
+--------------------------------------------------------------
+FILE:
+infile ->
+les chats
+les chiens
+
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
+cat > out1 > out2 < infile << here_doc
+
+
+OUT:
+
+FILE CREATE:
+out1 ->
+
+out2 ->
+I am
+inside the 
+heredoc
+
+===============================================================
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > cat
+	option          > NULL
+	tab_file        >   [type= >,  file_name=out1, fd=?],
+                        [type= >,  file_name=out2, fd=?],
+                        [type= <,  file_name=infile, fd=?],
+                        [type= <<, file_name=here_doc, fd=?],
+    subshell        > NULL  
+    next            > NULL
+    previous        > NULL
+}						t_list;
+
+1. Creer les here_doc               > Il n'y en un
+2 .Verifier la redirection d'avant  > Pas de precedant
+3. Ouvrir les fichiers              > Ouvrir le premier fichier et faire les redirection (stdout=out1)
+4. Stocker l'exit code              >
+5. Ouvrir les fichiers              > Ouvrir le deuxine fichier et faire les redirection (stdout=out2)
+6. Stocker l'exit code              >
+7. Ouvrir les fichiers              > Ouvrir le troisime fichier et faire les redirection (stdin=infile)
+8. Stocker l'exit code              >
+9. Ouvrir les fichiers              > Faire la redirection du here_doc (stdin=here_doc)
+10. Stocker l'exit code             >
+11. Verifier les subshell           > Il n'y en a pas
+12. Buil-in ou commande             > C'est une commande
+13. Executer la commande            > (stdin=here_doc, stdout=out2)
+14. Stocker l'exit code             >
+15. Nouveau noeud                   > Il n'y pas de prochain noeud
+
+
+--------------------------------------------------------------
+cat > out1 > out2 << here_doc < infile 
+
+FILE:
+infile ->
+les chats
+les chiens
+
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
+cat > out1 > out2 << here_doc < infile 
+
+
+OUT:
+
+FILE CREATE:
+out1 ->
+
+out2 ->
+les chats
+les chiens
+
+===============================================================
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > cat
+	option          > NULL
+	tab_file        >   [type= >,  file_name=out1, fd=?],
+                        [type= >,  file_name=out2, fd=?],
+                        [type= <,  file_name=infile, fd=?],
+                        [type= <<, file_name=here_doc, fd=?],
+    subshell        > NULL  
+    next            > NULL
+    previous        > NULL
+}						t_list;
+
+1. Creer les here_doc               > Il n'y en un
+2 .Verifier la redirection d'avant  > Pas de precedant
+3. Ouvrir les fichiers              > Ouvrir le premier fichier et faire les redirection (stdout=out1)
+4. Stocker l'exit code              >
+5. Ouvrir les fichiers              > Ouvrir le deuxine fichier et faire les redirection (stdout=out2)
+6. Stocker l'exit code              >
+7. Ouvrir les fichiers              > Faire la redirection du here_doc (stdin=here_doc)
+8. Stocker l'exit code              >
+9. Ouvrir les fichiers              > Ouvrir le troisime fichier et faire les redirection (stdin=infile)
+10. Stocker l'exit code             >
+11. Verifier les subshell           > Il n'y en a pas
+12. Buil-in ou commande             > C'est une commande
+13. Executer la commande            > (stdin=infile, stdout=out2)
+14. Stocker l'exit code             >
+15. Nouveau noeud                   > Il n'y pas de prochain noeud
+
+
+--------------------------------------------------------------
+IN:
+ls | wc -l
+
+OUT:
+?
+
+===============================================================
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > ls
+	option          > NULL
+	tab_file        > NULL
+    subshell        > NULL  
+    next            > *pointer
+    previous        > NULL
+}						t_list;
+
+1. Creer les here_doc               > Il n'y en a pas
+2 .Verifier la redirection d'avant  > Pas de precedant
+2. Ouvrir les fichiers              > Il n'y en a pas
+3. Verifier les subshell            > Il n'y en a pas
+4. Buil-in ou commande              > C'est une commande
+5. Executer la commande             > (stdin=stdin, stdout=pipe)
+6. Stocker l'exit code              >
+7. Nouveau noeud                    > Il y a un next
+
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > wc
+	option          > [-l] [NULL]
+	tab_file        > NULL
+    subshell        > NULL  
+    next            > NULL
+    previous        > *pointer
+}						t_list;
+
+2 .Verifier la redirection d'avant  > IL y a un precedant
+3 .Execution du pipe                > Oui pipe
+1. Ouvrir les fichiers              > Il n'y en a pas
+4. Verifier les subshell            > Il n'y en a pas
+5. Buil-in ou commande              > C'est une commande
+6. Executer la commande             > (stdin=pipe, stdout=stdout)
+7. Stocker l'exit code              >
+8. Nouveau noeud                    > Il n'y pas de prochain noeud
+
+
+--------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
+(echo hello && cat -e) << stop 
+
+OUT:
+hello
+I am$
+inside the$
+heredoc$
+
+===============================================================
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > NULL
+	option          > NULL
+	tab_file        > [type= <<, file_name=stop, fd=?]
+    subshell        > "echo hello && cat -e"
+    next            > NULL
+    previous        > NULL
+}						t_list;
+
+1. Creer les here_doc               > Il y en a un
+2 .Verifier la redirection d'avant  > Pas de precedant
+3. Ouvrir les fichiers              > Pas de fichier
+4. Ouvrir les fichiers              > Faire la redirection du here_doc (stdin=stop)
+5. Stocker l'exit code              >
+6. Verifier les subshell            > Il y en a un
+7. Definir son I/O                  > stdin=stop, sdtout=stdout
+
+        ────────►
+        echo hello && cat -e
+
+        typedef struct s_list
+        {
+            pre_redir       > NULL
+            command         > echo
+            option          > [hello] [NULL]
+            tab_file        > NULL
+            subshell        > NULL
+            next            > *pointer
+            previous        > NULL
+        }						t_list;
+
+        1 .Verifier la redirection d'avant  > Pas de precedant
+        2. Ouvrir les fichiers              > Pas de fichier
+        3. Verifier les subshell            > Il n'y en a pas
+        4. Buil-in ou commande              > C'est un built-in
+        5. Executer la commande             > (stdin=stop, stdout=stdout)
+        6. Stocker l'exit code              >
+        7. Nouveau noeud                    > Il y a un next
+
+
+        typedef struct s_list
+        {
+            pre_redir       > NULL
+            command         > cat
+            option          > [-e] [NULL]
+            tab_file        > NULL
+            subshell        > NULL
+            next            > NULL
+            previous        > *pointer
+        }						t_list;
+
+        1 .Verifier la redirection d'avant  > IL y a un precedant
+        2 .Execution du pipe                > &&, etat du derneir exit status (Suppose oui)
+        3. Ouvrir les fichiers              > Pas de fichier
+        4. Verifier les subshell            > Il n'y en a pas
+        5. Buil-in ou commande              > C'est une commade
+        6. Executer la commande             > (stdin=stop, stdout=stdout)
+        7. Stocker l'exit code              >
+        8. Nouveau noeud                    > Il n'y pas de prochain noeud
+        ◄────────
+
+8. Buil-in ou commande              > NULL
+9. Nouveau noeud                    > Il n'y pas de prochain noeud
+
+
+
+--------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
+(echo hello && cat -e) << stop > out1 > out2
+
+OUT:
+
+FILE CREATE:
+out1 ->
+
+out2 ->
+hello
+I am$
+inside the$
+heredoc$
+
+===============================================================
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > NULL
+	option          > NULL
+	tab_file        > [type= <<, file_name=stop, fd=?],
+                      [type= >,  file_name=out1, fd=?],
+                      [type= >,  file_name=out2, fd=?]
+    subshell        > "echo hello && cat -e"
+    next            > NULL
+    previous        > NULL
+}						t_list;
+
+1. Creer les here_doc               > Il y en a un
+2 .Verifier la redirection d'avant  > Pas de precedant
+7. Ouvrir les fichiers              > Faire la redirection du here_doc (stdin=stop)
+8. Stocker l'exit code              >
+3. Ouvrir les fichiers              > Ouvrir le premier fichier et faire les redirection (stout=out1)
+4. Stocker l'exit code              >
+5. Ouvrir les fichiers              > Ouvrir le deuxine fichier et faire les redirection (stout=out2)
+6. Stocker l'exit code              >
+7. Verifier les subshell            > Il y en a un
+8. Definir som I/O                  > stdin=stop, sdtout=out2
+
+        ────────►
+        echo hello && cat -e
+
+        typedef struct s_list
+        {
+            pre_redir       > NULL
+            command         > echo
+            option          > [hello] [NULL]
+            tab_file        > NULL
+            subshell        > NULL
+            next            > *pointer
+            previous        > NULL
+        }						t_list;
+
+        1 .Verifier la redirection d'avant  > Pas de precedant
+        2. Ouvrir les fichiers              > Pas de fichier
+        3. Verifier les subshell            > Il n'y en a pas
+        4. Buil-in ou commande              > C'est un built-in
+        5. Executer la commande             > (stdin=stop, stdout=out2)
+        6. Stocker l'exit code              >
+        7. Nouveau noeud                    > Il y a un next
+
+
+        typedef struct s_list
+        {
+            pre_redir       > NULL
+            command         > cat
+            option          > [-e] [NULL]
+            tab_file        > NULL
+            subshell        > NULL
+            next            > NULL
+            previous        > *pointer
+        }						t_list;
+
+        1 .Verifier la redirection d'avant  > IL y a un precedant
+        2 .Execution du pipe                > &&, etat du derneir exit status (Suppose oui)
+        3. Ouvrir les fichiers              > Pas de fichier
+        4. Verifier les subshell            > Il n'y en a pas
+        5. Buil-in ou commande              > C'est une commade
+        6. Executer la commande             > (stdin=stop, stdout=out2)
+        7. Stocker l'exit code              >
+        8. Nouveau noeud                    > Il n'y pas de prochain noeud
+        ◄────────
+
+8. Buil-in ou commande              > NULL
+11. Nouveau noeud                   > Il n'y pas de prochain noeud
+
+
+--------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
+(echo hello && cat -e) << stop > out | cat -n
+
+OUT:
+
+FILE CREATE:
+out ->
+hello
+I am$
+inside the$
+heredoc$
+
+===============================================================
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > NULL
+	option          > NULL
+	tab_file        > [type= <<, file_name=stop, fd=?],
+                      [type= > , file_name=out, fd=?]
+    subshell        > "echo hello && cat -e"
+    next            > *pointer
+    previous        > NULL
+}						t_list;
+
+1. Creer les here_doc               > Il y en a un
+2 .Verifier la redirection d'avant  > Pas de precedant
+4. Ouvrir les fichiers              > Faire la redirection du here_doc (stdin=stop)
+5. Stocker l'exit code              >
+3. Ouvrir les fichiers              > Ouvrir le premier fichier et faire les redirection (stout=out)
+4. Stocker l'exit code              >
+6. Verifier les subshell            > Il y en a un
+7. Definir son I/O                  > stdin=stop, sdtout=out
+
+        ────────►
+        echo hello && cat -e
+
+        typedef struct s_list
+        {
+            pre_redir       > NULL
+            command         > echo
+            option          > [hello] [NULL]
+            tab_file        > NULL
+            subshell        > NULL
+            next            > *pointer
+            previous        > NULL
+        }						t_list;
+
+        1 .Verifier la redirection d'avant  > Pas de precedant
+        2. Ouvrir les fichiers              > Pas de fichier
+        3. Verifier les subshell            > Il n'y en a pas
+        4. Buil-in ou commande              > C'est un built-in
+        5. Executer la commande             > (stdin=stop, stdout=out)
+        6. Stocker l'exit code              >
+        7. Nouveau noeud                    > Il y a un next
+
+
+        typedef struct s_list
+        {
+            pre_redir       > NULL
+            command         > cat
+            option          > [-e] [NULL]
+            tab_file        > NULL
+            subshell        > NULL
+            next            > NULL
+            previous        > *pointer
+        }						t_list;
+
+        1 .Verifier la redirection d'avant  > IL y a un precedant
+        2 .Execution du pipe                > &&, etat du derneir exit status (Suppose oui)
+        3. Ouvrir les fichiers              > Pas de fichier
+        4. Verifier les subshell            > Il n'y en a pas
+        5. Buil-in ou commande              > C'est une commade
+        6. Executer la commande             > (stdin=stop, stdout=out)
+        7. Stocker l'exit code              >
+        8. Nouveau noeud                    > Il n'y pas de prochain noeud
+        ◄────────
+
+8. Buil-in ou commande              > NULL
+9. Nouveau noeud                    > Il y a un next
+
+typedef struct s_list
+{
+	pre_redir       > Pipe
+	command         > cat
+	option          > [-n] [NULL]
+	tab_file        > NULL
+    subshell        > NULL
+    next            > NULL
+    previous        > *pointer
+}						t_list;
+
+1. Ouvrir les fichiers              > Il n'y en a pas
+2 .Verifier la redirection d'avant  > IL y a un precedant
+3 .Execution du pipe                > Oui pipe
+4. Verifier les subshell            > Il n'y en a pas
+5. Buil-in ou commande              > C'est une commande
+6. Executer la commande             > (stdin=CLOSE, stdout=stdout) -> (Pipe close creer un fichier vide et le passer dans le pipe)
+7. Stocker l'exit code              >
+8. Nouveau noeud                    > Il n'y pas de prochain noeud
+
+
+--------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
+(cat -e | cat -n) << stop
+
+OUT:
+     1	I am$
+     2	inside the $
+     3	heredoc$
+
+===============================================================
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > NULL
+	option          > NULL
+	tab_file        > [type= <<, file_name=stop, fd=?]
+    subshell        > "cat -e | cat -n"
+    next            > NULL
+    previous        > NULL
+}						t_list;
+
+1. Creer les here_doc               > Il y en a un
+2 .Verifier la redirection d'avant  > Pas de precedant
+3. Ouvrir les fichiers              > Pas de fichier
+4. Ouvrir les fichiers              > Faire la redirection du here_doc (stdin=stop)
+5. Stocker l'exit code              >
+6. Verifier les subshell            > Il y en a un
+7. Definir son I/O                  > stdin=stop, sdtout=stdout
+
+        ────────►
+        cat -e | cat -n
+
+        typedef struct s_list
+        {
+            pre_redir       > NULL
+            command         > cat
+            option          > [-e] [NULL]
+            tab_file        > NULL
+            subshell        > NULL
+            next            > *pointer
+            previous        > NULL
+        }						t_list;
+
+        1 .Verifier la redirection d'avant  > Pas de precedant
+        2. Ouvrir les fichiers              > Pas de fichier
+        3. Verifier les subshell            > Il n'y en a pas
+        4. Buil-in ou commande              > C'est un commande
+        5. Executer la commande             > (stdin=stop, stdout=pipe)
+        6. Stocker l'exit code              >
+        7. Nouveau noeud                    > Il y a un next
+
+
+        typedef struct s_list
+        {
+            pre_redir       > NULL
+            command         > cat
+            option          > [-n] [NULL]
+            tab_file        > NULL
+            subshell        > NULL
+            next            > NULL
+            previous        > *pointer
+        }						t_list;
+
+        1 .Verifier la redirection d'avant  > IL y a un precedant
+        2 .Execution du pipe                > Oui pipe
+        3. Ouvrir les fichiers              > Pas de fichier
+        4. Verifier les subshell            > Il n'y en a pas
+        5. Buil-in ou commande              > C'est une commade
+        6. Executer la commande             > (stdin=pipe, stdout=stdout)
+        7. Stocker l'exit code              >
+        8. Nouveau noeud                    > Il n'y pas de prochain noeud
+        ◄────────
+
+8. Buil-in ou commande              > NULL
+9. Nouveau noeud                    > Il n'y pas de prochain noeud
+
+
+--------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
+(cat -e && cat -n) << stop
+
+OUT:
+I am$
+inside the $
+heredoc$
+
+===============================================================
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > NULL
+	option          > NULL
+	tab_file        > [type= <<, file_name=stop, fd=?]
+    subshell        > "cat -e | cat -n"
+    next            > NULL
+    previous        > NULL
+}						t_list;
+
+1. Creer les here_doc               > Il y en a un
+2 .Verifier la redirection d'avant  > Pas de precedant
+3. Ouvrir les fichiers              > Pas de fichier
+4. Ouvrir les fichiers              > Faire la redirection du here_doc (stdin=stop)
+5. Stocker l'exit code              >
+6. Verifier les subshell            > Il y en a un
+7. Definir son I/O                  > stdin=stop, sdtout=stdout
+
+        ────────►
+        cat -e && cat -n
+
+        typedef struct s_list
+        {
+            pre_redir       > NULL
+            command         > cat
+            option          > [-e] [NULL]
+            tab_file        > NULL
+            subshell        > NULL
+            next            > *pointer
+            previous        > NULL
+        }						t_list;
+
+        1 .Verifier la redirection d'avant  > Pas de precedant
+        2. Ouvrir les fichiers              > Pas de fichier
+        3. Verifier les subshell            > Il n'y en a pas
+        4. Buil-in ou commande              > C'est un commande
+        5. Executer la commande             > (stdin=stop, stdout=pipe)
+        6. Stocker l'exit code              >
+        7. Nouveau noeud                    > Il y a un next
+
+
+        typedef struct s_list
+        {
+            pre_redir       > NULL
+            command         > cat
+            option          > [-n] [NULL]
+            tab_file        > NULL
+            subshell        > NULL
+            next            > NULL
+            previous        > *pointer
+        }						t_list;
+
+        1 .Verifier la redirection d'avant  > IL y a un precedant
+        2 .Execution du pipe                > &&, etat du derneir exit status (Suppose oui)
+        3. Ouvrir les fichiers              > Pas de fichier
+        4. Verifier les subshell            > Il n'y en a pas
+        5. Buil-in ou commande              > C'est une commade
+        6. Executer la commande             > (stdin=CLOSE, stdout=stdout) -> (Pipe close creer un fichier vide et le passer dans le pipe)
+        7. Stocker l'exit code              >
+        8. Nouveau noeud                    > Il n'y pas de prochain noeud
+        ◄────────
+
+8. Buil-in ou commande              > NULL
+9. Nouveau noeud                    > Il n'y pas de prochain noeud
+
+
+--------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
+(cat -e | cat -n) << stop | wc -l
+
+OUT:
+4
+
+===============================================================
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > NULL
+	option          > NULL
+	tab_file        > [type= <<, file_name=stop, fd=?]
+    subshell        > "cat -e | cat -n"
+    next            > *pointer
+    previous        > NULL
+}						t_list;
+
+1. Creer les here_doc               > Il y en a un
+2 .Verifier la redirection d'avant  > Pas de precedant
+3. Ouvrir les fichiers              > Pas de fichier
+4. Ouvrir les fichiers              > Faire la redirection du here_doc (stdin=stop)
+5. Stocker l'exit code              >
+6. Verifier les subshell            > Il y en a un
+7. Definir son I/O                  > stdin=stop, sdtout=stdout
+
+        ────────►
+        cat -e && cat -n
+
+        typedef struct s_list
+        {
+            pre_redir       > NULL
+            command         > cat
+            option          > [-e] [NULL]
+            tab_file        > NULL
+            subshell        > NULL
+            next            > *pointer
+            previous        > NULL
+        }						t_list;
+
+        1 .Verifier la redirection d'avant  > Pas de precedant
+        2. Ouvrir les fichiers              > Pas de fichier
+        3. Verifier les subshell            > Il n'y en a pas
+        4. Buil-in ou commande              > C'est un commande
+        5. Executer la commande             > (stdin=stop, stdout=pipe)
+        6. Stocker l'exit code              >
+        7. Nouveau noeud                    > Il y a un next
+
+
+        typedef struct s_list
+        {
+            pre_redir       > NULL
+            command         > cat
+            option          > [-n] [NULL]
+            tab_file        > NULL
+            subshell        > NULL
+            next            > NULL
+            previous        > *pointer
+        }						t_list;
+
+        1 .Verifier la redirection d'avant  > IL y a un precedant
+        2 .Execution du pipe                > &&, etat du derneir exit status (Suppose oui)
+        3. Ouvrir les fichiers              > Pas de fichier
+        4. Verifier les subshell            > Il n'y en a pas
+        5. Buil-in ou commande              > C'est une commade
+        6. Executer la commande             > (stdin=CLOSE, stdout=stdout) -> (Pipe close creer un fichier vide et le passer dans le pipe)
+        7. Stocker l'exit code              >
+        8. Nouveau noeud                    > Il n'y pas de prochain noeud
+        ◄────────
+
+8. Buil-in ou commande              > NULL
+9. Nouveau noeud                    > Il y a un next
+
+typedef struct s_list
+{
+	pre_redir       > Pipe
+	command         > wc
+	option          > [-l] [NULL]
+	tab_file        > NULL
+    subshell        > NULL
+    next            > NULL
+    previous        > *pointer
+}						t_list;
+
+1. Ouvrir les fichiers              > Il n'y en a pas
+2 .Verifier la redirection d'avant  > IL y a un precedant
+3 .Execution du pipe                > Oui pipe
+4. Verifier les subshell            > Il n'y en a pas
+5. Buil-in ou commande              > C'est une commande
+6. Executer la commande             > (stdin=pipe, stdout=stdout)
+7. Stocker l'exit code              >
+8. Nouveau noeud                    > Il n'y pas de prochain noeud
+
+
+--------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
+echo hello | cat | << stop | cat
+
+OUT:
+
+===============================================================
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > echo
+	option          > [hello] [NULL]
+	tab_file        > NULL
+    subshell        > NULL
+    next            > *pointer
+    previous        > NULL
+}						t_list;
+
+1. Creer les here_doc               > Il y en a un
+2 .Verifier la redirection d'avant  > Pas de precedant
+2. Ouvrir les fichiers              > Il n'y en a pas
+3. Verifier les subshell            > Il n'y en a pas
+4. Buil-in ou commande              > C'est une commande
+5. Executer la commande             > (stdin=stdin, stdout=pipe)
+6. Stocker l'exit code              >
+7. Nouveau noeud                    > Il y a un next
+
+typedef struct s_list
+{
+	pre_redir       > Pipe
+	command         > cat
+	option          > NULL
+	tab_file        > NULL
+    subshell        > "NULL
+    next            > *pointer
+    previous        > *pointer
+}						t_list;
+
+1. Creer les here_doc               > Il y en a pas
+2 .Verifier la redirection d'avant  > Pas de precedant
+2. Ouvrir les fichiers              > Il n'y en a pas
+3. Verifier les subshell            > Il n'y en a pas
+4. Buil-in ou commande              > C'est une commande
+5. Executer la commande             > (stdin=pipe, stdout=pipe)
+6. Stocker l'exit code              >
+7. Nouveau noeud                    > Il y a un next
+
+typedef struct s_list
+{
+	pre_redir       > Pipe
+	command         > NULL
+	option          > NULL
+	tab_file        > [type=<<, file_name=stop, fd=3]
+    subshell        > NULL
+    next            > *pointer
+    previous        > *pointer
+}						t_list;
+
+1. Creer les here_doc               > Il y en a pas
+2 .Verifier la redirection d'avant  > Pas de precedant
+2. Ouvrir les fichiers              > Il n'y en a pas
+4. Ouvrir les fichiers              > Faire la redirection du here_doc (stdin=stop)
+3. Verifier les subshell            > Il n'y en a pas
+4. Buil-in ou commande              > C'est une commande
+5. Executer la commande             > (stdin=stop, stdout=UNDEF) -> (Pipe close creer un fichier vide et le passer dans le pipe)
+6. Stocker l'exit code              >
+7. Nouveau noeud                    > Il y a un next
+
+typedef struct s_list
+{
+	pre_redir       > Pipe
+	command         > cat
+	option          > NULL
+	tab_file        > NULL
+    subshell        > NULL
+    next            > NULL
+    previous        > *pointer
+}						t_list;
+
+1. Creer les here_doc               > Il y en a pas
+2 .Verifier la redirection d'avant  > Pas de precedant
+2. Ouvrir les fichiers              > Il n'y en a pas
+3. Verifier les subshell            > Il n'y en a pas
+4. Buil-in ou commande              > C'est une commande
+5. Executer la commande             > (stdin=pipe, stdout=stdout)
+6. Stocker l'exit code              >
+7. Nouveau noeud                    > Il n'y pas de prochain noeud
+
+
+--------------------------------------------------------------
+HERE_DOC:
+I am
+inside the 
+heredoc
+
+IN:
+echo hello | cat | << stop cat| cat
+
+OUT:
+I am
+inside the 
+heredoc
+
+===============================================================
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > echo
+	option          > [hello] [NULL]
+	tab_file        > NULL
+    subshell        > NULL
+    next            > *pointer
+    previous        > NULL
+}						t_list;
+
+1. Creer les here_doc               > Il y en a un
+2 .Verifier la redirection d'avant  > Pas de precedant
+2. Ouvrir les fichiers              > Il n'y en a pas
+3. Verifier les subshell            > Il n'y en a pas
+4. Buil-in ou commande              > C'est une commande
+5. Executer la commande             > (stdin=stdin, stdout=pipe)
+6. Stocker l'exit code              >
+7. Nouveau noeud                    > Il y a un next
+
+typedef struct s_list
+{
+	pre_redir       > Pipe
+	command         > cat
+	option          > NULL
+	tab_file        > NULL
+    subshell        > NULL
+    next            > *pointer
+    previous        > *pointer
+}						t_list;
+
+1. Creer les here_doc               > Il y en a pas
+2 .Verifier la redirection d'avant  > Pas de precedant
+2. Ouvrir les fichiers              > Il n'y en a pas
+3. Verifier les subshell            > Il n'y en a pas
+4. Buil-in ou commande              > C'est une commande
+5. Executer la commande             > (stdin=pipe, stdout=pipe)
+6. Stocker l'exit code              >
+7. Nouveau noeud                    > Il y a un next
+
+typedef struct s_list
+{
+	pre_redir       > Pipe
+	command         > cat
+	option          > NULL
+	tab_file        > [type=<<, file_name=stop, fd=3]
+    subshell        > NULL
+    next            > *pointer
+    previous        > *pointer
+}						t_list;
+
+1. Creer les here_doc               > Il y en a pas
+2 .Verifier la redirection d'avant  > Pas de precedant
+2. Ouvrir les fichiers              > Il n'y en a pas
+4. Ouvrir les fichiers              > Faire la redirection du here_doc (stdin=stop)
+3. Verifier les subshell            > Il n'y en a pas
+4. Buil-in ou commande              > C'est une commande
+5. Executer la commande             > (stdin=stop, stdout=pipe) 
+6. Stocker l'exit code              >
+7. Nouveau noeud                    > Il y a un next
+
+typedef struct s_list
+{
+	pre_redir       > Pipe
+	command         > cat
+	option          > NULL
+	tab_file        > NULL
+    subshell        > NULL
+    next            > NULL
+    previous        > *pointer
+}						t_list;
+
+1. Creer les here_doc               > Il y en a pas
+2 .Verifier la redirection d'avant  > Pas de precedant
+2. Ouvrir les fichiers              > Il n'y en a pas
+3. Verifier les subshell            > Il n'y en a pas
+4. Buil-in ou commande              > C'est une commande
+5. Executer la commande             > (stdin=pipe, stdout=stdout)
+6. Stocker l'exit code              >
+7. Nouveau noeud                    > Il n'y pas de prochain noeud
+
+
+--------------------------------------------------------------
+
+IN:
+< infile && echo "Sucess" || echo "Fail"
+
+OUT:
+bash: infile: No such file or directory
+Fail
+
+===============================================================
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > NULL
+	option          > NULL
+	tab_file        > [type=<, file_name=infile, fd=?]
+    subshell        > NULL
+    next            > *pointer
+    previous        > NULL
+}						t_list;
+
+1. Creer les here_doc               > Il y en a un
+2 .Verifier la redirection d'avant  > Pas de precedant
+3. Ouvrir les fichiers              > Ouvrir le premier fichier et faire les redirection (stin=infile)
+4. Stocker l'exit code              >
+3. Verifier les subshell            > Il n'y en a pas
+4. Buil-in ou commande              > Pass
+7. Nouveau noeud                    > Il y a un next
+
+typedef struct s_list
+{
+	pre_redir       > &&
+	command         > echo
+	option          > "Sucess"
+	tab_file        > NULLL
+    subshell        > NULL
+    next            > *pointer
+    previous        > *pointer
+}						t_list;
+
+1 .Verifier la redirection d'avant  > IL y a un precedant
+2 .Execution du pipe                > &&, etat du derneir exit status (NON)
+3 .Aller au prochain noeud
+
+typedef struct s_list
+{
+	pre_redir       > ||
+	command         > echo
+	option          > "Fail"
+	tab_file        > NULLL
+    subshell        > NULL
+    next            > NULL
+    previous        > *pointer
+}						t_list;
+
+1 .Verifier la redirection d'avant  > IL y a un precedant
+2 .Execution du pipe                > || etat du derneir exit status (NON)
+2. Ouvrir les fichiers              > Il n'y en a pas
+3. Verifier les subshell            > Il n'y en a pas
+4. Buil-in ou commande              > C'est une commande
+5. Executer la commande             > (stdin=pipe, stdout=sdout) 
+6. Stocker l'exit code              >
+7. Nouveau noeud                    > Il n'y pas de prochain noeud
+
+
+--------------------------------------------------------------
+IN:
+(echo hello && (echo world && echo next > outfile)) > out
+
+OUT:
+
+FILE CREATE:
+out ->
+hello
+world
+
+outfile ->
+next
+
+===============================================================
+typedef struct s_list
+{
+	pre_redir       > NULL
+	command         > NULL
+	option          > NULL
+	tab_file        > [type=>, file_name=out, fd=?]
+    subshell        > echo hello && (echo world && echo next > outfile)
+    next            > NULL
+    previous        > NULL
+}						t_list;
+
+1. Creer les here_doc               > Il y en a un
+2 .Verifier la redirection d'avant  > Pas de precedant
+3. Ouvrir les fichiers              > Ouvrir le premier fichier et faire les redirection (stout=out)
+4. Stocker l'exit code              >
+6. Verifier les subshell            > Il y en a un
+7. Definir son I/O                  > stdin=stdin, sdtout=out
+
+        ────────►
+        echo hello && (echo world && echo next > outfile)
+        typedef struct s_list
+        {
+            pre_redir       > NULL
+            command         > echo
+            option          > [hello] [NULL]
+            tab_file        > NULL
+            subshell        > NULL
+            next            > *pointer
+            previous        > NULL
+        }						t_list;
+
+        1 .Verifier la redirection d'avant  > Pas de precedant
+        2. Ouvrir les fichiers              > Pas de fichier
+        3. Verifier les subshell            > Il n'y en a pas
+        4. Buil-in ou commande              > C'est un commande
+        5. Executer la commande             > (stdin=stdin, stdout=out)
+        6. Stocker l'exit code              >
+        7. Nouveau noeud                    > Il y a un next
+        
+
+        typedef struct s_list
+        {
+            pre_redir       > &&
+            command         > NULL
+            option          > NULLL
+            tab_file        > NULL
+            subshell        > "echo world && echo next > outfile"
+            next            > NULL
+            previous        > *pointer
+        }						t_list;
+
+        1 .Verifier la redirection d'avant  > IL y a un precedant
+        2 .Execution du pipe                > &&, etat du derneir exit status (OUI)
+        2. Ouvrir les fichiers              > Pas de fichier
+        6. Verifier les subshell            > Il y en a un
+        7. Definir son I/O                  > stdin=stdin, sdtout=out
+
+            ────────►
+            echo world && echo next > outfile
+            typedef struct s_list
+            {
+                pre_redir       > NULL
+                command         > echo
+                option          > [world] [NULL]
+                tab_file        > NULL
+                subshell        > NULL
+                next            > *pointer
+                previous        > NULL
+            }						t_list;
+            1 .Verifier la redirection d'avant  > Pas de precedant
+            2. Ouvrir les fichiers              > Pas de fichier
+            3. Verifier les subshell            > Il n'y en a pas
+            4. Buil-in ou commande              > C'est un commande
+            5. Executer la commande             > (stdin=CLOSE, stdout=out) -> (Pipe close creer un fichier vide et le passer dans le pipe)
+            6. Stocker l'exit code              >
+            7. Nouveau noeud                    > Il y a un next
+
+            typedef struct s_list
+            {
+                pre_redir       > &&
+                command         > echo
+                option          > [next] [NULL]
+                tab_file        > [type=> , file_name=outfile]
+                subshell        > "NULL
+                next            > NULL
+                previous        > *pointer
+            }						t_list;
+            1 .Verifier la redirection d'avant  > Pas de precedant
+            3. Ouvrir les fichiers              > Ouvrir le premier fichier et faire les redirection (stout=outfile)
+            4. Stocker l'exit code              >
+            3. Verifier les subshell            > Il n'y en a pas
+            4. Buil-in ou commande              > C'est un commande
+            5. Executer la commande             > (stdin=CLOSE, stdout=outfile) -> (Pipe close creer un fichier vide et le passer dans le pipe)
+            6. Stocker l'exit code              >
+            7. Nouveau noeud                    > Il n'y pas de prochain noeud
+            ◄────────
+
+        4. Buil-in ou commande              > Pass
+        7. Nouveau noeud                    > Il n'y pas de prochain noeud
+        ◄────────
+        
+4. Buil-in ou commande              > Pass
+7. Nouveau noeud                    > Il n'y pas de prochain noeud
