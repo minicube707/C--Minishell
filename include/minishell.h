@@ -51,7 +51,7 @@ typedef struct s_list_env
 // Strucuture to containt the info of the commande line
 typedef struct s_list
 {
-	t_list_env			**enviroment;
+	t_list_env			*environment;
 	int					pre_redir;
 	int					mypipe[2];
 	char				*command;
@@ -98,6 +98,6 @@ void					execution(t_list *head, int subshell,
 /*===================*/
 
 /*Parsing*/
-t_list					*parsing(int argc, char **argv, char **envp);
+t_list					*parsing(char *line, char **envp);
 
 #endif

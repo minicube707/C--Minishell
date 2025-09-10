@@ -43,6 +43,7 @@ t_list_env	*set_env(char **envp)
 	int		len;
 
 	new = NULL;
+	head = NULL;
 	while (*envp)
 	{
 		len = strlenc(*envp, '=');
@@ -63,15 +64,16 @@ t_list_env	*set_env(char **envp)
 	return (new);
 }
 
-t_list	*parser(int argc, char **argv, char **envp)
+t_list	*parsing(char *line, char **envp)
 {
 	t_list	*list;
 
+	(void)line;
 	list = malloc(sizeof(t_list));
 	if (!list)
 		return (NULL);
-	list->enviroment = set_env(envp);
-	t_list_env	p = list->enviroment;
+	list->environment = set_env(envp);
+	t_list_env	*p = list->environment;
 	while (p)
 	{
 		printf("%s = %s\n", p->name, p->content);

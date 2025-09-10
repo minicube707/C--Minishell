@@ -18,6 +18,7 @@ FILE_NAMES =	main \
 				execution \
 				execute_here_doc \
 				execute_open_file \
+				parser
 
 # =======================================
 #              VARIABLE
@@ -65,7 +66,7 @@ $(OBJ_PATH) :
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(HEA_FILES) | $(OBJ_PATH)
 	@echo "$(BLUE)[Compilation]$(RESET) $<"
-	@$(CC) $(INCLUDE) -O3 -c $< -o $@
+	@$(CC) $(INCLUDE) -c $< -o $@
 
 
 $(NAME): intro $(OBJ_FILES)

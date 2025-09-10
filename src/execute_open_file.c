@@ -47,6 +47,7 @@ int	file_processing(t_list *tmp_head, t_channel *in_out)
 
 	i = 0;
 	ptr = NULL;
+	(void)ptr;
 	exit_code = 0;
 	tmp_tab = tmp_head->tab_file;
 	while (tmp_tab[i] != NULL && exit_code == 0)
