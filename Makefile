@@ -16,7 +16,8 @@ FILE_NAMES =	main \
 				here_doc \
 				manage_error \
 				execution \
-				execute_here_doc
+				execute_here_doc \
+				execute_open_file \
 
 # =======================================
 #              VARIABLE
@@ -31,7 +32,7 @@ DEP_FILES = $(OBJ_FILES:.o=.d)
 HEA_FILES = $(HEA_PATH)/minishell.h
 
 INCLUDE = -I $(HEA_PATH) -I libft/include -I gnl/include
-ARCHIVE = -L libft -l ft -L gnl -l gnl -lreadline
+ARCHIVE =  -L gnl -lgnl -L libft -lft -lreadline
 
 NAME = minishell
 NAME_FOLDER := $(shell basename $(CURDIR))
@@ -71,7 +72,7 @@ $(NAME): intro $(OBJ_FILES)
 	@$(MAKE) -s -C  libft 
 	@$(MAKE) -s -C gnl
 	@echo "\n$(YELLOW)$(NAME_FOLDER): [Linking]$(RESET): $(NAME)"
-	@$(CC) $(OBJ_FILES)  $(ARCHIVE) -o $(NAME)
+	$(CC) $(OBJ_FILES)  $(ARCHIVE) -o $(NAME)
 	@echo "\n"
 	@echo "$(GREEN)======================$(RESET)"
 	@echo "$(GREEN)===PROJET COMPILER====$(RESET)"
