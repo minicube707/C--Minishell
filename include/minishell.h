@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/10 15:59:25 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/10 19:08:21 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,12 @@ typedef struct s_channel
 	int					in;
 	int					out;
 }						t_channel;
+
+/*===================*/
+/*====Temporaire=====*/
+/*===================*/
+t_list  				*tmp_parsing(int argc, char **argv, char **envp);
+
 
 /*===================*/
 /*=======COMMUN======*/
