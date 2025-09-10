@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/10 11:57:27 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/10 15:59:25 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+# define INPUT 0		// <
+# define OUPUT 1		// >
+# define HERE_DOC 2		// <<
+# define APPEND 3		// >>
 
 // STRUCTURE
 // Structure to containt the file info
@@ -79,7 +84,10 @@ void					print_error_unknow_cmd(char *string);
 int						here_doc(int *file_fd, char *limiter);
 
 /*Execute_here_doc*/
-void					execute_here_doc(t_list **head);
+void					execute_here_doc(t_list *head);
+
+/*Execute_open_file*/
+int					execute_open_file(t_list *head, t_channel *in_out);
 
 /*Execution*/
 void					execution(t_list *head, int subshell,
