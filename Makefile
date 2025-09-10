@@ -18,6 +18,7 @@ FILE_NAMES =	main \
 				execution \
 				execute_here_doc \
 				execute_open_file \
+				tmp_parsing
 
 # =======================================
 #              VARIABLE
