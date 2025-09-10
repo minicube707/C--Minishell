@@ -48,7 +48,10 @@ t_list_env	*set_env(char **envp)
 	{
 		len = strlenc(*envp, '=');
 		if (!head)
+		{
 			new = malloc(sizeof(t_list_env));
+			head = new;
+		}
 		else
 		{
 			new->next = malloc(sizeof(t_list_env));
@@ -61,7 +64,7 @@ t_list_env	*set_env(char **envp)
 		new->content = getenv(new->name);
 		envp++;
 	}
-	return (new);
+	return (head);
 }
 
 t_list	*parsing(char *line, char **envp)
