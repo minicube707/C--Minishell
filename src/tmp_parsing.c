@@ -18,27 +18,49 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
     
-    t_list *head;
-    t_file_info **file_info;
+    t_list          *head;
+    t_file_info     **file_info;
+    t_file_info     *element1;
+    t_file_info     *element2;
 
-    head = malloc(sizeof(t_list *));
+    /*Creation de la strucuture*/
+    head = malloc(sizeof(t_list));
     if (head == NULL)
         return (NULL);
     
-    file_info = malloc(sizeof(t_file_info **));
+    /*Creation du tableau*/
+    file_info = malloc(2 * sizeof(t_file_info *));
     if (file_info == NULL)
         return (NULL);
     
-    printf("Adrress %p \n", file_info);
-    printf("Adrress %p \n", *file_info);
-    printf("Adrress %p \n", file_info[0]->file_name);
+    /*Creation de la premiere cellule*/
+    element1 = malloc(sizeof(t_file_info));
+    if ( element1 == NULL)
+        return (NULL);
 
-    file_info[0]->file_name = ft_strdup("out");
-    file_info[0]->type = OUPUT;
-    
-    printf("Res\n");
+    element2 = malloc(sizeof(t_file_info));
+    if ( element2 == NULL)
+        return (NULL);
+
+    element1->file_name = ft_strdup("out");
+    element1->type = OUPUT;
+
+    element2->file_name = ft_strdup("infile");
+    element2->type = INPUT;
+
+    file_info[0] = element1;
+    file_info[1] = element2;
+
+    printf("Adress");
+    printf("Adrress %p \n", file_info);
+    printf("Adrress %p \n", file_info[0]->file_name);
+    printf("Adrress %p \n", file_info[1]->file_name);
+
+    printf("\nRes\n");
     printf("File Name %s\n", file_info[0]->file_name);
     printf("Type %d\n", file_info[0]->type);
+    printf("File Name %s\n", file_info[1]->file_name);
+    printf("Type %d\n", file_info[1]->type);
 
     head->pre_redir = 0;
     head->command = ft_strdup("ls");
@@ -48,9 +70,11 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     head->next = NULL;
     head->previous = NULL;
 
-    printf("Res\n");
+    printf("\nRes\n");
     printf("Command %s\n", head->command);
     printf("File Name %s\n", head->tab_file[0]->file_name);
     printf("Type %d\n", head->tab_file[0]->type);
+    printf("File Name %s\n", head->tab_file[1]->file_name);
+    printf("Type %d\n", head->tab_file[1]->type);
     return (head);
 }
