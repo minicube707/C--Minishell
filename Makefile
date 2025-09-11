@@ -73,7 +73,7 @@ $(NAME): intro $(OBJ_FILES)
 	@$(MAKE) -s -C  libft 
 	@$(MAKE) -s -C gnl
 	@echo "\n$(YELLOW)$(NAME_FOLDER): [Linking]$(RESET): $(NAME)"
-	$(CC) $(OBJ_FILES)  $(ARCHIVE) -o $(NAME)
+	@$(CC) $(OBJ_FILES)  $(ARCHIVE) -o $(NAME)
 	@echo "\n"
 	@echo "$(GREEN)======================$(RESET)"
 	@echo "$(GREEN)===PROJET COMPILER====$(RESET)"
