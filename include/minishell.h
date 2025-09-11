@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/11 10:54:11 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/11 14:01:36 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ t_list  				*tmp_parsing(int argc, char **argv, char **envp);
 /*Manage Error*/
 void					print_error(char *string);
 void					print_error_unknow_cmd(char *string);
+void					print_error_file(char *file);
 
 /*===================*/
 /*=====EXECUTION=====*/

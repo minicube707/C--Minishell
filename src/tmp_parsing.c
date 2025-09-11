@@ -22,6 +22,7 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     t_file_info     **file_info;
     t_file_info     *element1;
     t_file_info     *element2;
+    t_file_info     *element3;
 
     /*Creation de la strucuture*/
     head = malloc(sizeof(t_list));
@@ -29,7 +30,7 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
         return (NULL);
     
     /*Creation du tableau*/
-    file_info = malloc(2 * sizeof(t_file_info *));
+    file_info = malloc(3 * sizeof(t_file_info *));
     if (file_info == NULL)
         return (NULL);
     
@@ -38,21 +39,33 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     if ( element1 == NULL)
         return (NULL);
 
-    element1->file_name = ft_strdup("out");
-    element1->type = OUPUT;
+    element2 = malloc(sizeof(t_file_info));
+    if ( element2 == NULL)
+        return (NULL);
 
-    element2 = NULL;
+    element1->file_name = ft_strdup("infile");
+    element1->type = INPUT;
+
+    element2->file_name = ft_strdup("outfile");
+    element2->type = OUPUT;
+
+    element3 = NULL;
 
     file_info[0] = element1;
     file_info[1] = element2;
+    file_info[2] = element3;
 
     printf("Adress");
     printf("Adrress %p \n", file_info);
     printf("Adrress %p \n", file_info[0]->file_name);
+    printf("Adrress %p \n", file_info[1]->file_name);
+    printf("Adrress %p \n", file_info[2]);
 
     printf("\nRes\n");
     printf("File Name %s\n", file_info[0]->file_name);
     printf("Type %d\n", file_info[0]->type);
+    printf("File Name %s\n", file_info[1]->file_name);
+    printf("Type %d\n", file_info[1]->type);
 
     head->pre_redir = 0;
     head->command = ft_strdup("ls");
@@ -66,5 +79,7 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     printf("Command %s\n", head->command);
     printf("File Name %s\n", head->tab_file[0]->file_name);
     printf("Type %d\n", head->tab_file[0]->type);
+    printf("File Name %s\n", head->tab_file[1]->file_name);
+    printf("Type %d\n", head->tab_file[1]->type);
     return (head);
 }

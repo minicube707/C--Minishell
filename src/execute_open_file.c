@@ -6,28 +6,56 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:33:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/10 16:04:30 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/11 14:06:24 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	open_infile(char *file_name)
+{
+	int	fd;
+	int	flags;
+	int	get_access;
+
+	get_access = access(file_name, F_OK);
+	if (get_access == -1)
+	{
+		print_error_file(file_name);
+		return (-1);
+	}
+	flags = O_RDONLY;
+	fd = open(file_name, flags);
+	return (fd);
+}
+
+int	open_outfile(char *file_name, int type)
+{
+	int	fd;
+	int	flags;
+
+	if (type == OUPUT)
+		flags = O_CREAT | O_WRONLY | O_TRUNC;
+	else
+		flags = O_CREAT | O_WRONLY | O_APPEND;
+	fd = open(file_name, flags, 0644);
+	return (fd);
+}
+
 int	open_redirection(t_file_info *tmp_tab, t_channel *in_out)
 {
 	int		fd;
-	int		flags;
 	int		type;
 	char	*file_name;
 
 	type = tmp_tab->type;
 	file_name = tmp_tab->file_name;
 	if (type == INPUT)
-		flags = O_RDONLY;
-	else if (type == OUPUT)
-		flags = O_CREAT | O_WRONLY | O_TRUNC;
+		fd = open_infile(file_name);
+	else if (type == OUPUT || type == APPEND)
+		fd = open_outfile(file_name, type);
 	else
-		flags = O_CREAT | O_WRONLY | O_APPEND;
-	fd = open(file_name, flags);
+		fd = tmp_tab->fd;
 	if (fd == -1)
 		return (1);
 	if (type == INPUT || type == HERE_DOC)
