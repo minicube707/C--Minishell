@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/10 19:08:21 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/11 11:41:53 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@
 # define HERE_DOC 2		// <<
 # define APPEND 3		// >>
 
+# define PIPE 1			// |
+# define AND 2			// &&
+# define OR 3			// ||
+
 // STRUCTURE
 // Structure to containt the file info
 typedef struct s_file_info
@@ -52,7 +56,7 @@ typedef struct s_list_env
 typedef struct s_list
 {
 	t_list_env			*environment;
-	int					pre_redir;
+	int					next_redir;
 	int					mypipe[2];
 	char				*command;
 	char				**option;
@@ -67,6 +71,13 @@ typedef struct s_channel
 	int					in;
 	int					out;
 }						t_channel;
+
+typedef struct s_token
+{
+	int				redir;
+	char			*content;
+	struct token	*next;
+}
 
 /*===================*/
 /*====Temporaire=====*/

@@ -6,20 +6,12 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:05:15 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/05 16:42:27 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/11 11:42:13 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
-
-# define LT <
-# define GT >
-# define LOET <<
-# define GOET >>
-# define AND &&
-# define OR ||
-# define PIPE |
 
 int	strlenc(char *str, const char c)
 {
@@ -70,17 +62,13 @@ t_list_env	*set_env(char **envp)
 t_list	*parsing(char *line, char **envp)
 {
 	t_list	*list;
+	t_token	*token;
 
 	(void)line;
 	list = malloc(sizeof(t_list));
 	if (!list)
 		return (NULL);
 	list->environment = set_env(envp);
-	t_list_env	*p = list->environment;
-	while (p)
-	{
-		printf("%s = %s\n", p->name, p->content);
-		p = p->next;
-	}
+	token = tokenizer(line);
 	return (list);
 }
