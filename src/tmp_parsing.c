@@ -38,15 +38,10 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     if ( element1 == NULL)
         return (NULL);
 
-    element2 = malloc(sizeof(t_file_info));
-    if ( element2 == NULL)
-        return (NULL);
-
     element1->file_name = ft_strdup("out");
     element1->type = OUPUT;
 
-    element2->file_name = ft_strdup("infile");
-    element2->type = INPUT;
+    element2 = NULL;
 
     file_info[0] = element1;
     file_info[1] = element2;
@@ -54,13 +49,10 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     printf("Adress");
     printf("Adrress %p \n", file_info);
     printf("Adrress %p \n", file_info[0]->file_name);
-    printf("Adrress %p \n", file_info[1]->file_name);
 
     printf("\nRes\n");
     printf("File Name %s\n", file_info[0]->file_name);
     printf("Type %d\n", file_info[0]->type);
-    printf("File Name %s\n", file_info[1]->file_name);
-    printf("Type %d\n", file_info[1]->type);
 
     head->pre_redir = 0;
     head->command = ft_strdup("ls");
@@ -74,7 +66,5 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     printf("Command %s\n", head->command);
     printf("File Name %s\n", head->tab_file[0]->file_name);
     printf("Type %d\n", head->tab_file[0]->type);
-    printf("File Name %s\n", head->tab_file[1]->file_name);
-    printf("Type %d\n", head->tab_file[1]->type);
     return (head);
 }
