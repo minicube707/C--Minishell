@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:07:51 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/10 16:02:31 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/11 12:00:10 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,24 @@
 
 void	execute_here_doc(t_list *head)
 {
-	t_file_info	**tmp_tab;
+	t_file_info	*tmp_ptr;
 	int			i;
 	int			*ptr;
 
 	ptr = NULL;
 	while (head != NULL)
 	{
-		tmp_tab = head->tab_file;
 		i = 0;
-		while (tmp_tab[i] != NULL)
+		tmp_ptr = head->tab_file[i];
+		while (tmp_ptr != NULL)
 		{
-			if (tmp_tab[i]->type == HERE_DOC)
+			if (tmp_ptr->type == HERE_DOC)
 			{
-				here_doc(ptr, tmp_tab[i]->file_name);
+				here_doc(ptr, tmp_ptr->file_name);
 				head->tab_file[i]->fd = *ptr;
 			}
 			i++;
+			tmp_ptr = head->tab_file[i];
 		}
 		head = head->next;
 	}
