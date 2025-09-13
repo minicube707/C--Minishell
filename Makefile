@@ -6,7 +6,7 @@
 # =======================================
 #                FLAGS
 # =======================================
-CC = cc -Wall -Wextra -Werror -MMD -MP
+CC = cc -Wall -Wextra -Werror -MMD -MP -g
 
 
 # =======================================
@@ -18,6 +18,7 @@ FILE_NAMES =	main \
 				execution \
 				execute_here_doc \
 				execute_open_file \
+				execute_command \
 				tmp_parsing
 
 # =======================================
