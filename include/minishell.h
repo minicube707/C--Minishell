@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/13 13:23:15 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/13 15:29:15 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,25 +48,27 @@ typedef struct s_list_env
 	struct s_list_env	*next;
 }						t_list_env;
 
-// Strucuture to containt the info of the commande line
-typedef struct s_list
-{
-	t_list_env			**enviroment;
-	int					pre_redir;
-	int					mypipe[2];
-	char				*command;
-	char				**option;
-	t_file_info			**tab_file;
-	char				*subshell;
-	struct s_list		*next;
-	struct s_list		*previous;
-}						t_list;
-
+// Strucuture to containt the input/ouput of a bloc
 typedef struct s_channel
 {
 	int					in;
 	int					out;
 }						t_channel;
+
+// Strucuture to containt the info of the commande line
+typedef struct s_list
+{
+	char			**enviroment; // -> (changemnt temporaire besion pour test a remettre t_list_env)
+	int					pre_redir;
+	int					mypipe[2];
+	char				*command;
+	char				**option;
+	t_file_info			**tab_file;
+	t_channel 			*in_out;
+	char				*subshell;
+	struct s_list		*next;
+	struct s_list		*previous;
+}						t_list;
 
 /*===================*/
 /*====Temporaire=====*/
@@ -96,7 +98,10 @@ void					execute_here_doc(t_list *head);
 /*Execute_open_file*/
 int						execute_open_file(t_list *head, t_channel *in_out);
 
-/*Execution*/
+/*Execution Command*/
+int 					execute_command(t_list *head);
+
+/*Main Execution*/
 void					execution(t_list *head, int subshell,
 							t_channel *shell_channel);
 

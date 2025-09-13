@@ -16,13 +16,12 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
 {
     (void)argc;
 	(void)argv;
-	(void)envp;
     
     t_list          *head;
     t_file_info     **file_info;
-    t_file_info     *element1;
-    t_file_info     *element2;
-    t_file_info     *element3;
+    //t_file_info     *element1;
+    //t_file_info     *element2;
+    //t_file_info     *element3;
 
     /*Creation de la strucuture*/
     head = malloc(sizeof(t_list));
@@ -30,11 +29,12 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
         return (NULL);
     
     /*Creation du tableau*/
-    file_info = malloc(3 * sizeof(t_file_info *));
+    file_info = malloc(1 * sizeof(t_file_info *));
     if (file_info == NULL)
         return (NULL);
     
     /*Creation de la premiere cellule*/
+    /*
     element1 = malloc(sizeof(t_file_info));
     if ( element1 == NULL)
         return (NULL);
@@ -43,43 +43,61 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     if ( element2 == NULL)
         return (NULL);
 
-    element1->file_name = ft_strdup("output1");
-    element1->type = OUPUT;
+    
+    element1->file_name = ft_strdup("stop");
+    element1->type = HERE_DOC;
 
     element2->file_name = ft_strdup("outfile");
-    element2->type = OUPUT;
+    element2->type = APPEND;
 
     element3 = NULL;
-
+    
     file_info[0] = element1;
     file_info[1] = element2;
     file_info[2] = element3;
+    */
 
-    printf("Adress");
+    printf("Adress\n");
     printf("Adrress %p \n", file_info);
-    printf("Adrress %p \n", file_info[0]->file_name);
-    printf("Adrress %p \n", file_info[1]->file_name);
-    printf("Adrress %p \n", file_info[2]);
+    printf("Adrress %p \n", file_info[0]);
 
+    /*
     printf("\nRes\n");
     printf("File Name %s\n", file_info[0]->file_name);
     printf("Type %d\n", file_info[0]->type);
     printf("File Name %s\n", file_info[1]->file_name);
     printf("Type %d\n", file_info[1]->type);
+    */
+    
+    file_info[0] = NULL;
+
+    char    **tab_option;
+    tab_option = malloc(3 * sizeof(char *));
+    if ( tab_option == NULL)
+        return (NULL);
+
+    tab_option[0] = ft_strdup("/bin/cat");
+    tab_option[1] = ft_strdup("-e");
+    tab_option[2] = NULL;
 
     head->pre_redir = 0;
-    head->command = ft_strdup("ls");
-    head->option = NULL;
+    head->command = ft_strdup("/bin/cat");
+    head->option = tab_option;
     head->tab_file = file_info;
     head->subshell = NULL;
+    head->enviroment = envp;
+    head->mypipe[0] = -1;
+    head->mypipe[1] = -1;
     head->next = NULL;
     head->previous = NULL;
 
+    /*
     printf("\nRes\n");
     printf("Command %s\n", head->command);
     printf("File Name %s\n", head->tab_file[0]->file_name);
     printf("Type %d\n", head->tab_file[0]->type);
     printf("File Name %s\n", head->tab_file[1]->file_name);
     printf("Type %d\n", head->tab_file[1]->type);
+    */
     return (head);
 }
