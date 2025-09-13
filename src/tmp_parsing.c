@@ -43,8 +43,8 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     if ( element2 == NULL)
         return (NULL);
 
-    element1->file_name = ft_strdup("infile");
-    element1->type = INPUT;
+    element1->file_name = ft_strdup("output1");
+    element1->type = OUPUT;
 
     element2->file_name = ft_strdup("outfile");
     element2->type = OUPUT;
