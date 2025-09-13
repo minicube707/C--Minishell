@@ -58,7 +58,7 @@ CYAN        = \033[38;5;51m
 # =======================================
 #              RULES
 # =======================================
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re intro run test
 
 all : $(NAME)
 
@@ -99,6 +99,20 @@ re : fclean all
 
 intro :
 	@printf "\n$(MAGENTA)📦 Compilation de $(shell basename $(CURDIR))$(RESET)\n"
+
+run:
+	./$(NAME)
+
+test:
+	valgrind \
+	--suppressions=./dev_tools/.ignore_rl_leaks.supp \
+	--leak-check=full \
+	--track-origins=yes \
+	--trace-children=yes \
+	--track-fds=yes \
+	--leak-check=full -s \
+	./$(NAME)
+
 
 # Inclusion automatique des fichiers .d s’ils existent
 -include $(DEP_FILES)
