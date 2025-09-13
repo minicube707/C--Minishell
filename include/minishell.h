@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/11 14:01:36 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/13 13:23:15 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int						here_doc(int *file_fd, char *limiter);
 void					execute_here_doc(t_list *head);
 
 /*Execute_open_file*/
-int					execute_open_file(t_list *head, t_channel *in_out);
+int						execute_open_file(t_list *head, t_channel *in_out);
 
 /*Execution*/
 void					execution(t_list *head, int subshell,
