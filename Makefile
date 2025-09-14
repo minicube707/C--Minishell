@@ -12,14 +12,15 @@ CC = cc -Wall -Wextra -Werror -MMD -MP -g
 # =======================================
 #              FILE
 # =======================================
-FILE_NAMES =	main \
-				here_doc \
-				manage_error \
-				execution \
-				execute_here_doc \
-				execute_open_file \
-				execute_command \
-				tmp_parsing
+FILE_NAMES =	execute_close_file \
+                execute_command \
+                execute_here_doc \
+                execute_open_file \
+                execution \
+                here_doc \
+                main \
+                manage_error \
+                tmp_parsing \
 
 # =======================================
 #              VARIABLE
