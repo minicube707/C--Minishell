@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/13 16:34:32 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/14 12:52:14 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	manage_pipe(t_list *head)
 		close(head->in_out->out);
 	}
 		
-	//Close all pipe
+	execute_close_fd(head);
 	
 	//Creat function to join option to path command
 	//Insert command in pos 0heqd-> option
@@ -53,7 +53,7 @@ int	single_command(t_list *head, pid_t *ptr_pid)
 		exit_code = manage_pipe(head);
 		return (exit_code);
 	}
-	//Close prevouse pipe
+	execute_close_fd(head);
 	*ptr_pid = pid;
 	return (exit_code);
 }
@@ -76,7 +76,7 @@ int	multiple_command(t_list *head, pid_t *ptr_pid)
 		exit_code = manage_pipe(head);
 		return (exit_code);
 	}
-	//Close prevouse pipe
+	execute_close_fd(head);
 	*ptr_pid = pid;
 	return (exit_code);
 }
