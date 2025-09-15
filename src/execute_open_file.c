@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:33:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/13 13:35:17 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/15 17:28:40 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	open_outfile(t_file_info *tmp_tab)
 	return (fd);
 }
 
-int	open_redirection(t_file_info *tmp_tab, t_channel *in_out)
+int	open_redirection(t_list *head, t_file_info *tmp_tab)
 {
 	int		fd;
 	int		type;
@@ -65,13 +65,13 @@ int	open_redirection(t_file_info *tmp_tab, t_channel *in_out)
 	if (fd == -1)
 		return (1);
 	if (type == INPUT || type == HERE_DOC)
-		in_out->in = fd;
+		head->in_out->in = fd;
 	else
-		in_out->out = fd;
+		head->in_out->out = fd;
 	return (0);
 }
 
-int	execute_open_file(t_list *head, t_channel *in_out)
+int	execute_open_file(t_list *head)
 {
 	t_file_info	**tmp_tab;
 	int			i;
@@ -82,7 +82,7 @@ int	execute_open_file(t_list *head, t_channel *in_out)
 	tmp_tab = head->tab_file;
 	while (tmp_tab[i] != NULL && exit_code == 0)
 	{
-		exit_code = open_redirection(tmp_tab[i], in_out);
+		exit_code = open_redirection(head, tmp_tab[i]);
 		i++;
 	}
 	return (exit_code);
