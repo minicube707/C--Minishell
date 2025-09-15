@@ -19,6 +19,9 @@ FILE_NAMES =	main \
 				execute_here_doc \
 				execute_open_file \
 				parser \
+				token_utils \
+				lexer \
+				free_utils \
 				tmp_parsing
 
 # =======================================

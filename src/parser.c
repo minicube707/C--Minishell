@@ -42,6 +42,7 @@ t_list_env	*set_env(char **envp)
 		if (!head)
 		{
 			new = malloc(sizeof(t_list_env));
+			new->next = NULL;
 			head = new;
 		}
 		else
@@ -69,6 +70,23 @@ t_list	*parsing(char *line, char **envp)
 	if (!list)
 		return (NULL);
 	list->environment = set_env(envp);
-	token = tokenizer(line);
+	/*t_list_env	*p = list->environment;
+	while (p)
+	{
+		printf("%s = %s\n", p->name, p->content);
+		p = p->next;
+	}*/
+	token = lexer(line);
+	t_token *t = token;
+	while (t)
+	{
+		if (t->content)
+			printf("%s\n", t->content);
+		else
+			printf("%d\n", t->op);
+		t = t->next;
+	}
+	free_env(list->environment);
+	free_token(token);
 	return (list);
 }

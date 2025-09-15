@@ -52,12 +52,12 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		if (*line)
 		{
-			printf("check\n");
 			add_history(line);
 			head = parsing(line, envp);
 			(void)head;	
 //			execution(head, 0, &shell_channel);
 			free(line);
+			free(head);
 		}
 	}
 	return (0);

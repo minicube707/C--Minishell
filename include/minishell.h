@@ -31,9 +31,9 @@
 # define HERE_DOC 2		// <<
 # define APPEND 3		// >>
 
-# define PIPE 1			// |
-# define AND 2			// &&
-# define OR 3			// ||
+# define PIPE 4			// |
+# define AND 5			// &&
+# define OR 6			// ||
 
 // STRUCTURE
 // Structure to containt the file info
@@ -56,7 +56,7 @@ typedef struct s_list_env
 typedef struct s_list
 {
 	t_list_env			*environment;
-	int					next_redir;
+	int					pre_redir;
 	int					mypipe[2];
 	char				*command;
 	char				**option;
@@ -74,10 +74,10 @@ typedef struct s_channel
 
 typedef struct s_token
 {
-	int				redir;
+	int				op;
 	char			*content;
-	struct token	*next;
-}
+	struct s_token	*next;
+}						t_token;
 
 /*===================*/
 /*====Temporaire=====*/
@@ -117,4 +117,15 @@ void					execution(t_list *head, int subshell,
 /*Parsing*/
 t_list					*parsing(char *line, char **envp);
 
+/*Lexer*/
+t_token	*lexer(char *str);
+
+/*Token Utils*/
+t_token	*end_list(t_token *lst);
+t_token *new_token(char *content, int op);
+int	add_back(t_token **head, char *content,  int op);
+
+/*Free Utils*/
+void	free_env(t_list_env *head);
+void	free_token(t_token *head);
 #endif
