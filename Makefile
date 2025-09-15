@@ -104,7 +104,7 @@ intro :
 run:
 	./$(NAME)
 
-test:
+test: $(NAME)
 	valgrind \
 	--suppressions=./dev_tools/.ignore_rl_leaks.supp \
 	--leak-check=full \
