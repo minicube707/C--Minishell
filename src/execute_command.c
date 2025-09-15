@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/14 12:52:14 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/15 18:46:30 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,13 @@ int	manage_pipe(t_list *head)
 	int	exit_code;
 	
 	exit_code = 0;
-		
 	/*Dup input*/
-	if (head->in_out->in != 0)
+	if (head->in_out->out != 0)
 	{
 		dup2(head->in_out->in, STDIN_FILENO);
-		close(head->in_out->in);	
+		close(head->in_out->in);
 	}
-	
+		
 	/*Dup output*/
 	if (head->in_out->out != 1)
 	{
@@ -32,6 +31,14 @@ int	manage_pipe(t_list *head)
 		close(head->in_out->out);
 	}
 		
+	if (head->previous != NULL)
+	{
+		close(head->previous->mypipe[0]);
+		close(head->previous->mypipe[1]);
+	}
+	close(head->mypipe[0]);
+	close(head->mypipe[1]);
+	
 	execute_close_fd(head);
 	
 	//Creat function to join option to path command
@@ -54,6 +61,8 @@ int	single_command(t_list *head, pid_t *ptr_pid)
 		return (exit_code);
 	}
 	execute_close_fd(head);
+	close(head->mypipe[0]);
+	close(head->mypipe[1]);
 	*ptr_pid = pid;
 	return (exit_code);
 }
@@ -64,18 +73,24 @@ int	multiple_command(t_list *head, pid_t *ptr_pid)
 	int 	exit_code;
 	
 	exit_code = 0;
-	exit_code = pipe(head->mypipe);
-	if (exit_code != 0)
-	{
-		print_error("failure creation of pipe");
-		return (exit_code);
-	}
 	pid = fork();
 	if (pid == 0)
 	{
 		exit_code = manage_pipe(head);
 		return (exit_code);
 	}
+	if (head->previous != NULL)
+	{
+		close(head->previous->mypipe[0]);
+		close(head->previous->mypipe[1]);
+	}
+		
+	if (head->next == NULL)
+	{
+		close(head->mypipe[0]);
+		close(head->mypipe[1]);
+	}
+	
 	execute_close_fd(head);
 	*ptr_pid = pid;
 	return (exit_code);
@@ -85,9 +100,6 @@ int execute_command(t_list *head)
 {
 	int 			exit_code;
 	pid_t			pid;
-	
-	printf("IN %d \n", head->in_out->in);
-	printf("OUT %d \n", head->in_out->out);
 	
 	exit_code = 0;
 	if (head->previous == NULL && head->next == NULL)

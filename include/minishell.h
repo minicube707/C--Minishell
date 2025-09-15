@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/14 12:43:17 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/14 20:45:40 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,17 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+/*REDIRECTION*/
 # define INPUT 0		// <
 # define OUPUT 1		// >
 # define HERE_DOC 2		// <<
 # define APPEND 3		// >>
+
+/*CONTROL OPERATOR*/
+# define EMPTY 0
+# define PIPE 1
+# define AND 2
+# define OR 3
 
 // STRUCTURE
 // Structure to containt the file info
@@ -99,7 +106,7 @@ void					execute_here_doc(t_list *head);
 void    				execute_close_fd(t_list *head);
 
 /*Execute_open_file*/
-int						execute_open_file(t_list *head, t_channel *in_out);
+int						execute_open_file(t_list *head	);
 
 /*Execution Command*/
 int 					execute_command(t_list *head);
