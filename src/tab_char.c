@@ -1,39 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_close_file.c                               :+:      :+:    :+:   */
+/*   tab_char.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/14 12:37:15 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/16 18:01:32 by fmotte           ###   ########.fr       */
+/*   Created: 2025/09/16 17:30:41 by fmotte            #+#    #+#             */
+/*   Updated: 2025/09/16 18:16:53 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    execute_close_fd(t_list *head)
+void	tab_char_clear(char **tab)
 {
-    t_file_info	**tmp_tab;	
-	int			i;
+	int	i;
 
 	i = 0;
-	tmp_tab = head->tab_file;
-	while (tmp_tab[i] != NULL)
+	while (tab[i] != NULL)
 	{
-        close(tmp_tab[i]->fd);
+		printf("DES %p \n", tab[i]);
+		free(tab[i]);
+		tab[i] = NULL;
 		i++;
 	}
-}
-
-void    execute_close_all_fd(t_list *head)
-{
-	t_list *tmp_list;
-
-	tmp_list = dlist_get_top(head);
-	while (tmp_list != NULL)
-	{
-		execute_close_fd(tmp_list);
-		tmp_list = tmp_list->next;
-	}
+	free(tab);
+	tab = NULL;
 }

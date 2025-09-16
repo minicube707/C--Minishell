@@ -12,7 +12,9 @@ CC = cc -Wall -Wextra -Werror -MMD -MP -g
 # =======================================
 #              FILE
 # =======================================
-FILE_NAMES =	execute_close_file \
+FILE_NAMES =	double_list \
+				double_list_utils \
+				execute_close_file \
                 execute_command \
                 execute_here_doc \
                 execute_open_file \
@@ -20,6 +22,8 @@ FILE_NAMES =	execute_close_file \
                 here_doc \
                 main \
                 manage_error \
+				tab_char \
+				tab_info \
                 tmp_parsing \
 				parser \
 				token_utils \
@@ -112,6 +116,7 @@ test: $(NAME)
 	valgrind \
 	--suppressions=./dev_tools/.ignore_rl_leaks.supp \
 	--leak-check=full \
+	--show-leak-kinds=all \
 	--track-origins=yes \
 	--trace-children=yes \
 	--track-fds=yes \
