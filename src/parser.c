@@ -65,28 +65,11 @@ t_list	*parsing(char *line, char **envp)
 	t_list	*list;
 	t_token	*token;
 
-	(void)line;
 	list = malloc(sizeof(t_list));
 	if (!list)
 		return (NULL);
 	list->env = set_env(envp);
-	/*t_list_env	*p = list->env;
-	while (p)
-	{
-		printf("%s = %s\n", p->name, p->content);
-		p = p->next;
-	}*/
 	token = lexer(line);
-	t_token *t = token;
-	while (t)
-	{
-		if (t->content)
-			printf("%s\n", t->content);
-		else
-			printf("%d\n", t->op);
-		t = t->next;
-	}
-	free_env(list->env);
 	free_token(token);
 	return (list);
 }

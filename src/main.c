@@ -57,6 +57,7 @@ int	main(int argc, char **argv, char **envp)
 			(void)head;	
 //			execution(head, 0, &shell_channel);
 			free(line);
+			free(head->env);
 			free(head);
 		}
 	}
