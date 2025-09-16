@@ -1,39 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_close_file.c                               :+:      :+:    :+:   */
+/*   double_list_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/14 12:37:15 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/16 18:01:32 by fmotte           ###   ########.fr       */
+/*   Created: 2025/09/16 16:13:52 by fmotte            #+#    #+#             */
+/*   Updated: 2025/09/16 18:10:48 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    execute_close_fd(t_list *head)
+t_list *dlist_get_top(t_list *head)
 {
-    t_file_info	**tmp_tab;	
-	int			i;
-
-	i = 0;
-	tmp_tab = head->tab_file;
-	while (tmp_tab[i] != NULL)
-	{
-        close(tmp_tab[i]->fd);
-		i++;
-	}
-}
-
-void    execute_close_all_fd(t_list *head)
-{
-	t_list *tmp_list;
-
-	tmp_list = dlist_get_top(head);
-	while (tmp_list != NULL)
-	{
-		execute_close_fd(tmp_list);
-		tmp_list = tmp_list->next;
-	}
+    t_list *tmp_list;
+    
+    tmp_list = head;
+    if (tmp_list== NULL)
+        return (NULL);
+    while (tmp_list->previous != NULL)
+        tmp_list = tmp_list->previous;
+    return (tmp_list);
 }

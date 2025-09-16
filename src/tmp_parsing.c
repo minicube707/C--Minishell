@@ -43,13 +43,14 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     t_channel       *in_out5;
     char            **tab_option5;
 
+    t_file_info     *element3;
     /*
     t_file_info     *element1;
     t_file_info     *element2;
-    t_file_info     *element3;
+    
     t_file_info     *element4;
-    */
     t_file_info     *element5;
+    */
 
     /*
         PREMIER NOEUD
@@ -74,12 +75,17 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     if ( in_out1 == NULL)
         return (NULL);
 
-    tab_option1[0] = ft_strdup("/usr/bin/cat");
-    tab_option1[1] = ft_strdup("doc/definition.txt");
+    tab_option1[0] = ft_strdup("/usr/bin/echo");
+    tab_option1[1] = ft_strdup("hello");
     tab_option1[2] = NULL;
 
+    printf("Option %p \n", tab_option1);
+    printf("Option %p \n", tab_option1[0]);
+    printf("Option %p \n", tab_option1[1]);
+    printf("Option %p \n", tab_option1[2]);
+
     head1->pre_redir = EMPTY;
-    head1->command = ft_strdup("/usr/bin/cat");
+    head1->command = ft_strdup("/usr/bin/echo");
     head1->option = tab_option1;
     head1->tab_file = file_info1;
     head1->subshell = NULL;
@@ -104,7 +110,7 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
 
     file_info2[0] = NULL;
 
-    tab_option2 = malloc(4 * sizeof(char *));
+    tab_option2 = malloc(2 * sizeof(char *));
     if ( tab_option2 == NULL)
         return (NULL);
 
@@ -113,13 +119,11 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
         return (NULL);
 
 
-    tab_option2[0] = ft_strdup("/usr/bin/tr");
-    tab_option2[1] = ft_strdup("' '");
-    tab_option2[2] = ft_strdup("'\n'");
-    tab_option2[3] = NULL;
+    tab_option2[0] = ft_strdup("/usr/bin/cat");
+    tab_option2[1] = NULL;
 
     head2->pre_redir = PIPE;
-    head2->command = ft_strdup("/usr/bin/tr");
+    head2->command = ft_strdup("/usr/bin/cat");
     head2->option = tab_option2;
     head2->tab_file = file_info2;
     head2->subshell = NULL;
@@ -139,13 +143,21 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
         return (NULL);
     
     /*Creation du tableau*/
-    file_info3 = malloc(1 * sizeof(t_file_info *));
+    file_info3 = malloc(2 * sizeof(t_file_info *));
     if (file_info3 == NULL)
         return (NULL);
 
-    file_info3[0] = NULL;
+    element3 = malloc(sizeof(t_file_info));
+    if (element3 == NULL)
+        return (NULL);
+    
+    element3->file_name = ft_strdup("stop");
+    element3->type = HERE_DOC;
 
-    tab_option3 = malloc(2 * sizeof(char *));
+    file_info3[0] = element3;
+    file_info3[1] = NULL;
+
+    tab_option3 = malloc(1 * sizeof(char *));
     if ( tab_option3 == NULL)
         return (NULL);
 
@@ -154,11 +166,10 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
         return (NULL);
 
 
-    tab_option3[0] = ft_strdup("/usr/bin/sort");
-    tab_option3[1] = NULL;
+    tab_option3[0] = NULL;
 
     head3->pre_redir = PIPE;
-    head3->command = ft_strdup("/usr/bin/sort");
+    head3->command = NULL;
     head3->option = tab_option3;
     head3->tab_file = file_info3;
     head3->subshell = NULL;
@@ -185,7 +196,7 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
 
     file_info4[0] = NULL;
 
-    tab_option4 = malloc(3 * sizeof(char *));
+    tab_option4 = malloc(2 * sizeof(char *));
     if ( tab_option4 == NULL)
         return (NULL);
 
@@ -194,12 +205,11 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
         return (NULL);
 
 
-    tab_option4[0] = ft_strdup("/usr/bin/uniq");
-    tab_option4[1] = ft_strdup("-c");
-    tab_option4[2] = NULL;
+    tab_option4[0] = ft_strdup("/usr/bin/cat");
+    tab_option4[1] = NULL;
 
     head4->pre_redir = PIPE;
-    head4->command = ft_strdup("/usr/bin/uniq");
+    head4->command = ft_strdup("/usr/bin/cat");
     head4->option = tab_option4;
     head4->tab_file = file_info4;
     head4->subshell = NULL;
@@ -219,21 +229,13 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
         return (NULL);
     
     /*Creation du tableau*/
-    file_info5 = malloc(2 * sizeof(t_file_info *));
+    file_info5 = malloc(1 * sizeof(t_file_info *));
     if (file_info5 == NULL)
         return (NULL);
 
-    element5 = malloc(sizeof(t_file_info));
-    if ( element5 == NULL)
-        return (NULL);
+    file_info5[0] = NULL;
 
-    element5->file_name = ft_strdup("outfile");
-    element5->type = APPEND;
-
-    file_info5[0] = element5;
-    file_info5[1] = NULL;
-
-    tab_option5 = malloc(3 * sizeof(char *));
+    tab_option5 = malloc(2 * sizeof(char *));
     if ( tab_option5 == NULL)
         return (NULL);
 
@@ -242,12 +244,11 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
         return (NULL);
 
 
-    tab_option5[0] = ft_strdup("/usr/bin/sort");
-    tab_option5[1] = ft_strdup("-nr");
-    tab_option5[2] = NULL;
+    tab_option5[0] = ft_strdup("/usr/bin/cat");
+    tab_option5[1] = NULL;
 
     head5->pre_redir = PIPE;
-    head5->command = ft_strdup("/usr/bin/sort");
+    head5->command = ft_strdup("/usr/bin/cat");
     head5->option = tab_option5;
     head5->tab_file = file_info5;
     head5->subshell = NULL;

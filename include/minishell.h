@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/14 20:45:40 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/16 18:35:03 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@
 # define APPEND 3		// >>
 
 /*CONTROL OPERATOR*/
-# define EMPTY 0
-# define PIPE 1
-# define AND 2
-# define OR 3
+# define EMPTY 4
+# define PIPE 5
+# define AND 6
+# define OR 7
 
 // STRUCTURE
 // Structure to containt the file info
@@ -82,6 +82,21 @@ typedef struct s_list
 /*===================*/
 t_list  				*tmp_parsing(int argc, char **argv, char **envp);
 
+/*===================*/
+/*=====TAB_CHAR======*/
+/*===================*/
+void					tab_char_clear(char **tab);
+
+/*===================*/
+/*=====TAB_INFO======*/
+/*===================*/
+void					tab_info_clear(t_file_info **tab);
+
+/*===================*/
+/*=======DLIST=======*/
+/*===================*/
+t_list 					*dlist_clear(t_list *head);
+t_list 					*dlist_get_top(t_list *head);
 
 /*===================*/
 /*=======COMMUN======*/
@@ -94,8 +109,8 @@ void					print_error_file(char *file);
 
 /*===================*/
 /*=====EXECUTION=====*/
-
 /*===================*/
+
 /*Here_doc*/
 int						here_doc(int *file_fd, char *limiter);
 
@@ -104,6 +119,7 @@ void					execute_here_doc(t_list *head);
 
 /*Execute_close_file*/
 void    				execute_close_fd(t_list *head);
+void    				execute_close_all_fd(t_list *head);
 
 /*Execute_open_file*/
 int						execute_open_file(t_list *head	);
