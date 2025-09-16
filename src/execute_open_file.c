@@ -6,71 +6,84 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:33:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/10 16:04:30 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/15 17:28:40 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	open_redirection(t_file_info *tmp_tab, t_channel *in_out)
+int	open_infile(t_file_info *tmp_tab)
 {
-	int		fd;
-	int		flags;
-	int		type;
-	char	*file_name;
+	int	fd;
+	int	flags;
+	int	get_access;
+	char *file_name;
+
+	file_name = tmp_tab->file_name;
+	get_access = access(file_name, F_OK);
+	if (get_access == -1)
+	{
+		print_error_file(file_name);
+		return (-1);
+	}
+	flags = O_RDONLY;
+	fd = open(file_name, flags);
+	tmp_tab->fd = fd;
+	return (fd);
+}
+
+int	open_outfile(t_file_info *tmp_tab)
+{
+	int	fd;
+	int	flags;
+	int	type;
+	char *file_name;
 
 	type = tmp_tab->type;
 	file_name = tmp_tab->file_name;
-	if (type == INPUT)
-		flags = O_RDONLY;
-	else if (type == OUPUT)
+	if (type == OUTPUT)
 		flags = O_CREAT | O_WRONLY | O_TRUNC;
 	else
 		flags = O_CREAT | O_WRONLY | O_APPEND;
-	fd = open(file_name, flags);
+	fd = open(file_name, flags, 0644);
+	tmp_tab->fd = fd;
+	return (fd);
+}
+
+int	open_redirection(t_list *head, t_file_info *tmp_tab)
+{
+	int		fd;
+	int		type;
+
+	type = tmp_tab->type;
+	if (type == INPUT)
+		fd = open_infile(tmp_tab);
+	else if (type == OUTPUT || type == APPEND)
+		fd = open_outfile(tmp_tab);
+	else
+		fd = tmp_tab->fd;
 	if (fd == -1)
 		return (1);
 	if (type == INPUT || type == HERE_DOC)
-		in_out->in = fd;
+		head->in_out->in = fd;
 	else
-		in_out->out = fd;
+		head->in_out->out = fd;
 	return (0);
 }
 
-int	file_processing(t_list *tmp_head, t_channel *in_out)
+int	execute_open_file(t_list *head)
 {
 	t_file_info	**tmp_tab;
 	int			i;
-	int			*ptr;
 	int			exit_code;
-	int			type;
 
 	i = 0;
-	ptr = NULL;
-	(void)ptr;
 	exit_code = 0;
-	tmp_tab = tmp_head->tab_file;
+	tmp_tab = head->tab_file;
 	while (tmp_tab[i] != NULL && exit_code == 0)
 	{
-		type = tmp_tab[i]->type;
-		if (type == INPUT || type == OUPUT || type == APPEND)
-			exit_code = open_redirection(tmp_tab[i], in_out);
-		else
-			in_out->in = tmp_tab[i]->fd;
+		exit_code = open_redirection(head, tmp_tab[i]);
 		i++;
-	}
-	return (exit_code);
-}
-
-int	execute_open_file(t_list *head, t_channel *in_out)
-{
-	int	exit_code;
-
-	exit_code = 0;
-	while (head != NULL && exit_code == 0)
-	{
-		exit_code = file_processing(head, in_out);
-		head = head->next;
 	}
 	return (exit_code);
 }

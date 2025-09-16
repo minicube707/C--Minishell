@@ -24,7 +24,7 @@ static int	is_op(char *str)
 	{
 		if (str[1] == '>')
 			return (APPEND);
-		return (OUPUT);
+		return (OUTPUT);
 	}
 	if (str[0] == '|')
 	{
@@ -67,7 +67,7 @@ char	*duparg(char *str)
 
 size_t	op_len(int op)
 {
-	if (op == INPUT || op == OUPUT || op == PIPE)
+	if (op == INPUT || op == OUTPUT || op == PIPE)
 		return (1);
 	return (2);
 }

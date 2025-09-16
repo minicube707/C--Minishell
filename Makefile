@@ -6,23 +6,25 @@
 # =======================================
 #                FLAGS
 # =======================================
-CC = cc -Wall -Wextra -Werror -MMD -MP
+CC = cc -Wall -Wextra -Werror -MMD -MP -g
 
 
 # =======================================
 #              FILE
 # =======================================
-FILE_NAMES =	main \
-				here_doc \
-				manage_error \
-				execution \
-				execute_here_doc \
-				execute_open_file \
+FILE_NAMES =	execute_close_file \
+                execute_command \
+                execute_here_doc \
+                execute_open_file \
+                execution \
+                here_doc \
+                main \
+                manage_error \
+                tmp_parsing \
 				parser \
 				token_utils \
 				lexer \
 				free_utils \
-				tmp_parsing
 
 # =======================================
 #              VARIABLE
@@ -61,7 +63,7 @@ CYAN        = \033[38;5;51m
 # =======================================
 #              RULES
 # =======================================
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re intro run test
 
 all : $(NAME)
 
@@ -77,7 +79,7 @@ $(NAME): intro $(OBJ_FILES)
 	@$(MAKE) -s -C  libft 
 	@$(MAKE) -s -C gnl
 	@echo "\n$(YELLOW)$(NAME_FOLDER): [Linking]$(RESET): $(NAME)"
-	$(CC) $(OBJ_FILES)  $(ARCHIVE) -o $(NAME)
+	@$(CC) $(OBJ_FILES)  $(ARCHIVE) -o $(NAME)
 	@echo "\n"
 	@echo "$(GREEN)======================$(RESET)"
 	@echo "$(GREEN)===PROJET COMPILER====$(RESET)"
@@ -102,6 +104,20 @@ re : fclean all
 
 intro :
 	@printf "\n$(MAGENTA)📦 Compilation de $(shell basename $(CURDIR))$(RESET)\n"
+
+run:
+	./$(NAME)
+
+test: $(NAME)
+	valgrind \
+	--suppressions=./dev_tools/.ignore_rl_leaks.supp \
+	--leak-check=full \
+	--track-origins=yes \
+	--trace-children=yes \
+	--track-fds=yes \
+	--leak-check=full -s \
+	./$(NAME)
+
 
 # Inclusion automatique des fichiers .d s’ils existent
 -include $(DEP_FILES)
