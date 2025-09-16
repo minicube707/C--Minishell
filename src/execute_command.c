@@ -45,7 +45,7 @@ int	manage_pipe(t_list *head)
 	//Insert command in pos 0heqd-> option
 	if (head->command != NULL)
 	{
-		exit_code = execve(head->command, head->option, head->enviroment);
+		exit_code = execve(head->command, head->option, head->environment);
 		print_error_unknow_cmd(head->command);
 		return (exit_code);
 	}

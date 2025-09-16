@@ -44,6 +44,7 @@ int	main(int argc, char **argv, char **envp)
 	set_signal_action();
 	shell_channel.in = 0;
 	shell_channel.out = 1;
+	(void)shell_channel;
 	while (1)
 	{
 		line = readline("Minishell > ");
@@ -52,9 +53,12 @@ int	main(int argc, char **argv, char **envp)
 		if (*line)
 		{
 			add_history(line);
-			head = tmp_parsing(argc, argv, envp);
-			execution(head, 0, &shell_channel);
+			head = parsing(line, envp);
+			(void)head;	
+//			execution(head, 0, &shell_channel);
 			free(line);
+			free(head->env);
+			free(head);
 		}
 	}
 	return (0);

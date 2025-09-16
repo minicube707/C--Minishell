@@ -41,7 +41,7 @@ int	open_outfile(t_file_info *tmp_tab)
 
 	type = tmp_tab->type;
 	file_name = tmp_tab->file_name;
-	if (type == OUPUT)
+	if (type == OUTPUT)
 		flags = O_CREAT | O_WRONLY | O_TRUNC;
 	else
 		flags = O_CREAT | O_WRONLY | O_APPEND;
@@ -58,7 +58,7 @@ int	open_redirection(t_list *head, t_file_info *tmp_tab)
 	type = tmp_tab->type;
 	if (type == INPUT)
 		fd = open_infile(tmp_tab);
-	else if (type == OUPUT || type == APPEND)
+	else if (type == OUTPUT || type == APPEND)
 		fd = open_outfile(tmp_tab);
 	else
 		fd = tmp_tab->fd;

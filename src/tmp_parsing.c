@@ -89,7 +89,7 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     head1->option = tab_option1;
     head1->tab_file = file_info1;
     head1->subshell = NULL;
-    head1->enviroment = envp;
+    head1->environment = envp;
     head1->in_out = in_out1;
     head1->next = NULL;
     head1->previous = NULL;
@@ -127,7 +127,7 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     head2->option = tab_option2;
     head2->tab_file = file_info2;
     head2->subshell = NULL;
-    head2->enviroment = envp;
+    head2->environment = envp;
     head2->in_out = in_out2;
     head2->next = NULL;
     head2->previous = head1;
@@ -173,7 +173,7 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     head3->option = tab_option3;
     head3->tab_file = file_info3;
     head3->subshell = NULL;
-    head3->enviroment = envp;
+    head3->environment = envp;
     head3->in_out = in_out3;
     head3->next = NULL;
     head3->previous = head2;
@@ -213,7 +213,7 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     head4->option = tab_option4;
     head4->tab_file = file_info4;
     head4->subshell = NULL;
-    head4->enviroment = envp;
+    head4->environment = envp;
     head4->in_out = in_out4;
     head4->next = NULL;
     head4->previous = head3;
@@ -252,7 +252,7 @@ t_list  *tmp_parsing(int argc, char **argv, char **envp)
     head5->option = tab_option5;
     head5->tab_file = file_info5;
     head5->subshell = NULL;
-    head5->enviroment = envp;
+    head5->environment = envp;
     head5->in_out = in_out5;
     head5->next = NULL;
     head5->previous = head4;

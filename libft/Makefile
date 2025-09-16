@@ -90,7 +90,7 @@ $(OBJ_PATH) :
 
 $(OBJ_PATH)/%.o : $(SRC_PATH)/%.c $(HEA_FILES) | $(OBJ_PATH)
 	@echo "$(BLUE)[Compilation]$(RESET) $<"
-	@$(CC) $(INCLUDE) -O3 -c $< -o $@
+	@$(CC) $(INCLUDE) -c $< -o $@
 
 $(NAME) : intro $(OBJ_FILES)
 	@echo "$(CYAN)$(NAME_FOLDER): [ARCHIVAGE]$(RESET): $(NAME)"

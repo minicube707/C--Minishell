@@ -25,6 +25,10 @@ FILE_NAMES =	double_list \
 				tab_char \
 				tab_info \
                 tmp_parsing \
+				parser \
+				token_utils \
+				lexer \
+				free_utils \
 
 # =======================================
 #              VARIABLE
@@ -72,7 +76,7 @@ $(OBJ_PATH) :
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(HEA_FILES) | $(OBJ_PATH)
 	@echo "$(BLUE)[Compilation]$(RESET) $<"
-	@$(CC) $(INCLUDE) -O3 -c $< -o $@
+	@$(CC) $(INCLUDE) -c $< -o $@
 
 
 $(NAME): intro $(OBJ_FILES)

@@ -28,15 +28,15 @@
 
 /*REDIRECTION*/
 # define INPUT 0		// <
-# define OUPUT 1		// >
+# define OUTPUT 1		// >
 # define HERE_DOC 2		// <<
 # define APPEND 3		// >>
 
 /*CONTROL OPERATOR*/
 # define EMPTY 4
-# define PIPE 5
-# define AND 6
-# define OR 7
+# define PIPE 5 		// |
+# define AND 6			// &&
+# define OR 7			// ||
 
 // STRUCTURE
 // Structure to containt the file info
@@ -62,10 +62,18 @@ typedef struct s_channel
 	int					out;
 }						t_channel;
 
+typedef struct s_token
+{
+	int				op;
+	char			*content;
+	struct s_token	*next;
+}						t_token;
+
 // Strucuture to containt the info of the commande line
 typedef struct s_list
 {
-	char			**enviroment; // -> (changemnt temporaire besion pour test a remettre t_list_env)
+	char				**environment; // -> (changemnt temporaire besion pour test a remettre t_list_env)
+	t_list_env			*env;
 	int					pre_redir;
 	int					mypipe[2];
 	char				*command;
@@ -136,6 +144,17 @@ void					execution(t_list *head, int subshell,
 /*===================*/
 
 /*Parsing*/
-t_list					*parsing(int argc, char **argv, char **envp);
+t_list					*parsing(char *line, char **envp);
 
+/*Lexer*/
+t_token	*lexer(char *str);
+
+/*Token Utils*/
+t_token	*end_list(t_token *lst);
+t_token *new_token(char *content, int op);
+int	add_back(t_token **head, char *content,  int op);
+
+/*Free Utils*/
+void	free_env(t_list_env *head);
+void	free_token(t_token *head);
 #endif
