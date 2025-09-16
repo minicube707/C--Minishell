@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:37:15 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/14 12:40:25 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/16 18:01:32 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void    execute_close_fd(t_list *head)
 {
-    t_file_info	**tmp_tab;
+    t_file_info	**tmp_tab;	
 	int			i;
 
 	i = 0;
@@ -23,5 +23,17 @@ void    execute_close_fd(t_list *head)
 	{
         close(tmp_tab[i]->fd);
 		i++;
+	}
+}
+
+void    execute_close_all_fd(t_list *head)
+{
+	t_list *tmp_list;
+
+	tmp_list = dlist_get_top(head);
+	while (tmp_list != NULL)
+	{
+		execute_close_fd(tmp_list);
+		tmp_list = tmp_list->next;
 	}
 }

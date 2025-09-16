@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/15 18:46:30 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/16 17:59:33 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,18 @@ int	manage_pipe(t_list *head)
 	close(head->mypipe[0]);
 	close(head->mypipe[1]);
 	
-	execute_close_fd(head);
+	execute_close_all_fd(head);
 	
 	//Creat function to join option to path command
 	//Insert command in pos 0heqd-> option
-	exit_code = execve(head->command, head->option, head->enviroment);
-	print_error_unknow_cmd(head->command);
-	return (exit_code);
+	if (head->command != NULL)
+	{
+		exit_code = execve(head->command, head->option, head->enviroment);
+		print_error_unknow_cmd(head->command);
+		return (exit_code);
+	}
+	dlist_clear(head);
+	exit(EXIT_SUCCESS);
 }
 
 int	single_command(t_list *head, pid_t *ptr_pid)
@@ -106,6 +111,6 @@ int execute_command(t_list *head)
 		exit_code = single_command(head, &pid);
 	else
 		exit_code = multiple_command(head, &pid);
-	waitpid(pid, NULL, 0);
+	waitpid(pid, NULL, 0);	
 	return (exit_code);
 }
