@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/17 16:17:48 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/17 16:53:55 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ typedef struct s_token
 // Strucuture to containt the info of the commande line
 typedef struct s_list
 {
-	char				**environment; // -> (changemnt temporaire besion pour test a remettre t_list_env)
-	t_list_env			*env;
 	int					pre_redir;
 	int					mypipe[2];
 	char				*command;
@@ -150,8 +148,11 @@ void					execution(t_list *head, int subshell,
 /*======PARSING======*/
 /*===================*/
 
+/*Environment*/
+t_list_env	*set_env(char **envp);
+
 /*Parsing*/
-t_list					*parsing(char *line, char **envp);
+t_list					*parsing(char *line);
 
 /*Lexer*/
 t_token	*lexer(char *str);

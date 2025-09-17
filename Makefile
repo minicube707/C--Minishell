@@ -12,7 +12,15 @@ CC = cc -Wall -Wextra -Werror -MMD -MP -g
 # =======================================
 #              FILE
 # =======================================
-FILE_NAMES =	double_list \
+FILE_NAMES =	main \
+				double_list_utils \
+                env \
+				parser \
+				token_utils \
+				lexer \
+				free_utils \
+
+FILE_NAMESCP =	double_list \
 				double_list_utils \
 				execute_close_file \
                 execute_command \
@@ -25,6 +33,7 @@ FILE_NAMES =	double_list \
 				tab_char \
 				tab_info \
                 tmp_parsing \
+				env \
 				parser \
 				token_utils \
 				lexer \
