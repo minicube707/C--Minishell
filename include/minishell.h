@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/16 18:35:03 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/17 16:17:48 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,13 @@ typedef struct s_list
 	struct s_list		*next;
 	struct s_list		*previous;
 }						t_list;
+
+typedef struct s_shell
+{
+	char		**environment;
+	t_list_env	*env;
+	t_list		*head;
+}				t_shell;
 
 /*===================*/
 /*====Temporaire=====*/

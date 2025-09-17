@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:05:15 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/11 11:42:13 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/17 16:21:44 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,12 @@ t_list	*parsing(char *line, char **envp)
 		return (NULL);
 	list->env = set_env(envp);
 	token = lexer(line);
+	if (token->op > 3 && token->op <= 7)
+	{
+		write(2, "\033[91mparse error\n\033[", 17);
+		free_token(token);
+		return (NULL);
+	}
 	free_token(token);
 	return (list);
 }
