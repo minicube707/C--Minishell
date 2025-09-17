@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/10 19:09:02 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/17 16:18:41 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void	set_signal_action(void)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_list	*head;
-	t_channel shell_channel;
-	char	*line;
+	t_shell		shell;
+	t_channel	shell_channel;
+	char		*line;
 
 	(void)argc;
 	(void)argv;
@@ -47,18 +47,19 @@ int	main(int argc, char **argv, char **envp)
 	(void)shell_channel;
 	while (1)
 	{
-		line = readline("Minishell > ");
+		line = readline("\033[1;94mMinishell >\033[0m ");
 		if (!line)
 			break ;
 		if (*line)
 		{
 			add_history(line);
-			head = parsing(line, envp);
-			(void)head;	
-//			execution(head, 0, &shell_channel);
+			shell.head = parsing(line, envp);
+			if (shell.head)
+			{
+//			execution(shell, 0, &shell_channel);
 			free(line);
-			free(head->env);
-			free(head);
+			free(shell.head->env);
+			}
 		}
 	}
 	return (0);
