@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   double_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:45:15 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/16 18:28:28 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/18 23:02:50 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_list *dlist_pop_front(t_list *head)
         return (NULL);
     pop_head = dlist_get_top(head);
     new_head = pop_head->next;
-    printf("POP %p \n", pop_head);
     
     /*If last noeud free list environement*/
     

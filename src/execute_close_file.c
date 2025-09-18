@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_close_file.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:37:15 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/16 18:01:32 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/19 00:58:26 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void    execute_close_fd(t_list *head)
 	tmp_tab = head->tab_file;
 	while (tmp_tab[i] != NULL)
 	{
-        close(tmp_tab[i]->fd);
+		if (tmp_tab[i]->fd > 0)
+        	close(tmp_tab[i]->fd);
 		i++;
 	}
 }

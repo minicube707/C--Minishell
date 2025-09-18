@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/09/15 18:08:29 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/19 00:41:55 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execution(t_list *head, int subshell, t_channel *shell_channel)
+void	execution(t_shell *shell, int subshell, t_channel *shell_channel)
 {
 	int			exit_code;
 
@@ -20,12 +20,12 @@ void	execution(t_list *head, int subshell, t_channel *shell_channel)
 	(void)shell_channel;
 	exit_code = 0;
 
-	execute_here_doc(head);
+	execute_here_doc(shell->head);
 	
 	/*Put this loop in new function*/
-	while (head != NULL && exit_code == 0)
+	while (shell->head != NULL && exit_code == 0)
 	{	
-		exit_code = pipe(head->mypipe);
+		exit_code = pipe(shell->head->mypipe);
 		if (exit_code != 0)
 		{
 			print_error("failure creation of pipe");
@@ -33,24 +33,14 @@ void	execution(t_list *head, int subshell, t_channel *shell_channel)
 			//Stock exit code
 			return ;
 		}
+		if (shell->head->previous == NULL)
+			shell->head->in_out->in = 0;
+		if (shell->head->next == NULL)
+			shell->head->in_out->out = 1;
+		else
+			shell->head->in_out->out = shell->head->mypipe[1];
 		
-		/*SET dans parsing*/
-		head->in_out->in = 0;
-		head->in_out->out = 1;
-		
-		if (head->next != NULL)
-		{
-			head->in_out->in = head->mypipe[0];
-			head->in_out->out = head->mypipe[1];	
-		}
-		
-		/*S'il n'y a pas de precedant nous ne somme pas dans le premier neoud*/
-		if (head->previous != NULL)
-			head->in_out->in = head->previous->mypipe[0];
-			
-			
-		/*Check the last exist code*/
-		exit_code = execute_open_file(head);
+		exit_code = execute_open_file(shell->head);
 		if (exit_code)
 		{
 			//Close all
@@ -58,20 +48,14 @@ void	execution(t_list *head, int subshell, t_channel *shell_channel)
 			return;
 		}
 		
-		/*
-		if (head->subshell != NULL)
-			Check subshell
-		*/
-			
-		
-		exit_code = execute_command(head);
+		exit_code = execute_command(shell);
 		if (exit_code)
 		{
 			//Close all
 			//Stock exit code
 			return;
 		}
-		head = head->next;
+		shell->head = shell->head->next;
 	}
 	/*Stocker le last exit dans un ficheir tmp*/
 }

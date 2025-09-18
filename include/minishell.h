@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/17 16:17:48 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/19 00:51:31 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ typedef struct s_token
 // Strucuture to containt the info of the commande line
 typedef struct s_list
 {
-	char				**environment; // -> (changemnt temporaire besion pour test a remettre t_list_env)
-	t_list_env			*env;
 	int					pre_redir;
 	int					mypipe[2];
 	char				*command;
@@ -95,7 +93,7 @@ typedef struct s_shell
 /*===================*/
 /*====Temporaire=====*/
 /*===================*/
-t_list  				*tmp_parsing(int argc, char **argv, char **envp);
+t_shell  				*tmp_parsing(int argc, char **argv, char **envp);
 
 /*===================*/
 /*=====TAB_CHAR======*/
@@ -137,13 +135,13 @@ void    				execute_close_fd(t_list *head);
 void    				execute_close_all_fd(t_list *head);
 
 /*Execute_open_file*/
-int						execute_open_file(t_list *head	);
+int						execute_open_file(t_list *head);
 
 /*Execution Command*/
-int 					execute_command(t_list *head);
+int 					execute_command(t_shell *shell);
 
 /*Main Execution*/
-void					execution(t_list *head, int subshell,
+void					execution(t_shell *shell, int subshell,
 							t_channel *shell_channel);
 
 /*===================*/
@@ -151,7 +149,7 @@ void					execution(t_list *head, int subshell,
 /*===================*/
 
 /*Parsing*/
-t_list					*parsing(char *line, char **envp);
+t_shell					*parsing(char *line, char **envp);
 
 /*Lexer*/
 t_token	*lexer(char *str);
