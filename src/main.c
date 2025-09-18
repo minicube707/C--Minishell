@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/17 16:18:41 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/19 00:52:04 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,20 @@ void	set_signal_action(void)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell		shell;
+	t_shell		*shell;
 	t_channel	shell_channel;
 	char		*line;
 
 	(void)argc;
 	(void)argv;
-	(void)envp;
 	set_signal_action();
 	shell_channel.in = 0;
 	shell_channel.out = 1;
-	(void)shell_channel;
+
+	shell = malloc(sizeof(t_shell));
+	if (shell == NULL)
+		return (1);
+		
 	while (1)
 	{
 		line = readline("\033[1;94mMinishell >\033[0m ");
@@ -53,13 +56,9 @@ int	main(int argc, char **argv, char **envp)
 		if (*line)
 		{
 			add_history(line);
-			shell.head = parsing(line, envp);
-			if (shell.head)
-			{
-//			execution(shell, 0, &shell_channel);
+			shell = tmp_parsing(argc, argv, envp);
+			execution(shell, 0, &shell_channel);
 			free(line);
-			free(shell.head->env);
-			}
 		}
 	}
 	return (0);

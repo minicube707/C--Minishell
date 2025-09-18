@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tab_char.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 17:30:41 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/16 18:16:53 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/19 01:07:06 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	tab_char_clear(char **tab)
 	i = 0;
 	while (tab[i] != NULL)
 	{
-		printf("DES %p \n", tab[i]);
 		free(tab[i]);
 		tab[i] = NULL;
 		i++;
