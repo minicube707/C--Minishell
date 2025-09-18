@@ -1,0 +1,16 @@
+{
+   cat_sup1
+   Memcheck:BadAlign
+   fun:aligned_alloc
+   obj:/usr/bin/cat
+   fun:(below main)
+}
+
+{
+   cat_sup2
+   Memcheck:BadAlign
+   fun:aligned_alloc
+   obj:/usr/bin/cat
+   fun:(below main)
+}   
+
