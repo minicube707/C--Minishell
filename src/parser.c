@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:05:15 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/17 16:21:44 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/19 00:48:35 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,15 @@ t_list_env	*set_env(char **envp)
 	return (head);
 }
 
-t_list	*parsing(char *line, char **envp)
+t_shell	*parsing(char *line, char **envp)
 {
-	t_list	*list;
+	t_shell	*shell;
 	t_token	*token;
 
-	list = malloc(sizeof(t_list));
-	if (!list)
+	shell = malloc(sizeof(t_shell));
+	if (!shell)
 		return (NULL);
-	list->env = set_env(envp);
+	shell->env = set_env(envp);
 	token = lexer(line);
 	if (token->op > 3 && token->op <= 7)
 	{
@@ -77,5 +77,5 @@ t_list	*parsing(char *line, char **envp)
 		return (NULL);
 	}
 	free_token(token);
-	return (list);
+	return (shell);
 }
