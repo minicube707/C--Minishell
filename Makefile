@@ -14,6 +14,7 @@ CC = cc -Wall -Wextra -Werror -MMD -MP -g
 # =======================================
 FILE_NAMES =	double_list \
 				double_list_utils \
+				execute_add_path \
 				execute_close_file \
                 execute_command \
                 execute_here_doc \
@@ -109,7 +110,7 @@ re : fclean all
 intro :
 	@printf "\n$(MAGENTA)📦 Compilation de $(shell basename $(CURDIR))$(RESET)\n"
 
-run:
+run: $(NAME)
 	./$(NAME)
 
 test: $(NAME)

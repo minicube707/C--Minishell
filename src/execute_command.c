@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/19 14:29:50 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/19 18:10:47 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	manage_pipe(t_shell *shell)
 {
+	char *path;
 	int	exit_code;
 	
 	exit_code = 0;
@@ -36,9 +37,15 @@ int	manage_pipe(t_shell *shell)
 	close(shell->head->mypipe[1]);
 	execute_close_all_fd(shell->head);
 	
-	//Creat function to join option to path command
-	//Insert command in pos 0heqd-> option
+	// Exec part to be rebuild
+	if (shell->head->command[0] != '/')
+	{
+		path = execute_add_path(shell->head->command, "PATH=", shell->environment);
+		free(shell->head->command);
+		shell->head->command = path;
+		shell->head->option[0] = path;
 
+	}
 	if (shell->head->previous != NULL)
 		close(shell->head->previous->mypipe[0]);
 		
