@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/19 14:32:20 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/19 17:58:19 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,6 @@ typedef struct s_shell
 }				t_shell;
 
 /*===================*/
-/*====Temporaire=====*/
-/*===================*/
-t_shell  				*tmp_parsing(int argc, char **argv, char **envp);
-
-/*===================*/
 /*=====TAB_CHAR======*/
 /*===================*/
 void					tab_char_clear(char **tab);
@@ -119,6 +114,9 @@ void					print_error_file(char *file);
 
 /*Here_doc*/
 int						here_doc(int *file_fd, char *limiter);
+
+/*Execute_close_file*/
+char    				*execute_add_path(char *command, char *name_env, char **envp);
 
 /*Execute_here_doc*/
 void					execute_here_doc(t_list *head);
