@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:33:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/15 17:28:40 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/19 14:28:42 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ int	open_redirection(t_list *head, t_file_info *tmp_tab)
 	if (fd == -1)
 		return (1);
 	if (type == INPUT || type == HERE_DOC)
-		head->in_out->in = fd;
+		head->in_out[0] = fd;
 	else
-		head->in_out->out = fd;
+		head->in_out[1] = fd;
 	return (0);
 }
 

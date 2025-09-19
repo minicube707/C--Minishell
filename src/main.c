@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/19 14:00:20 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/19 14:49:36 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,16 +94,14 @@ void print_list(t_list *head)
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell		shell;
-	t_channel	shell_channel;
+	int			shell_channel[2];
 	char		*line;
 
 	(void)argc;
 	(void)argv;
-	(void)envp;
 	set_signal_action();
-	shell_channel.in = 0;
-	shell_channel.out = 1;
-	(void)shell_channel;
+	shell_channel[0] = 0;
+	shell_channel[1] = 1;
 	while (1)
 	{
 		line = readline("\033[1;94mMinishell >\033[0m ");
@@ -113,11 +111,12 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(line);
 			shell.env = set_env(envp);
+			shell.environment = envp;
 			shell.head = parsing(line);
-//			print_list(shell.head);
+			//print_list(shell.head);
 			if (shell.head)
 			{
-//			execution(shell, 0, &shell_channel);
+			execution(&shell, 0, shell_channel);
 			free(line);
 			}
 		}

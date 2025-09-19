@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/17 16:53:55 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/19 14:32:20 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,6 @@ typedef struct s_list_env
 	struct s_list_env	*next;
 }						t_list_env;
 
-// Strucuture to containt the input/ouput of a bloc
-typedef struct s_channel
-{
-	int					in;
-	int					out;
-}						t_channel;
-
 typedef struct s_token
 {
 	int				op;
@@ -77,7 +70,7 @@ typedef struct s_list
 	char				*command;
 	char				**option;
 	t_file_info			**tab_file;
-	t_channel 			*in_out;
+	int 				in_out[2];
 	char				*subshell;
 	struct s_list		*next;
 	struct s_list		*previous;
@@ -93,7 +86,7 @@ typedef struct s_shell
 /*===================*/
 /*====Temporaire=====*/
 /*===================*/
-t_list  				*tmp_parsing(int argc, char **argv, char **envp);
+t_shell  				*tmp_parsing(int argc, char **argv, char **envp);
 
 /*===================*/
 /*=====TAB_CHAR======*/
@@ -135,14 +128,14 @@ void    				execute_close_fd(t_list *head);
 void    				execute_close_all_fd(t_list *head);
 
 /*Execute_open_file*/
-int						execute_open_file(t_list *head	);
+int						execute_open_file(t_list *head);
 
 /*Execution Command*/
-int 					execute_command(t_list *head);
+int 					execute_command(t_shell *shell);
 
 /*Main Execution*/
-void					execution(t_list *head, int subshell,
-							t_channel *shell_channel);
+void					execution(t_shell *shell, int subshell,
+							int	shell_channel[2]);
 
 /*===================*/
 /*======PARSING======*/
