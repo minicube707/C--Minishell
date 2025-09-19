@@ -24,7 +24,7 @@ FILE_NAMES =	double_list \
                 manage_error \
 				tab_char \
 				tab_info \
-                tmp_parsing \
+				env \
 				parser \
 				token_utils \
 				lexer \
@@ -115,7 +115,6 @@ run:
 test: $(NAME)
 	valgrind \
 	--suppressions=./dev_tools/.ignore_rl_leaks.supp \
-	--suppressions=./dev_tools/.cat.supp \
 	--leak-check=full \
 	--show-leak-kinds=all \
 	--track-origins=yes \

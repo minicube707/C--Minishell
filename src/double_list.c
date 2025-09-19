@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:45:15 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/18 23:02:50 by florent          ###   ########.fr       */
+/*   Updated: 2025/09/19 14:33:27 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,6 @@ t_list *dlist_pop_front(t_list *head)
     
     /*Free tab of fd*/
     tab_info_clear(pop_head->tab_file);
-    
-    /*Free struct in_out*/
-    free(pop_head->in_out);
-    pop_head->in_out = NULL;
     
     /*Free struct subshell*/
     free(pop_head->subshell);

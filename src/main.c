@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/19 00:52:04 by florent          ###   ########.fr       */
+/*   Updated: 2025/09/19 14:49:36 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,76 @@ void	set_signal_action(void)
 	sigaction(SIGINT, &qt, NULL);
 }
 
+void print_file_info(t_file_info **tab_file)
+{
+	if (!tab_file)
+		return;
+	int i = 0;
+	while (tab_file[i])
+	{
+		printf("    [File %d]\n", i);
+		printf("      type: %d\n", tab_file[i]->type);
+		printf("      name: %s\n", tab_file[i]->file_name ? tab_file[i]->file_name : "(null)");
+		printf("      fd  : %d\n", tab_file[i]->fd);
+		i++;
+	}
+}
+/*
+void print_channel(t_channel *ch)
+{
+	if (!ch)
+	{
+		printf("    [Channel] (null)\n");
+		return;
+	}
+	printf("    [Channel]\n");
+	printf("      in : %d\n", ch->in);
+	printf("      out: %d\n", ch->out);
+}
+*/
+void print_list(t_list *head)
+{
+	int index = 0;
+	while (head)
+	{
+		printf("=== Node %d ===\n", index);
+		printf("  pre_redir: %d\n", head->pre_redir);
+//		printf("  mypipe[0]: %d\n", head->mypipe[0]);
+//		printf("  mypipe[1]: %d\n", head->mypipe[1]);
+		printf("  command  : %s\n", head->command ? head->command : "(null)");
+
+		if (head->option)
+		{
+			printf("  options  :\n");
+			for (int i = 0; head->option[i]; i++)
+				printf("    [%d]: %s\n", i, head->option[i]);
+		}
+		else
+		{
+			printf("  options  : (null)\n");
+		}
+
+		print_file_info(head->tab_file);
+//		print_channel(head->in_out);
+
+//		printf("  subshell : %s\n", head->subshell ? head->subshell : "(null)");
+
+		head = head->next;
+		index++;
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell		*shell;
-	t_channel	shell_channel;
+	t_shell		shell;
+	int			shell_channel[2];
 	char		*line;
 
 	(void)argc;
 	(void)argv;
 	set_signal_action();
-	shell_channel.in = 0;
-	shell_channel.out = 1;
-
-	shell = malloc(sizeof(t_shell));
-	if (shell == NULL)
-		return (1);
-		
+	shell_channel[0] = 0;
+	shell_channel[1] = 1;
 	while (1)
 	{
 		line = readline("\033[1;94mMinishell >\033[0m ");
@@ -56,9 +110,15 @@ int	main(int argc, char **argv, char **envp)
 		if (*line)
 		{
 			add_history(line);
-			shell = tmp_parsing(argc, argv, envp);
-			execution(shell, 0, &shell_channel);
+			shell.env = set_env(envp);
+			shell.environment = envp;
+			shell.head = parsing(line);
+			//print_list(shell.head);
+			if (shell.head)
+			{
+			execution(&shell, 0, shell_channel);
 			free(line);
+			}
 		}
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/19 00:51:31 by florent          ###   ########.fr       */
+/*   Updated: 2025/09/19 14:32:20 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,6 @@ typedef struct s_list_env
 	struct s_list_env	*next;
 }						t_list_env;
 
-// Strucuture to containt the input/ouput of a bloc
-typedef struct s_channel
-{
-	int					in;
-	int					out;
-}						t_channel;
-
 typedef struct s_token
 {
 	int				op;
@@ -77,7 +70,7 @@ typedef struct s_list
 	char				*command;
 	char				**option;
 	t_file_info			**tab_file;
-	t_channel 			*in_out;
+	int 				in_out[2];
 	char				*subshell;
 	struct s_list		*next;
 	struct s_list		*previous;
@@ -142,14 +135,17 @@ int 					execute_command(t_shell *shell);
 
 /*Main Execution*/
 void					execution(t_shell *shell, int subshell,
-							t_channel *shell_channel);
+							int	shell_channel[2]);
 
 /*===================*/
 /*======PARSING======*/
 /*===================*/
 
+/*Environment*/
+t_list_env	*set_env(char **envp);
+
 /*Parsing*/
-t_shell					*parsing(char *line, char **envp);
+t_list					*parsing(char *line);
 
 /*Lexer*/
 t_token	*lexer(char *str);

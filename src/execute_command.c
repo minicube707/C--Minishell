@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/19 01:06:18 by florent          ###   ########.fr       */
+/*   Updated: 2025/09/19 14:29:50 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ int	manage_pipe(t_shell *shell)
 	exit_code = 0;
 
 	/*Dup input*/
-	if (shell->head->in_out->in != 0)
+	if (shell->head->in_out[0] != 0)
 	{
-		dup2(shell->head->in_out->in, STDIN_FILENO);
-		close(shell->head->in_out->in);	
+		dup2(shell->head->in_out[0], STDIN_FILENO);
+		close(shell->head->in_out[0]);	
 	}
 	
 	/*Dup output*/
-	if (shell->head->in_out->out != 1)
+	if (shell->head->in_out[1] != 1)
 	{
-		dup2(shell->head->in_out->out, STDOUT_FILENO);
-		close(shell->head->in_out->out);
+		dup2(shell->head->in_out[1], STDOUT_FILENO);
+		close(shell->head->in_out[1]);
 	}
 
 	close(shell->head->mypipe[0]);
@@ -78,7 +78,7 @@ int	multiple_command(t_shell *shell, pid_t *ptr_pid)
 	
 	exit_code = 0;
 	if (shell->head->next != NULL)
-		shell->head->next->in_out->in = shell->head->mypipe[0];
+		shell->head->next->in_out[0] = shell->head->mypipe[0];
 		
 	pid = fork();
 	if (pid == 0)

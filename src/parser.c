@@ -6,69 +6,135 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:05:15 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/19 00:48:35 by florent          ###   ########.fr       */
+/*   Updated: 2025/09/19 14:44:29 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
-int	strlenc(char *str, const char c)
+int	count_redir(t_token *token)
 {
-	int	i;
+	int	c;
 
-	i = 0;
-	if (!str)
-		return (-1);
-	while (*str && *str != c)
+	c = 0;
+	while (token && !(token->op >= 5 && token->op <= 7))
 	{
-		i++;
-		str++;
+		if (token->op >= 0 && token->op <= 3)
+			c++;
+		token = token->next;
 	}
-	return (i);
+	return (c);
 }
 
-t_list_env	*set_env(char **envp)
+int	count_option(t_token *token)
 {
-	t_list_env	*new;
-	t_list_env	*head;
-	int		len;
+	int	c;
 
-	new = NULL;
-	head = NULL;
-	while (*envp)
+	c = 0;
+	if (token->op >= 5 && token->op <= 7)
+		token = token->next;
+	while (token != NULL && !(token->op >= 5 && token->op <=7))
 	{
-		len = strlenc(*envp, '=');
-		if (!head)
+		
+		if (token->op >= 0 && token->op <= 3)
+			token = token->next;
+		else
+			c++;
+		token = token->next;
+	}
+	return (c);
+}
+
+t_list	*new_list(t_token *token, t_list *prev)
+{
+	t_list	*new;
+	int		count[2];
+
+	count[0] = count_redir(token);
+	count[1] = count_option(token);;
+	new = malloc(sizeof(t_list));
+	if (!new)
+		return (NULL);
+	ft_bzero(new, sizeof(t_list));
+	if (token->op == -1)
+		new->pre_redir = EMPTY;
+	else
+		new->pre_redir = token->op;
+	new->tab_file = malloc(sizeof(t_file_info *) * (count[0] + 1));
+	new->option = malloc(sizeof(char *) * (count[1] + 1));
+	ft_bzero(new->tab_file, sizeof(t_file_info *) * (count[0] + 1));
+	ft_bzero(new->option, sizeof(char *) * (count[1] + 1));
+	if (!new->tab_file || !new->option)
+	{
+		free(new->tab_file);
+		free(new->option);
+		free(new);
+		return (NULL);
+	}
+	new->tab_file[count[0]] = NULL;
+	new->option[count[1]] = NULL;
+	new->previous = prev;
+	return (new);
+}
+
+t_list	*set_list(t_token *token)
+{
+	t_list	*curr;
+	t_list	*prev;
+	int		f;
+	int		o;
+
+	curr = new_list(token, NULL);
+	if (!curr)
+		return (NULL);
+	prev = curr;
+	f = 0;
+	o = 0;
+	while (token)
+	{
+		if (token->op >= 5 && token->op <=7)
 		{
-			new = malloc(sizeof(t_list_env));
-			new->next = NULL;
-			head = new;
+			curr->next = new_list(token, prev);
+			if (!curr->next)
+				return (NULL);
+			curr = curr->next;
+			prev = curr;
+			f = 0;
+			o = 0;
+		}
+		else if (token->op >= 0 && token->op <= 3)
+		{
+			curr->tab_file[f] = malloc(sizeof(t_file_info));
+			curr->tab_file[f]->type = token->op;
+			if (token->next->op == -1)
+			{
+				token = token->next;
+				curr->tab_file[f]->file_name = token->content;
+				curr->tab_file[f]->fd = -1;
+			}
+			else
+				write(2, "error\n", 6);
+			f++;
+		}
+		else if (!curr->command)
+		{
+			curr->command = token->content;
+			curr->option[o++] = token->content;
 		}
 		else
-		{
-			new->next = malloc(sizeof(t_list_env));
-			new = new->next;
-			new->next = NULL;
-		}
-		new->name = ft_substr(*envp, 0, len);
-		if (!new->name)
-			write(1, "Error env-name\n", 15);
-		new->content = getenv(new->name);
-		envp++;
+			curr->option[o++] = token->content;
+		if (token)
+			token = token->next;
 	}
-	return (head);
+	return (curr);
 }
 
-t_shell	*parsing(char *line, char **envp)
+t_list	*parsing(char *line)
 {
-	t_shell	*shell;
+	t_list	*list;
 	t_token	*token;
 
-	shell = malloc(sizeof(t_shell));
-	if (!shell)
-		return (NULL);
-	shell->env = set_env(envp);
 	token = lexer(line);
 	if (token->op > 3 && token->op <= 7)
 	{
@@ -76,6 +142,10 @@ t_shell	*parsing(char *line, char **envp)
 		free_token(token);
 		return (NULL);
 	}
+	list = set_list(token);
+	list = dlist_get_top(list);
+	if (!list)
+		return (NULL);
 	free_token(token);
-	return (shell);
+	return (list);
 }
