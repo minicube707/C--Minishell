@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:05:15 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/17 20:43:46 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/19 13:35:49 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	count_redir(t_token *token)
 			c++;
 		token = token->next;
 	}
-	printf("%d\n", c);
 	return (c);
 }
 
@@ -35,15 +34,15 @@ int	count_option(t_token *token)
 	c = 0;
 	if (token->op >= 5 && token->op <= 7)
 		token = token->next;
-	while (token && !(token->op >= 5 && token->op <=7))
+	while (token != NULL && !(token->op >= 5 && token->op <=7))
 	{
+		
 		if (token->op >= 0 && token->op <= 3)
-				token = token->next;
+			token = token->next->next;
 		else
 			c++;
 		token = token->next;
 	}
-	printf("%d\n", c);
 	return (c);
 }
 
@@ -53,7 +52,7 @@ t_list	*new_list(t_token *token, t_list *prev)
 	int		count[2];
 
 	count[0] = count_redir(token);
-	count[1] = count_option(token);
+	count[1] = count_option(token);;
 	new = malloc(sizeof(t_list));
 	if (!new)
 		return (NULL);
@@ -101,15 +100,18 @@ t_list	*set_list(t_token *token)
 				return (NULL);
 			curr = curr->next;
 			prev = curr;
+			f = 0;
+			o = 0;
 		}
 		else if (token->op >= 0 && token->op <= 3)
 		{
 			curr->tab_file[f] = malloc(sizeof(t_file_info));
 			curr->tab_file[f]->type = token->op;
-			if (token->next->op != -1)
+			if (token->next->op == -1)
 			{
 				token = token->next;
 				curr->tab_file[f]->file_name = token->content;
+				curr->tab_file[f]->fd = -1;
 			}
 			else
 				write(2, "error\n", 6);
@@ -118,14 +120,10 @@ t_list	*set_list(t_token *token)
 		else if (!curr->command)
 		{
 			curr->command = token->content;
-			curr->option[o] = token->content;
-			o++;
+			curr->option[o++] = token->content;
 		}
 		else
-		{
-			curr->option[o] = token->content;
-			o++;
-		}
+			curr->option[o++] = token->content;
 		if (token)
 			token = token->next;
 	}

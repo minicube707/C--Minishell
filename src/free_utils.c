@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 22:55:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/11 22:55:53 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/19 11:11:36 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	free_token(t_token *head)
 	while (head)
 	{
 		next = head->next;
-		free(head->content);
 		free(head);
 		head = next;
 	}

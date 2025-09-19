@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/17 20:17:27 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/19 14:00:20 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void print_file_info(t_file_info **tab_file)
 		printf("    [File %d]\n", i);
 		printf("      type: %d\n", tab_file[i]->type);
 		printf("      name: %s\n", tab_file[i]->file_name ? tab_file[i]->file_name : "(null)");
-//		printf("      fd  : %d\n", tab_file[i]->fd);
+		printf("      fd  : %d\n", tab_file[i]->fd);
 		i++;
 	}
 }
@@ -90,6 +90,7 @@ void print_list(t_list *head)
 		index++;
 	}
 }
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell		shell;
@@ -113,7 +114,7 @@ int	main(int argc, char **argv, char **envp)
 			add_history(line);
 			shell.env = set_env(envp);
 			shell.head = parsing(line);
-		//	print_list(shell.head);
+//			print_list(shell.head);
 			if (shell.head)
 			{
 //			execution(shell, 0, &shell_channel);
