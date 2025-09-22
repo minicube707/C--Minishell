@@ -68,6 +68,7 @@ int	single_command(t_shell *shell, pid_t *ptr_pid)
 	pid = fork();
 	if (pid == 0)
 	{
+//		reset_signal_handlers();
 		exit_code = manage_pipe(shell);
 		return (exit_code);
 	}
@@ -90,6 +91,7 @@ int	multiple_command(t_shell *shell, pid_t *ptr_pid)
 	pid = fork();
 	if (pid == 0)
 	{
+//		reset_signal_handlers();
 		exit_code = manage_pipe(shell);
 		return (exit_code);
 	}

@@ -16,9 +16,6 @@ void	sighandler(int signal)
 {
 	(void) signal;
 	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
 	return ;
 }
 
@@ -28,7 +25,7 @@ void	set_signal_action(void)
 
 	qt.sa_handler = sighandler;
 	sigemptyset(&qt.sa_mask);
-	qt.sa_flags = 0;
+	qt.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &qt, NULL);
 }
 

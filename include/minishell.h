@@ -156,4 +156,6 @@ int	add_back(t_token **head, char *content,  int op);
 /*Free Utils*/
 void	free_env(t_list_env *head);
 void	free_token(t_token *head);
+
+void	reset_signal_handlers(void);
 #endif
