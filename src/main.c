@@ -6,11 +6,13 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/19 15:32:21 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/23 14:58:03 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_status = 0;
 
 void	sighandler(int signal)
 {
@@ -100,8 +102,10 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	set_signal_action();
-	shell_channel[0] = 0;
-	shell_channel[1] = 1;
+	shell_channel[0] = STDIN_FILENO;
+	shell_channel[1] = STDOUT_FILENO;
+	shell.env = set_env(envp);
+	shell.environment = envp;
 	while (1)
 	{
 		line = readline("\033[1;94mMinishell >\033[0m ");
@@ -110,14 +114,13 @@ int	main(int argc, char **argv, char **envp)
 		if (*line)
 		{
 			add_history(line);
-			shell.env = set_env(envp);
-			shell.environment = envp;
 			shell.head = parsing(line);
 			//print_list(shell.head);
 			if (shell.head)
 			{
-			execution(&shell, 0, shell_channel);
-			free(line);
+				execution(&shell, 0, shell_channel);
+				dlist_clear(shell.head);
+				free(line);
 			}
 		}
 	}

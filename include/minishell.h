@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/19 17:58:19 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/23 14:54:17 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+/*===================*/
+/*=======GLOBAL======*/
+/*===================*/
+extern int				g_status;
+
+/*===================*/
+/*=======MACRO=======*/
+/*===================*/
 /*REDIRECTION*/
 # define INPUT 0		// <
 # define OUTPUT 1		// >
@@ -38,7 +46,10 @@
 # define AND 6			// &&
 # define OR 7			// ||
 
-// STRUCTURE
+
+/*===================*/
+/*=====STRUCTURE=====*/
+/*===================*/
 // Structure to containt the file info
 typedef struct s_file_info
 {
@@ -103,10 +114,14 @@ t_list 					*dlist_get_top(t_list *head);
 /*=======COMMUN======*/
 /*===================*/
 
+/*Free Shell*/
+void					free_shell(t_shell *shell, int exit_code);
+
 /*Manage Error*/
-void					print_error(char *string);
-void					print_error_unknow_cmd(char *string);
-void					print_error_file(char *file);
+int						print_error(char *string);
+int						print_error_unknow_cmd(char *string);
+int						print_error_file(char *file);
+int						print_error_is_directory(char *file);
 
 /*===================*/
 /*=====EXECUTION=====*/

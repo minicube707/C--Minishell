@@ -20,6 +20,7 @@ FILE_NAMES =	double_list \
                 execute_here_doc \
                 execute_open_file \
                 execution \
+				free_shell \
                 here_doc \
                 main \
                 manage_error \
