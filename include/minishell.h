@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/23 16:08:35 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/23 16:47:45 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ t_list_env	*set_env(char **envp);
 /*Parsing*/
 t_list					*parsing(char *line);
 t_list					*new_node(t_list *curr, t_list *prev, t_token *token);
-int						new_tab_file(t_list *curr, t_token *token, int f);
+int						new_tab_file(t_list *curr, t_token **token, int f);
 t_list					*new_list(t_token *token, t_list *prev);
 int						count_redir(t_token *token);
 int						count_option(t_token *token);
