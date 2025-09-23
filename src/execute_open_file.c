@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:33:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/23 15:06:18 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/23 15:32:32 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	open_infile(t_file_info *tmp_tab)
 {
-	int	fd;
-	int	flags;
-	int	get_access;
-	char *file_name;
+	int		fd;
+	int		flags;
+	int		get_access;
+	char	*file_name;
 
 	file_name = tmp_tab->file_name;
 	get_access = access(file_name, F_OK);
@@ -34,10 +34,10 @@ int	open_infile(t_file_info *tmp_tab)
 
 int	open_outfile(t_file_info *tmp_tab)
 {
-	int	fd;
-	int	flags;
-	int	type;
-	char *file_name;
+	int		fd;
+	int		flags;
+	int		type;
+	char	*file_name;
 
 	type = tmp_tab->type;
 	file_name = tmp_tab->file_name;
@@ -52,8 +52,8 @@ int	open_outfile(t_file_info *tmp_tab)
 
 int	open_redirection(t_list *head, t_file_info *tmp_tab)
 {
-	int		fd;
-	int		type;
+	int	fd;
+	int	type;
 
 	type = tmp_tab->type;
 	if (type == INPUT)

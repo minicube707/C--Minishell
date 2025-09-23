@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 17:39:03 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/23 15:00:51 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/23 15:32:18 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*execute_add_path(char *command, char *name_env, char **envp)
 	tab_env = ft_split(path, ':');
 	if (tab_env == NULL)
 		return (NULL);
-	new_path = 	join_path(command, tab_env);
+	new_path = join_path(command, tab_env);
 	tab_char_clear(tab_env);
 	return (new_path);
 }

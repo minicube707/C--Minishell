@@ -6,17 +6,17 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/23 14:58:03 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/23 15:33:01 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_status = 0;
+int		g_status = 0;
 
 void	sighandler(int signal)
 {
-	(void) signal;
+	(void)signal;
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -34,44 +34,48 @@ void	set_signal_action(void)
 	sigaction(SIGINT, &qt, NULL);
 }
 
-void print_file_info(t_file_info **tab_file)
+void	print_file_info(t_file_info **tab_file)
 {
+	int	i;
+
 	if (!tab_file)
-		return;
-	int i = 0;
+		return ;
+	i = 0;
 	while (tab_file[i])
 	{
 		printf("    [File %d]\n", i);
 		printf("      type: %d\n", tab_file[i]->type);
-		printf("      name: %s\n", tab_file[i]->file_name ? tab_file[i]->file_name : "(null)");
+		printf("      name: %s\n",
+			tab_file[i]->file_name ? tab_file[i]->file_name : "(null)");
 		printf("      fd  : %d\n", tab_file[i]->fd);
 		i++;
 	}
 }
 /*
-void print_channel(t_channel *ch)
+void	print_channel(t_channel *ch)
 {
 	if (!ch)
 	{
 		printf("    [Channel] (null)\n");
-		return;
+		return ;
 	}
 	printf("    [Channel]\n");
 	printf("      in : %d\n", ch->in);
 	printf("      out: %d\n", ch->out);
 }
 */
-void print_list(t_list *head)
+void	print_list(t_list *head)
 {
-	int index = 0;
+	int	index;
+
+	index = 0;
 	while (head)
 	{
 		printf("=== Node %d ===\n", index);
 		printf("  pre_redir: %d\n", head->pre_redir);
-//		printf("  mypipe[0]: %d\n", head->mypipe[0]);
-//		printf("  mypipe[1]: %d\n", head->mypipe[1]);
+		//		printf("  mypipe[0]: %d\n", head->mypipe[0]);
+		//		printf("  mypipe[1]: %d\n", head->mypipe[1]);
 		printf("  command  : %s\n", head->command ? head->command : "(null)");
-
 		if (head->option)
 		{
 			printf("  options  :\n");
@@ -82,12 +86,10 @@ void print_list(t_list *head)
 		{
 			printf("  options  : (null)\n");
 		}
-
 		print_file_info(head->tab_file);
-//		print_channel(head->in_out);
-
-//		printf("  subshell : %s\n", head->subshell ? head->subshell : "(null)");
-
+		//		print_channel(head->in_out);
+		//		printf("  subshell : %s\n",
+					head->subshell ? head->subshell : "(null)");
 		head = head->next;
 		index++;
 	}
@@ -95,9 +97,9 @@ void print_list(t_list *head)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell		shell;
-	int			shell_channel[2];
-	char		*line;
+	t_shell	shell;
+	int		shell_channel[2];
+	char	*line;
 
 	(void)argc;
 	(void)argv;
@@ -115,7 +117,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(line);
 			shell.head = parsing(line);
-			//print_list(shell.head);
+			// print_list(shell.head);
 			if (shell.head)
 			{
 				execution(&shell, 0, shell_channel);
