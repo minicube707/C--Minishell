@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:49:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/23 14:51:17 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/23 17:08:11 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,17 @@ t_list	*new_node(t_list *curr, t_list *prev, t_token *token)
 	return (curr);
 }
 
-int	new_tab_file(t_list *curr, t_token *token, int f)
+int	new_tab_file(t_list *curr, t_token **token, int f)
 {
 	curr->tab_file[f] = malloc(sizeof(t_file_info));
-	curr->tab_file[f]->type = token->op;
-	if (token->next->op == -1)
+	curr->tab_file[f]->type = (*token)->op;
+	if ((*token)->next && (*token)->next->op == -1)
 	{
-		token = token->next;
-		curr->tab_file[f]->file_name = token->content;
+		*token = (*token)->next;
+		curr->tab_file[f]->file_name = (*token)->content;
 		curr->tab_file[f]->fd = -1;
 	}
 	else
 		write(2, "error\n", 6);
-	return (f++);
+	return (++f);
 }
