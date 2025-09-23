@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 22:55:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/23 12:31:20 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/23 16:11:54 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,4 @@ void	free_token(t_token *head)
 		free(head);
 		head = next;
 	}
-}
-
-void	free_shell(t_shell *shell, int init)
-{
-	(void)shell;
-	(void)init;
-	printf("Nothing has been free dumbass\n");
-	exit(1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:05:15 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/23 14:44:06 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/23 16:13:04 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	init_fo(t_list *new, int r, int o)
 		free(new->tab_file);
 		free(new->option);
 		free(new);
-		free_shell(NULL, 0);
+		free_shell(NULL, 1);
 	}
 	ft_bzero(new->tab_file, sizeof(t_file_info *) * (r + 1));
 	ft_bzero(new->option, sizeof(char *) * (o + 1));
