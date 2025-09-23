@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:33:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/19 14:28:42 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/23 15:06:18 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	open_infile(t_file_info *tmp_tab)
 	get_access = access(file_name, F_OK);
 	if (get_access == -1)
 	{
-		print_error_file(file_name);
-		return (-1);
+		g_status = 1;
+		return (print_error_file(file_name));
 	}
 	flags = O_RDONLY;
 	fd = open(file_name, flags);
