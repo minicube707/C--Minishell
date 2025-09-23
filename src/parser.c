@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:05:15 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/19 14:44:29 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/23 15:33:06 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,8 @@ int	count_option(t_token *token)
 	c = 0;
 	if (token->op >= 5 && token->op <= 7)
 		token = token->next;
-	while (token != NULL && !(token->op >= 5 && token->op <=7))
+	while (token != NULL && !(token->op >= 5 && token->op <= 7))
 	{
-		
 		if (token->op >= 0 && token->op <= 3)
 			token = token->next;
 		else
@@ -52,7 +51,8 @@ t_list	*new_list(t_token *token, t_list *prev)
 	int		count[2];
 
 	count[0] = count_redir(token);
-	count[1] = count_option(token);;
+	count[1] = count_option(token);
+	;
 	new = malloc(sizeof(t_list));
 	if (!new)
 		return (NULL);
@@ -93,7 +93,7 @@ t_list	*set_list(t_token *token)
 	o = 0;
 	while (token)
 	{
-		if (token->op >= 5 && token->op <=7)
+		if (token->op >= 5 && token->op <= 7)
 		{
 			curr->next = new_list(token, prev);
 			if (!curr->next)
