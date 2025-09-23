@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/09/19 14:31:54 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/23 15:10:13 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void	execution(t_shell *shell, int subshell, int	shell_channel[2])
 {
 	int			exit_code;
-
+	int 		prev_redir;
+	
 	(void)subshell;
-	(void)shell_channel;
 	exit_code = 0;
 
 	execute_here_doc(shell->head);
@@ -33,29 +33,36 @@ void	execution(t_shell *shell, int subshell, int	shell_channel[2])
 			//Stock exit code
 			return ;
 		}
-		if (shell->head->previous == NULL)
-			shell->head->in_out[0] = 0;
-		if (shell->head->next == NULL)
-			shell->head->in_out[1] = 1;
+		prev_redir = shell->head->pre_redir;
+		if (shell->head->previous == NULL || prev_redir == AND || prev_redir == OR)
+			shell->head->in_out[0] = shell_channel[0];
+		if (shell->head->next == NULL || prev_redir == AND || prev_redir == OR)
+			shell->head->in_out[1] = shell_channel[1];
 		else
 			shell->head->in_out[1] = shell->head->mypipe[1];
 		
-		exit_code = execute_open_file(shell->head);
-		if (exit_code)
+		execute_open_file(shell->head);
+		if ((prev_redir == AND && g_status == 0) || (prev_redir == OR && g_status != 0) || prev_redir == PIPE || prev_redir == EMPTY)
 		{
-			//Close all
-			//Stock exit code
-			return;
-		}
+			
+			/*
+			if subshell
+				Do subshell
+			else
+				Do command
+			*/
 		
-		exit_code = execute_command(shell);
-		if (exit_code)
-		{
-			//Close all
-			//Stock exit code
-			return;
+			exit_code = execute_command(shell);
+			if (exit_code)
+			{
+				execute_close_all_fd(shell->head);
+				//Stock exit code
+				return;
+			}
 		}
+		else
+			execute_close_fd(shell->head);
+		
 		shell->head = shell->head->next;
 	}
-	/*Stocker le last exit dans un ficheir tmp*/
 }
