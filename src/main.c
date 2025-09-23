@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/19 15:32:21 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/23 15:28:20 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	main(int argc, char **argv, char **envp)
 			shell.env = set_env(envp);
 			shell.environment = envp;
 			shell.head = parsing(line);
-			//print_list(shell.head);
+//			print_list(shell.head);
 			if (shell.head)
 			{
 			execution(&shell, 0, shell_channel);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:38:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/17 16:50:43 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/23 15:20:45 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,23 @@ int	strlenc(char *str, const char c)
 	return (i);
 }
 
+static void	set_new_env(t_list_env *new, char *envp)
+{
+	new->name = ft_substr(envp, 0, strlenc(envp, '='));
+	if (!new->name)
+		write(1, "Error env-name\n", 15);
+	new->content = getenv(new->name);
+}
+
 t_list_env	*set_env(char **envp)
 {
 	t_list_env	*new;
 	t_list_env	*head;
-	int		len;
 
 	new = NULL;
 	head = NULL;
 	while (*envp)
 	{
-		len = strlenc(*envp, '=');
 		if (!head)
 		{
 			new = malloc(sizeof(t_list_env));
@@ -50,10 +56,7 @@ t_list_env	*set_env(char **envp)
 			new = new->next;
 			new->next = NULL;
 		}
-		new->name = ft_substr(*envp, 0, len);
-		if (!new->name)
-			write(1, "Error env-name\n", 15);
-		new->content = getenv(new->name);
+		set_new_env(new, *envp);
 		envp++;
 	}
 	return (head);

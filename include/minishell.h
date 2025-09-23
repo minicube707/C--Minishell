@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/19 17:58:19 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/23 15:41:42 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,9 +144,16 @@ t_list_env	*set_env(char **envp);
 
 /*Parsing*/
 t_list					*parsing(char *line);
-
+t_list					*new_node(t_list *curr, t_list *prev, t_token *token);
+int						new_tab_file(t_list *curr, t_token *token, int f);
+t_list					*new_list(t_token *token, t_list *prev);
+int						count_redir(t_token *token);
+int						count_option(t_token *token);
 /*Lexer*/
 t_token	*lexer(char *str);
+
+/*Lexer Utils*/
+size_t	op_len(int op);
 
 /*Token Utils*/
 t_token	*end_list(t_token *lst);
@@ -156,4 +163,5 @@ int	add_back(t_token **head, char *content,  int op);
 /*Free Utils*/
 void	free_env(t_list_env *head);
 void	free_token(t_token *head);
+void	free_shell(t_shell *shell, int init);
 #endif

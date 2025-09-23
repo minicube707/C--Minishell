@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_utils.c                                        :+:      :+:    :+:   */
+/*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 11:42:26 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/11 15:01:55 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/23 15:57:06 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_token	*end_list(t_token *lst)
 	return (lst);
 }
 
-t_token *new_token(char *content, int op)
+t_token	*new_token(char *content, int op)
 {
 	t_token	*new;
 
@@ -34,7 +34,7 @@ t_token *new_token(char *content, int op)
 	return (new);
 }
 
-int	add_back(t_token **head, char *content,  int op)
+int	add_back(t_token **head, char *content, int op)
 {
 	t_token	*end;
 
