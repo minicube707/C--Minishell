@@ -28,8 +28,10 @@ FILE_NAMES =	double_list \
 				tab_info \
 				env \
 				parser \
+				parser_utils \
 				token_utils \
 				lexer \
+				lexer_utils \
 				free_utils \
 
 # =======================================

@@ -6,53 +6,38 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:05:15 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/23 15:33:06 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/23 16:13:04 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
-int	count_redir(t_token *token)
+void	init_fo(t_list *new, int r, int o)
 {
-	int	c;
-
-	c = 0;
-	while (token && !(token->op >= 5 && token->op <= 7))
+	new->tab_file = malloc(sizeof(t_file_info *) * (r + 1));
+	new->option = malloc(sizeof(char *) * (o + 1));
+	if (!new->tab_file || !new->option)
 	{
-		if (token->op >= 0 && token->op <= 3)
-			c++;
-		token = token->next;
+		free(new->tab_file);
+		free(new->option);
+		free(new);
+		free_shell(NULL, 1);
 	}
-	return (c);
-}
-
-int	count_option(t_token *token)
-{
-	int	c;
-
-	c = 0;
-	if (token->op >= 5 && token->op <= 7)
-		token = token->next;
-	while (token != NULL && !(token->op >= 5 && token->op <= 7))
-	{
-		if (token->op >= 0 && token->op <= 3)
-			token = token->next;
-		else
-			c++;
-		token = token->next;
-	}
-	return (c);
+	ft_bzero(new->tab_file, sizeof(t_file_info *) * (r + 1));
+	ft_bzero(new->option, sizeof(char *) * (o + 1));
+	new->tab_file[r] = NULL;
+	new->option[o] = NULL;
 }
 
 t_list	*new_list(t_token *token, t_list *prev)
 {
 	t_list	*new;
-	int		count[2];
+	int		r;
+	int		o;
 
-	count[0] = count_redir(token);
-	count[1] = count_option(token);
-	;
+	r = count_redir(token);
+	o = count_option(token);
 	new = malloc(sizeof(t_list));
 	if (!new)
 		return (NULL);
@@ -61,62 +46,28 @@ t_list	*new_list(t_token *token, t_list *prev)
 		new->pre_redir = EMPTY;
 	else
 		new->pre_redir = token->op;
-	new->tab_file = malloc(sizeof(t_file_info *) * (count[0] + 1));
-	new->option = malloc(sizeof(char *) * (count[1] + 1));
-	ft_bzero(new->tab_file, sizeof(t_file_info *) * (count[0] + 1));
-	ft_bzero(new->option, sizeof(char *) * (count[1] + 1));
-	if (!new->tab_file || !new->option)
-	{
-		free(new->tab_file);
-		free(new->option);
-		free(new);
-		return (NULL);
-	}
-	new->tab_file[count[0]] = NULL;
-	new->option[count[1]] = NULL;
+	init_fo(new, r, o);
 	new->previous = prev;
 	return (new);
 }
 
-t_list	*set_list(t_token *token)
+void	set_list_loop(t_list *curr, t_list *prev, t_token *token)
 {
-	t_list	*curr;
-	t_list	*prev;
-	int		f;
-	int		o;
+	int	f;
+	int	o;
 
-	curr = new_list(token, NULL);
-	if (!curr)
-		return (NULL);
-	prev = curr;
 	f = 0;
 	o = 0;
 	while (token)
 	{
 		if (token->op >= 5 && token->op <= 7)
 		{
-			curr->next = new_list(token, prev);
-			if (!curr->next)
-				return (NULL);
-			curr = curr->next;
-			prev = curr;
+			curr = new_node(curr, prev, token);
 			f = 0;
 			o = 0;
 		}
 		else if (token->op >= 0 && token->op <= 3)
-		{
-			curr->tab_file[f] = malloc(sizeof(t_file_info));
-			curr->tab_file[f]->type = token->op;
-			if (token->next->op == -1)
-			{
-				token = token->next;
-				curr->tab_file[f]->file_name = token->content;
-				curr->tab_file[f]->fd = -1;
-			}
-			else
-				write(2, "error\n", 6);
-			f++;
-		}
+			f = new_tab_file(curr, token, f);
 		else if (!curr->command)
 		{
 			curr->command = token->content;
@@ -127,6 +78,16 @@ t_list	*set_list(t_token *token)
 		if (token)
 			token = token->next;
 	}
+}
+
+t_list	*set_list(t_token *token)
+{
+	t_list	*curr;
+
+	curr = new_list(token, NULL);
+	if (!curr)
+		return (NULL);
+	set_list_loop(curr, curr, token);
 	return (curr);
 }
 
@@ -143,7 +104,6 @@ t_list	*parsing(char *line)
 		return (NULL);
 	}
 	list = set_list(token);
-	list = dlist_get_top(list);
 	if (!list)
 		return (NULL);
 	free_token(token);
