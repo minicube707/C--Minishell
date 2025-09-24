@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:49:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/23 17:08:11 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/24 13:54:42 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	count_redir(t_token *token)
 	int	c;
 
 	c = 0;
+	if (token->op >= 5 && token->op <= 7)
+		token = token->next;	
 	while (token && !(token->op >= 5 && token->op <= 7))
 	{
 		if (token->op >= 0 && token->op <= 3)

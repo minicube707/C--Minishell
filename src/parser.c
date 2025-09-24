@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:05:15 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/23 17:06:35 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/24 14:04:37 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	init_fo(t_list *new, int r, int o)
 		free(new);
 		free_shell(NULL, 1);
 	}
-	printf("______________--%d\n", r);
 	ft_bzero(new->tab_file, sizeof(t_file_info *) * (r + 1));
 	ft_bzero(new->option, sizeof(char *) * (o + 1));
 	new->tab_file[r] = NULL;
@@ -43,7 +42,7 @@ t_list	*new_list(t_token *token, t_list *prev)
 	if (!new)
 		return (NULL);
 	ft_bzero(new, sizeof(t_list));
-	if (token->op == -1)
+	if (token->op >= -1 && token->op <= 3)
 		new->pre_redir = EMPTY;
 	else
 		new->pre_redir = token->op;
@@ -63,7 +62,7 @@ void	set_list_loop(t_list *curr, t_list *prev, t_token *token)
 	{
 		if (token->op >= 5 && token->op <= 7)
 		{
-			curr = new_node(curr, prev, token->next);
+			curr = new_node(curr, prev, token);
 			f = 0;
 			o = 0;
 		}
