@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/23 16:52:39 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/24 14:57:33 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,20 @@ void	sighandler(int signal)
 	return ;
 }
 
-void	set_signal_action(void)
+void	handlexec(int signal)
+{
+	(void)signal;
+	write(1, "\n", 1);
+	return ;
+}
+
+void	set_signal_action(void (*handler)(int))
 {
 	struct sigaction	qt;
 
-	qt.sa_handler = sighandler;
+	qt.sa_handler = handler;
 	sigemptyset(&qt.sa_mask);
-	qt.sa_flags = 0;
+	qt.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &qt, NULL);
 }
 
@@ -103,7 +110,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	set_signal_action();
+	set_signal_action(sighandler);
 	shell_channel[0] = STDIN_FILENO;
 	shell_channel[1] = STDOUT_FILENO;
 	shell.env = set_env(envp);
@@ -120,7 +127,9 @@ int	main(int argc, char **argv, char **envp)
 			print_list(shell.head);
 			if (shell.head)
 			{
+				set_signal_action(handlexec);
 				execution(&shell, 0, shell_channel);
+				set_signal_action(sighandler);
 				dlist_clear(shell.head);
 				free(line);
 			}

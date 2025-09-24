@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/23 16:47:45 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/24 14:13:42 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,4 +180,6 @@ int	add_back(t_token **head, char *content,  int op);
 void	free_env(t_list_env *head);
 void	free_token(t_token *head);
 void	free_shell(t_shell *shell, int init);
+
+void	reset_signal_handlers(void);
 #endif
