@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   double_list_utils.c                                :+:      :+:    :+:   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/16 16:13:52 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/23 15:32:10 by fmotte           ###   ########.fr       */
+/*   Created: 2025/09/23 15:37:42 by lupayet           #+#    #+#             */
+/*   Updated: 2025/09/23 15:50:55 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_list	*dlist_get_top(t_list *head)
+size_t	op_len(int op)
 {
-	t_list	*tmp_list;
-
-	tmp_list = head;
-	if (tmp_list == NULL)
-		return (NULL);
-	while (tmp_list->previous != NULL)
-		tmp_list = tmp_list->previous;
-	return (tmp_list);
+	if (op == INPUT || op == OUTPUT || op == PIPE)
+		return (1);
+	return (2);
 }

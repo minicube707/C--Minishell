@@ -1,0 +1,15 @@
+free_shell(t_shell *shell_ptr, int	init)
+{
+	static t_shell *shell;
+	if (init)
+		shell = shell_ptr;
+	else
+	{
+		free;
+		exit(1);
+	}
+}
+
+free_shell(&shell, 1);
+
+free_shell(NULL, 0)

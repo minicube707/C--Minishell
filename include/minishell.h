@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/19 17:58:19 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/24 14:13:42 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+/*===================*/
+/*=======GLOBAL======*/
+/*===================*/
+extern int				g_status;
+
+/*===================*/
+/*=======MACRO=======*/
+/*===================*/
 /*REDIRECTION*/
 # define INPUT 0		// <
 # define OUTPUT 1		// >
@@ -38,7 +46,10 @@
 # define AND 6			// &&
 # define OR 7			// ||
 
-// STRUCTURE
+
+/*===================*/
+/*=====STRUCTURE=====*/
+/*===================*/
 // Structure to containt the file info
 typedef struct s_file_info
 {
@@ -103,10 +114,14 @@ t_list 					*dlist_get_top(t_list *head);
 /*=======COMMUN======*/
 /*===================*/
 
+/*Free Shell*/
+void					free_shell(t_shell *shell, int exit_code);
+
 /*Manage Error*/
-void					print_error(char *string);
-void					print_error_unknow_cmd(char *string);
-void					print_error_file(char *file);
+int						print_error(char *string);
+int						print_error_unknow_cmd(char *string);
+int						print_error_file(char *file);
+int						print_error_is_directory(char *file);
 
 /*===================*/
 /*=====EXECUTION=====*/
@@ -144,9 +159,17 @@ t_list_env	*set_env(char **envp);
 
 /*Parsing*/
 t_list					*parsing(char *line);
+t_list					*new_node(t_list *curr, t_list *prev, t_token *token);
+int						new_tab_file(t_list *curr, t_token **token, int f);
+t_list					*new_list(t_token *token, t_list *prev);
+int						count_redir(t_token *token);
+int						count_option(t_token *token);
 
 /*Lexer*/
 t_token	*lexer(char *str);
+
+/*Lexer Utils*/
+size_t	op_len(int op);
 
 /*Token Utils*/
 t_token	*end_list(t_token *lst);
@@ -156,6 +179,7 @@ int	add_back(t_token **head, char *content,  int op);
 /*Free Utils*/
 void	free_env(t_list_env *head);
 void	free_token(t_token *head);
+void	free_shell(t_shell *shell, int init);
 
 void	reset_signal_handlers(void);
 #endif
