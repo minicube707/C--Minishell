@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/24 14:19:09 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/25 18:12:18 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	manage_path(t_shell *shell)
 	struct stat	buff;
 	char		*path;
 
+	if (shell->head->command == NULL)
+		return (0);
 	if (shell->head->command[0] != '/')
 	{
 		path = execute_add_path(shell->head->command, "PATH=",
@@ -75,11 +77,7 @@ void	manage_pipe(t_shell *shell)
 			free_shell(shell, EXIT_FAILURE);
 		close(shell->head->in_out[1]);
 	}
-	close(shell->head->mypipe[0]);
-	close(shell->head->mypipe[1]);
 	execute_close_all_fd(shell->head);
-	if (shell->head->previous != NULL)
-		close(shell->head->previous->mypipe[0]);
 	execute_programm(shell);
 }
 
@@ -112,12 +110,12 @@ int	execute_command(t_shell *shell)
 	if (WIFEXITED(status))
 	{
 		g_status = WEXITSTATUS(status);
-		return (-1);
+		return (g_status);
 	}
 	else if (WIFEXITED(status))
 	{
 		g_status = 128 + WTERMSIG(status);
-		return (-1);
+		return (g_status);
 	}
 	// Let run until the last
 	if (shell->head->next == NULL)
