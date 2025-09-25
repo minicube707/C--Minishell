@@ -33,6 +33,8 @@ FILE_NAMES =	double_list \
 				lexer \
 				lexer_utils \
 				free_utils \
+				export \
+				unset \
 
 # =======================================
 #              VARIABLE

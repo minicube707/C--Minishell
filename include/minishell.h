@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/24 14:13:42 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/25 18:31:59 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ typedef struct s_list_env
 
 typedef struct s_token
 {
-	int				op;
-	char			*content;
-	struct s_token	*next;
+	int					op;
+	char				*content;
+	struct s_token		*next;
 }						t_token;
 
 // Strucuture to containt the info of the commande line
@@ -89,10 +89,10 @@ typedef struct s_list
 
 typedef struct s_shell
 {
-	char		**environment;
-	t_list_env	*env;
-	t_list		*head;
-}				t_shell;
+	char				**environment;
+	t_list_env			*env;
+	t_list				*head;
+}						t_shell;
 
 /*===================*/
 /*=====TAB_CHAR======*/
@@ -151,11 +151,17 @@ void					execution(t_shell *shell, int subshell,
 							int	shell_channel[2]);
 
 /*===================*/
+/*======BUILTIN======*/
+/*===================*/
+int						ft_export(t_shell *shell, char **arg);
+int						unset(t_shell *shell, char **arg);
+/*===================*/
 /*======PARSING======*/
 /*===================*/
 
 /*Environment*/
-t_list_env	*set_env(char **envp);
+t_list_env				*set_env(char **envp);
+char					**make_env(t_shell *shell, t_list_env *list);
 
 /*Parsing*/
 t_list					*parsing(char *line);
@@ -166,20 +172,23 @@ int						count_redir(t_token *token);
 int						count_option(t_token *token);
 
 /*Lexer*/
-t_token	*lexer(char *str);
+t_token					*lexer(char *str);
 
 /*Lexer Utils*/
-size_t	op_len(int op);
+size_t					op_len(int op);
 
 /*Token Utils*/
-t_token	*end_list(t_token *lst);
-t_token *new_token(char *content, int op);
-int	add_back(t_token **head, char *content,  int op);
+t_token					*end_list(t_token *lst);
+t_token 				*new_token(char *content, int op);
+int						add_back(t_token **head, char *content,  int op);
 
 /*Free Utils*/
-void	free_env(t_list_env *head);
-void	free_token(t_token *head);
-void	free_shell(t_shell *shell, int init);
+void					free_env(t_list_env *head);
+void					free_token(t_token *head);
+void					free_shell(t_shell *shell, int init);
+void    				free_env_node(t_list_env *env);
+char					**free_double_list(char **list);
 
-void	reset_signal_handlers(void);
+void					reset_signal_handlers(void);
+int						strlenc(char *str, const char c);
 #endif

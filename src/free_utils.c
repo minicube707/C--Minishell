@@ -6,11 +6,17 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 22:55:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/23 16:11:54 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/25 16:55:26 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_env_node(t_list_env *env)
+{
+	free(env->name);
+	free(env);
+}
 
 void	free_env(t_list_env *head)
 {
@@ -36,4 +42,19 @@ void	free_token(t_token *head)
 		free(head);
 		head = next;
 	}
+}
+
+char	**free_double_list(char **list)
+{
+	int	i;
+
+	i = 0;
+	while (list[i])
+	{
+		free(list[i]);
+		list[i] = NULL;
+		i++;
+	}
+	free(list);
+	return (NULL);
 }
