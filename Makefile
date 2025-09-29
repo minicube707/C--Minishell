@@ -34,6 +34,7 @@ FILE_NAMES =	double_list \
 				lexer_utils \
 				free_utils \
 				export \
+				export_utils \
 				unset \
 
 # =======================================

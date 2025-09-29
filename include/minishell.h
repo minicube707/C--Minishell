@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/25 18:31:59 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/29 22:22:46 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,10 @@ void					execution(t_shell *shell, int subshell,
 /*===================*/
 int						ft_export(t_shell *shell, char **arg);
 int						unset(t_shell *shell, char **arg);
+int						size_t_list_env(t_list_env *env);
+t_list_env				**set_export_list(t_list_env *env, int size);
+int						ft_strcmp(const char *s1, const char *s2);
+
 /*===================*/
 /*======PARSING======*/
 /*===================*/
