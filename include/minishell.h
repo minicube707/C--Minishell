@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/29 22:22:46 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/30 10:25:02 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ void					free_env(t_list_env *head);
 void					free_token(t_token *head);
 void					free_shell(t_shell *shell, int init);
 void    				free_env_node(t_list_env *env);
-char					**free_double_list(char **list);
+char					**free_double_array(char **list);
 
 void					reset_signal_handlers(void);
 int						strlenc(char *str, const char c);

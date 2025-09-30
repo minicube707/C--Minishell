@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 22:55:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/25 16:55:26 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/30 10:34:35 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,13 @@ void	free_token(t_token *head)
 	}
 }
 
-char	**free_double_list(char **list)
+char	**free_double_array(char **list)
 {
 	int	i;
 
 	i = 0;
+	if (!list)
+		return NULL;
 	while (list[i])
 	{
 		free(list[i]);

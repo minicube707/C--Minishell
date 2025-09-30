@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:38:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/25 17:32:11 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/30 10:58:43 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,7 @@ char	**make_env(t_shell *shell, t_list_env *list)
     char	*p;
 
     i = 0;
-	(void)shell;
-	//shell->environment = free_double_list(shell->environment);
+	shell->environment = free_double_array(shell->environment);
     size = list_size(list);
     env = malloc(sizeof(char *) * (size + 1));
     if (!env)

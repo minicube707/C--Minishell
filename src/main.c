@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/29 22:26:18 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/30 10:55:27 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,5 +153,5 @@ int	main(int argc, char **argv, char **envp)
 			}
 		}
 	}
-	return (0);
+	//free_shell(&shell, 0);
 }
