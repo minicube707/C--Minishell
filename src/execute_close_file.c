@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:37:15 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/23 15:32:20 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/30 12:02:08 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,13 @@ void	execute_close_all_fd(t_list *head)
 	while (tmp_list != NULL)
 	{
 		execute_close_fd(tmp_list);
-		close(head->mypipe[0]);
-		close(head->mypipe[1]);
+		if (head->mypipe[0] > 2)
+			close(head->mypipe[0]);
+		if (head->mypipe[0] > 2)
+			close(head->mypipe[1]);
 		if (head->previous != NULL)
 			close(head->previous->mypipe[0]);
+			
 		tmp_list = tmp_list->next;
 	}
 }

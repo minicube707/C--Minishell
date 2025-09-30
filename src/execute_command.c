@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/25 18:12:18 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/30 17:54:36 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	execute_programm(t_shell *shell)
 		free_shell(shell, EXIT_FAILURE);
 	if (shell->head->command != NULL)
 	{
-		exit_code = execve(shell->head->command, shell->head->option,
+		execve(shell->head->command, shell->head->option,
 				shell->environment);
 		print_error_unknow_cmd(shell->head->command);
 		free_shell(shell, EXIT_FAILURE);
@@ -85,17 +85,9 @@ void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 {
 	pid_t	pid;
 
-	if (shell->head->next != NULL)
-		shell->head->next->in_out[0] = shell->head->mypipe[0];
 	pid = fork();
 	if (pid == 0)
 		manage_pipe(shell);
-	if (shell->head->previous != NULL)
-		close(shell->head->previous->mypipe[0]);
-	if (shell->head->next == NULL)
-		close(shell->head->mypipe[0]);
-	close(shell->head->mypipe[1]);
-	execute_close_fd(shell->head);
 	*ptr_pid = pid;
 }
 
@@ -106,19 +98,19 @@ int	execute_command(t_shell *shell)
 
 	manage_fork(shell, &pid);
 	// Caught SIGFAULT Upate exit status
-	waitpid(pid, &status, WUNTRACED);
-	if (WIFEXITED(status))
+	if (waitpid(pid, &status, WNOHANG))
 	{
-		g_status = WEXITSTATUS(status);
-		return (g_status);
+		if (WIFEXITED(status))
+			g_status = WEXITSTATUS(status);
+		else if (WIFEXITED(status))
+			g_status = 128 + WTERMSIG(status);
 	}
-	else if (WIFEXITED(status))
-	{
-		g_status = 128 + WTERMSIG(status);
-		return (g_status);
-	}
+	else
+		g_status = 0;
+		
 	// Let run until the last
-	if (shell->head->next == NULL)
+	if (shell->head->next == NULL || shell->head->pre_redir == AND || shell->head->pre_redir == OR || shell->head->next->pre_redir == AND || shell->head->next->pre_redir == OR)
 		waitpid(pid, NULL, 0);
+		
 	return (0);
 }

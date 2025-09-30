@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/25 18:01:44 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/30 18:07:07 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,13 @@ void	print_list(t_list *head)
 	while (head)
 	{
 		printf("=== Node %d ===\n", index);
+		printf("ADRESS %p \n", head);
 		printf("  pre_redir: %d\n", head->pre_redir);
 		//		printf("  mypipe[0]: %d\n", head->mypipe[0]);
 		//		printf("  mypipe[1]: %d\n", head->mypipe[1]);
 		printf("  command  : %s\n", head->command ? head->command : "(null)");
+
+		printf("ADRESS OPT %p \n", head->option);
 		if (head->option)
 		{
 			printf("  options  :\n");
@@ -93,6 +96,7 @@ void	print_list(t_list *head)
 		{
 			printf("  options  : (null)\n");
 		}
+		printf("ADRESS TAB %p \n", head->tab_file);
 		print_file_info(head->tab_file);
 		//		print_channel(head->in_out);
 		//		printf("  subshell : %s\n",
@@ -110,6 +114,9 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	
+	mtrace();
+	
 	set_signal_action(sighandler);
 	shell_channel[0] = STDIN_FILENO;
 	shell_channel[1] = STDOUT_FILENO;
@@ -129,11 +136,14 @@ int	main(int argc, char **argv, char **envp)
 			{
 				set_signal_action(handlexec);
 				execution(&shell, 0, shell_channel);
-				dlist_clear(shell.head);
+				printf("OUT\n");
 				set_signal_action(sighandler);
+				shell.head = dlist_clear(shell.head);
 				free(line);
 			}
 		}
 	}
+	printf("END\n");
+	free_shell(&shell, 0);
 	return (0);
 }
