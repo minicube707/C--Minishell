@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/24 14:57:33 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/30 14:39:50 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,9 @@ void	print_list(t_list *head)
 			printf("  options  : (null)\n");
 		}
 		print_file_info(head->tab_file);
-		//		print_channel(head->in_out);
-		//		printf("  subshell : %s\n",
-	//				head->subshell ? head->subshell : "(null)");
+//				print_channel(head->in_out);
+				printf("  subshell : %s\n",
+					head->subshell ? head->subshell : "(null)");
 		head = head->next;
 		index++;
 	}

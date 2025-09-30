@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:49:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/24 13:54:42 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/30 14:38:29 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,17 @@ int	new_tab_file(t_list *curr, t_token **token, int f)
 	else
 		write(2, "error\n", 6);
 	return (++f);
+}
+
+void	option_or_subs(t_list *curr, int *o, t_token *token)
+{
+	if (*token->content == '(')
+	{
+		curr->subshell = token->content;
+	}
+	else
+	{
+		curr->command = token->content;
+		curr->option[*o++] = token->content;
+	}
 }

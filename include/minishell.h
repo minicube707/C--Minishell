@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/24 14:13:42 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/30 14:37:48 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ int						new_tab_file(t_list *curr, t_token **token, int f);
 t_list					*new_list(t_token *token, t_list *prev);
 int						count_redir(t_token *token);
 int						count_option(t_token *token);
+void					option_or_subs(t_list *curr, int *o, t_token *token);
 
 /*Lexer*/
 t_token	*lexer(char *str);
