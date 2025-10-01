@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:45:15 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/30 17:33:29 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/01 17:31:35 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,8 @@ t_list	*dlist_pop_front(t_list *pop_head)
 
 	if (pop_head == NULL)
 		return (NULL);
-	printf("POP %p \n", pop_head);	
 	new_head = pop_head->next;
-	printf("NEW %p \n", new_head);	
 
-	printf("ADRESS OPT %p \n", pop_head->option);
-	printf("ADRESS TAB %p \n", pop_head->tab_file);
-	
 	tab_char_clear(pop_head->option);
 	tab_info_clear(pop_head->tab_file);
 	

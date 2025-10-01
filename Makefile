@@ -125,8 +125,6 @@ test: $(NAME)
 	--trace-children=yes \
 	--track-fds=yes \
 	--leak-check=full -s \
-	--num-callers=20 \
-	--verbose \
 	./$(NAME)
 
 
