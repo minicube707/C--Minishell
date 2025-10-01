@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/30 15:51:16 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/01 15:46:48 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ int	main(int argc, char **argv, char **envp)
 	shell_channel[0] = STDIN_FILENO;
 	shell_channel[1] = STDOUT_FILENO;
 	shell.env = set_env(envp);
+	shell.environment = NULL;
 	shell.environment = make_env(&shell, shell.env);
 	while (1)
 	{
