@@ -98,9 +98,9 @@ void	print_list(t_list *head)
 		}
 		//printf("ADRESS TAB %p \n", head->tab_file);
 		print_file_info(head->tab_file);
-		//		print_channel(head->in_out);
-		//		printf("  subshell : %s\n",
-	//				head->subshell ? head->subshell : "(null)");
+//				print_channel(head->in_out);
+				printf("  subshell : %s\n",
+					head->subshell ? head->subshell : "(null)");
 		head = head->next;
 		index++;
 	}
@@ -120,7 +120,8 @@ int	main(int argc, char **argv, char **envp)
 	shell_channel[0] = STDIN_FILENO;
 	shell_channel[1] = STDOUT_FILENO;
 	shell.env = set_env(envp);
-	shell.environment = envp;
+	shell.environment = NULL;
+	shell.environment = make_env(&shell, shell.env);
 	while (1)
 	{
 		line = readline("\033[1;94mMinishell >\033[0m ");
@@ -130,15 +131,16 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(line);
 			shell.head = parsing(line);
+
 			free(line);
 			print_list(shell.head);
+      
 			if (shell.head)
 			{
 				set_signal_action(handlexec);
 				execution(&shell, 0, shell_channel);
 				printf("OUT\n");
 				set_signal_action(sighandler);
-				shell.head = dlist_clear(shell.head);
 			}
 		}
 	}

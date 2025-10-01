@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:05:15 by lupayet           #+#    #+#             */
 /*   Updated: 2025/09/25 13:20:24 by fmotte           ###   ########.fr       */
@@ -70,10 +70,7 @@ void	set_list_loop(t_list *curr, t_list *prev, t_token *token)
 		else if (token->op >= 0 && token->op <= 3)
 			f = new_tab_file(curr, &token, f);
 		else if (!curr->command)
-		{
-			curr->command = token->content;
-			curr->option[o++] = token->content;
-		}
+			option_or_subs(curr, &o, token);
 		else
 			curr->option[o++] = token->content;
 		if (token)
