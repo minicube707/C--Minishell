@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/01 15:46:48 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/01 17:11:47 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(line);
 			shell.head = parsing(line);
-			//print_list(shell.head);
+			print_list(shell.head);
 			if (shell.head)
 			{
 				set_signal_action(handlexec);
@@ -134,7 +134,7 @@ int	main(int argc, char **argv, char **envp)
 				dlist_clear(shell.head);
 				free(line);
 				/*char	*av[] = {"export", "A=test", "B", "C=", "_P=re", NULL};*/
-				ft_export(&shell, NULL);/*
+				/*ft_export(&shell, NULL);
 				printf("\033[1;94mMinishell >\033[0m export A=test B C= _P=re\n");
 				char **s = shell.environment;
 				while (*s)
