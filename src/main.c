@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/30 14:39:50 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/01 15:46:48 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,8 @@ int	main(int argc, char **argv, char **envp)
 	shell_channel[0] = STDIN_FILENO;
 	shell_channel[1] = STDOUT_FILENO;
 	shell.env = set_env(envp);
-	shell.environment = envp;
+	shell.environment = NULL;
+	shell.environment = make_env(&shell, shell.env);
 	while (1)
 	{
 		line = readline("\033[1;94mMinishell >\033[0m ");
@@ -124,7 +125,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(line);
 			shell.head = parsing(line);
-			print_list(shell.head);
+			//print_list(shell.head);
 			if (shell.head)
 			{
 				set_signal_action(handlexec);
@@ -132,8 +133,26 @@ int	main(int argc, char **argv, char **envp)
 				set_signal_action(sighandler);
 				dlist_clear(shell.head);
 				free(line);
+				/*char	*av[] = {"export", "A=test", "B", "C=", "_P=re", NULL};*/
+				ft_export(&shell, NULL);/*
+				printf("\033[1;94mMinishell >\033[0m export A=test B C= _P=re\n");
+				char **s = shell.environment;
+				while (*s)
+				{
+					printf("%s\n", *s);
+					s++;
+				}
+				char	*av1[] = {"unset", "A", "_P", NULL};
+				unset(&shell, av1);
+				printf("\033[1;94mMinishell >\033[0m unset A _p\n");
+				s = shell.environment;
+				while (*s)
+				{
+					printf("%s\n", *s);
+					s++;
+				}*/
 			}
 		}
 	}
-	return (0);
+	//free_shell(&shell, 0);
 }

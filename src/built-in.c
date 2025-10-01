@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:27:57 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/24 15:08:25 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/25 18:22:31 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,24 +77,4 @@ void    ft_pwd(t_shell *shell)
         return;
     }
     write(1, buff, 1024);
-}
-
-void ft_export(t_list *list, char **tab_option)
-{
-    char    **tab_env;
-    char    *name;
-    char    *content;
-    int i;
-    
-    i = 0;
-    while(tab_option[i] != NULL)
-    {
-        name = 
-        content =
-        if (name != NULL)
-        {
-            con
-            set_new_env(list, name, )
-        }
-    }
 }
