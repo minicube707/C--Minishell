@@ -14,7 +14,9 @@ CC = cc -Wall -Wextra -Werror -MMD -MP -g
 # =======================================
 FILE_NAMES =	double_list \
 				double_list_utils \
+				built-in \
 				execute_add_path \
+				execute_built_in \
 				execute_close_file \
                 execute_command \
                 execute_here_doc \

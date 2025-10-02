@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/01 17:32:13 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/02 14:12:39 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	print_list(t_list *head)
 	while (head)
 	{
 		printf("=== Node %d ===\n", index);
-		//printf("ADRESS %p \n", head);
+		printf("ADRESS %p \n", head);
 		printf("  pre_redir: %d\n", head->pre_redir);
 		//		printf("  mypipe[0]: %d\n", head->mypipe[0]);
 		//		printf("  mypipe[1]: %d\n", head->mypipe[1]);
@@ -120,6 +120,7 @@ int	main(int argc, char **argv, char **envp)
 	shell_channel[0] = STDIN_FILENO;
 	shell_channel[1] = STDOUT_FILENO;
 	shell.env = set_env(envp);
+	shell.head = NULL;
 	shell.environment = NULL;
 	shell.environment = make_env(&shell, shell.env);
 	while (1)
@@ -139,13 +140,12 @@ int	main(int argc, char **argv, char **envp)
 			{
 				set_signal_action(handlexec);
 				execution(&shell, 0, shell_channel);
-				printf("OUT\n");
+				dlist_clear(shell.head);
 				set_signal_action(sighandler);
 			}
 		}
 	}
-	printf("END\n");
-	dlist_clear(shell.head);
 	free_env(shell.env);
+	free_double_array(shell.environment);
 	return (g_status);
 }

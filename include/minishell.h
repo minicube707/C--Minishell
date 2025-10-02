@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/30 18:06:51 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/02 15:50:14 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int						print_error_is_directory(char *file);
 int						here_doc(int *file_fd, char *limiter);
 
 /*Execute_close_file*/
-char    				*execute_add_path(char *command, char *name_env, char **envp);
+int						manage_path(t_shell *shell);
 
 /*Execute_here_doc*/
 void					execute_here_doc(t_list *head);
@@ -148,6 +148,9 @@ int						execute_open_file(t_list *head);
 /*Execution Command*/
 int 					execute_command(t_shell *shell);
 
+/*Execution Built In*/
+int						execute_built_in(t_shell *shell);
+
 /*Main Execution*/
 void					execution(t_shell *shell, int subshell,
 							int	shell_channel[2]);
@@ -155,8 +158,12 @@ void					execution(t_shell *shell, int subshell,
 /*===================*/
 /*======BUILTIN======*/
 /*===================*/
+
+int 					ft_is_built_in(char *command);
+void    				ft_echo(char **tab_option);
+void    				ft_pwd(t_shell *shell);
 int						ft_export(t_shell *shell, char **arg);
-int						unset(t_shell *shell, char **arg);
+int						ft_unset(t_shell *shell, char **arg);
 int						size_t_list_env(t_list_env *env);
 t_list_env				**set_export_list(t_list_env *env, int size);
 int						ft_strcmp(const char *s1, const char *s2);
