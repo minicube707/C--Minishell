@@ -6,42 +6,14 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/30 17:54:36 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/02 16:50:18 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	manage_path(t_shell *shell)
-{
-	struct stat	buff;
-	char		*path;
 
-	if (shell->head->command == NULL)
-		return (0);
-	if (shell->head->command[0] != '/')
-	{
-		path = execute_add_path(shell->head->command, "PATH=",
-				shell->environment);
-		if (shell->head->command != NULL)
-		{
-			free(shell->head->command);
-			shell->head->command = path;
-			shell->head->option[0] = path;
-		}
-	}
-	else
-	{
-		if (access(shell->head->command, F_OK) == -1)
-			return (print_error_file(shell->head->command));
-		stat(shell->head->command, &buff);
-		if (S_ISDIR(buff.st_mode))
-			return (print_error_is_directory(shell->head->command));
-	}
-	return (0);
-}
-
-void	execute_programm(t_shell *shell)
+static void	execute_programm(t_shell *shell)
 {
 	int	exit_code;
 
@@ -58,7 +30,7 @@ void	execute_programm(t_shell *shell)
 	free_shell(shell, EXIT_SUCCESS);
 }
 
-void	manage_pipe(t_shell *shell)
+static void	manage_pipe(t_shell *shell)
 {
 	int	exit_code;
 
@@ -81,7 +53,7 @@ void	manage_pipe(t_shell *shell)
 	execute_programm(shell);
 }
 
-void	manage_fork(t_shell *shell, pid_t *ptr_pid)
+static void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 {
 	pid_t	pid;
 
@@ -97,20 +69,20 @@ int	execute_command(t_shell *shell)
 	pid_t	pid;
 
 	manage_fork(shell, &pid);
-	// Caught SIGFAULT Upate exit status
-	if (waitpid(pid, &status, WNOHANG))
-	{
-		if (WIFEXITED(status))
-			g_status = WEXITSTATUS(status);
-		else if (WIFEXITED(status))
-			g_status = 128 + WTERMSIG(status);
-	}
-	else
-		g_status = 0;
 		
 	// Let run until the last
 	if (shell->head->next == NULL || shell->head->pre_redir == AND || shell->head->pre_redir == OR || shell->head->next->pre_redir == AND || shell->head->next->pre_redir == OR)
-		waitpid(pid, NULL, 0);
+	{
+		if (waitpid(pid, &status, 0))
+		{
+			if (WIFEXITED(status))
+				g_status = WEXITSTATUS(status);
+			else if (WIFEXITED(status))
+				g_status = 128 + WTERMSIG(status);
+		}
+		else
+			g_status = 0;
+	}
 		
 	return (0);
 }

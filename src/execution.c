@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/09/30 16:57:47 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/02 16:41:06 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	execution(t_shell *shell, int subshell, int shell_channel[2])
 	exit_code = 0;
 	execute_here_doc(shell->head);
 	
-
+	t_list *last_head;
 	int prev_redir;
 	int is_logical;
 	int is_last_or_next_is_logical;
@@ -62,7 +62,11 @@ void	execution(t_shell *shell, int subshell, int shell_channel[2])
 			else
 				Do command
 			*/
-			execute_command(shell);
+			/*
+			if (ft_is_built_in(shell->head->command))
+				execute_built_in(shell);
+			else*/
+				execute_command(shell);
 
 		}
 		if (shell->head->previous != NULL)
@@ -72,6 +76,8 @@ void	execution(t_shell *shell, int subshell, int shell_channel[2])
 		close(shell->head->mypipe[1]);
 		execute_close_fd(shell->head);
 		
+		last_head = shell->head;
 		shell->head = shell->head->next;
 	}
+	shell->head = last_head;
 }
