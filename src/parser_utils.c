@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:49:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/30 14:38:29 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/02 15:12:24 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,6 @@ void	option_or_subs(t_list *curr, int *o, t_token *token)
 	else
 	{
 		curr->command = token->content;
-		curr->option[*o++] = token->content;
+		curr->option[(*o)++] = token->content;
 	}
 }
