@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/02 16:41:06 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/03 15:37:53 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ void	execution(t_shell *shell, int subshell, int shell_channel[2])
 			else
 				Do command
 			*/
-			/*
+			
 			if (ft_is_built_in(shell->head->command))
 				execute_built_in(shell);
-			else*/
+			else
 				execute_command(shell);
 
 		}

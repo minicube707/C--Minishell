@@ -23,6 +23,8 @@ FILE_NAMES =	double_list \
                 execute_open_file \
                 execution \
 				free_shell \
+				ft_env \
+				ft_exit \
                 here_doc \
                 main \
                 manage_error \

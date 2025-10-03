@@ -1,31 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_command.c                                  :+:      :+:    :+:   */
+/*   execute_built_in.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/03 17:53:47 by fmotte           ###   ########.fr       */
+/*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
+/*   Updated: 2025/10/03 17:53:28 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	execute_correct_built_in(t_shell *shell)
+{
+	char	*cp_command;
+
+	printf("OUR BUILT IN\n");
+	cp_command = shell->head->command;
+	printf("COMMAND %s \n", cp_command);
+	if (ft_strncmp(cp_command, "echo", ft_strlen(cp_command)) == 0)
+		ft_echo(shell->head->option);
+	else if (ft_strncmp(cp_command, "pwd", ft_strlen(cp_command)) == 0)
+		ft_pwd(shell);
+	else if (ft_strncmp(cp_command, "export", ft_strlen(cp_command)) == 0)
+		ft_export(shell, shell->head->option);
+	else if (ft_strncmp(cp_command, "unset", ft_strlen(cp_command)) == 0)
+		ft_unset(shell, shell->head->option);
+	else if (ft_strncmp(cp_command, "env", ft_strlen(cp_command)) == 0)
+		ft_env(shell->environment);
+	else if (ft_strncmp(cp_command, "exit", ft_strlen(cp_command)) == 0)
+		ft_exit(shell);
+}
+
 static void	execute_programm(t_shell *shell)
 {
 	int	exit_code;
 
-	exit_code = manage_path(shell, 1);
-	printf("COMMAND %s \n", shell->head->command);
+	exit_code = manage_path(shell, 0);
+	printf("CMD %s \n", shell->head->command);
 	if (exit_code)
 		free_shell(shell, EXIT_FAILURE);
-	if (shell->head->command != NULL)
-	{
-		execve(shell->head->command, shell->head->option, shell->environment);
-		print_error_unknow_cmd(shell->head->command);
-		free_shell(shell, EXIT_FAILURE);
-	}
+	execute_correct_built_in(shell);
 	free_shell(shell, EXIT_SUCCESS);
 }
 
@@ -56,32 +72,42 @@ static void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 {
 	pid_t	pid;
 
-	pid = fork();
-	if (pid == 0)
-		manage_pipe(shell);
-	*ptr_pid = pid;
+	if (shell->head->next != NULL && shell->head->next->pre_redir == PIPE)
+	{
+		printf("FORK \n");
+		pid = fork();
+		if (pid == 0)
+			manage_pipe(shell);
+		*ptr_pid = pid;
+	}
+	else
+	{
+		printf("NO FORK \n");
+		execute_correct_built_in(shell);
+		*ptr_pid = -1;
+	}
 }
 
-int	execute_command(t_shell *shell)
+int	execute_built_in(t_shell *shell)
 {
 	int		status;
 	pid_t	pid;
 
 	manage_fork(shell, &pid);
+	// Caught SIGFAULT Upate exit status
+	if (pid != -1 && waitpid(pid, &status, WNOHANG))
+	{
+		if (WIFEXITED(status))
+			g_status = WEXITSTATUS(status);
+		else if (WIFEXITED(status))
+			g_status = 128 + WTERMSIG(status);
+	}
+	else
+		g_status = 0;
 	// Let run until the last
 	if (shell->head->next == NULL || shell->head->pre_redir == AND
 		|| shell->head->pre_redir == OR || shell->head->next->pre_redir == AND
 		|| shell->head->next->pre_redir == OR)
-	{
-		if (waitpid(pid, &status, 0))
-		{
-			if (WIFEXITED(status))
-				g_status = WEXITSTATUS(status);
-			else if (WIFEXITED(status))
-				g_status = 128 + WTERMSIG(status);
-		}
-		else
-			g_status = 0;
-	}
+		waitpid(pid, NULL, 0);
 	return (0);
 }

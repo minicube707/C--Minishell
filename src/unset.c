@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 18:21:11 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/02 15:44:44 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/03 18:01:00 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,13 @@ static void	unset_arg(t_shell *shell, char *arg)
 			else
 				prev->next = next;
 			free_env_node(curr);
+			curr = next;
 		}
-		prev = curr;
-		curr = curr->next;
+		else
+		{
+			prev = curr;
+			curr = curr->next;
+		}
 	}
 }
 

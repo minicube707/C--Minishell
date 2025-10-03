@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 22:55:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/30 10:34:35 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/03 17:56:20 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	free_env_node(t_list_env *env)
 {
 	free(env->name);
+	free(env->content);
 	free(env);
 }
 
@@ -27,6 +28,8 @@ void	free_env(t_list_env *head)
 		next = head->next;
 		if (head->name)
 			free(head->name);
+		if (head->content)
+			free(head->content);
 		free(head);
 		head = next;
 	}
@@ -50,7 +53,7 @@ char	**free_double_array(char **list)
 
 	i = 0;
 	if (!list)
-		return NULL;
+		return (NULL);
 	while (list[i])
 	{
 		free(list[i]);
