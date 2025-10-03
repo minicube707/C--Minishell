@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:45:15 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/02 14:10:09 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/03 17:56:56 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_list	*dlist_pop_front(t_list *pop_head)
 		close(pop_head->mypipe[0]);
 	if (pop_head->mypipe[0] > 2)
 		close(pop_head->mypipe[1]);
-	//free(pop_head->subshell);
+	// free(pop_head->subshell);
 	pop_head->subshell = NULL;
 	pop_head->next = NULL;
 	pop_head->previous = NULL;
@@ -38,7 +38,8 @@ t_list	*dlist_pop_front(t_list *pop_head)
 
 t_list	*dlist_clear(t_list *dlist)
 {
-	t_list *head;
+	t_list	*head;
+
 	head = dlist_get_top(dlist);
 	while (head != NULL)
 		head = dlist_pop_front(head);
