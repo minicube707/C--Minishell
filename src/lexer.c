@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/03 04:07:03 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/03 18:16:32 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ char	*strcdup(char *str, char c)
 		l++;
 	if (str[l] == c)
 		l++;
-	if (c == '"')
-		return (ft_substr(str, 1, (l - 1)));
 	return (ft_substr(str, 0, l));
 }
 
@@ -85,6 +83,18 @@ char	*dup_subshell(char *str)
 	return (ft_substr(str, 0, i));
 }
 
+char	*dup_quote(char *str)
+{
+	size_t	l;
+
+	l = 1;
+	while (str[l] && str[l] != c)
+		l++;
+	if (str[l] == c)
+		l++;
+	return (ft_substr(str, 0, l));
+}
+
 char	*duparg(char *str)
 {
 	size_t	i;
@@ -101,7 +111,7 @@ char	*duparg(char *str)
 	return (ft_substr(str, 0, i));
 }
 
-static void	set_token(t_token **result, char *str, size_t *i)
+static void	set_token(t_token **result, char *str, int *i)
 {
 	char	*arg;
 	int		code;
@@ -115,15 +125,24 @@ static void	set_token(t_token **result, char *str, size_t *i)
 	else
 	{
 		arg = duparg(&str[*i]);
-		add_back(result, arg, code);
-		*i += ft_strlen(arg);
+		if (*arg == '"')
+		{
+			add_back(result, ft_substr(str, (*i) + 1, (ft_strlen(arg) - 2)), code);
+			*i += ft_strlen(arg);
+			free(arg);
+		}
+		else
+		{
+			add_back(result, arg, code);
+			*i += ft_strlen(arg);
+		}
 	}
 }
 
 t_token	*lexer(char *str)
 {
 	t_token	*result;
-	size_t	i;
+	int		i;
 
 	i = 0;
 	result = NULL;

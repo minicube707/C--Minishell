@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/02 15:50:14 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/03 14:10:43 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_token
 {
 	int					op;
 	char				*content;
+	int					len;
 	struct s_token		*next;
 }						t_token;
 

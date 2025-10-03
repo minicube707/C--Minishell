@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 18:21:11 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/25 18:38:29 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/02 15:44:44 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	unset_arg(t_shell *shell, char *arg)
 	}
 }
 
-int	unset(t_shell *shell, char **arg)
+int	ft_unset(t_shell *shell, char **arg)
 {
 	arg++;
 	while (*arg)

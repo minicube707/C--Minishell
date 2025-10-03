@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:38:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/02 14:05:20 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/03 16:52:45 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,13 @@ int	strlenc(char *str, const char c)
 
 static void	set_new_env(t_list_env *new, char *envp)
 {
+	char	*content;
+
 	new->name = ft_substr(envp, 0, strlenc(envp, '='));
 	if (!new->name)
 		write(1, "Error env-name\n", 15);
-	new->content = getenv(new->name);
+	content = getenv(new->name);
+	new->content = ft_strdup(content);
 }
 
 t_list_env	*set_env(char **envp)
