@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:27:57 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/25 18:22:31 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/03 04:20:32 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int ft_is_built_in(char *command)
 
 void    ft_echo(char **tab_option)
 {
-    int     *add_back_slash;
+    int     add_back_slash;
     int     i;
     
     add_back_slash = 1;
@@ -56,7 +56,7 @@ void    ft_echo(char **tab_option)
     if (add_back_slash)
         write(1, "\n", 1);
 }
-
+/*
 void    ft_pwd(t_shell *shell)
 {
     t_list_env *tmp;
@@ -77,4 +77,4 @@ void    ft_pwd(t_shell *shell)
         return;
     }
     write(1, buff, 1024);
-}
+}*/

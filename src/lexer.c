@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/01 17:15:15 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/03 04:07:03 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,16 @@ char	*strcdup(char *str, char c)
 		l++;
 	if (str[l] == c)
 		l++;
+	if (c == '"')
+		return (ft_substr(str, 1, (l - 1)));
 	return (ft_substr(str, 0, l));
+}
+
+void	in_quote(char *str, int *i)
+{
+	(*i)++;
+	while (str[(*i)] && str[(*i)] != '"')
+		(*i)++;
 }
 
 char	*dup_subshell(char *str)
@@ -59,7 +68,20 @@ char	*dup_subshell(char *str)
 	op = 1;
 	cl = 0;
 	while (str[i] && op != cl)
-		i++;
+		if (str[i] == '"')
+			in_quote(str, &i);
+		else if (str[i] == '(')
+		{
+			op++;
+			i++;
+		}
+		else if (str[i] == ')')
+		{
+			cl++;
+			i++;
+		}
+		else
+			i++;
 	return (ft_substr(str, 0, i));
 }
 
