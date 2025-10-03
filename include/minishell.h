@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/02 15:50:14 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/03 17:48:13 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int						print_error_is_directory(char *file);
 int						here_doc(int *file_fd, char *limiter);
 
 /*Execute_close_file*/
-int						manage_path(t_shell *shell);
+int						manage_path(t_shell *shell, int change );
 
 /*Execute_here_doc*/
 void					execute_here_doc(t_list *head);
@@ -164,9 +164,11 @@ void    				ft_echo(char **tab_option);
 void    				ft_pwd(t_shell *shell);
 int						ft_export(t_shell *shell, char **arg);
 int						ft_unset(t_shell *shell, char **arg);
+void    				ft_env(char **environment);
 int						size_t_list_env(t_list_env *env);
 t_list_env				**set_export_list(t_list_env *env, int size);
 int						ft_strcmp(const char *s1, const char *s2);
+void 					ft_exit(t_shell *shell);
 
 /*===================*/
 /*======PARSING======*/
