@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/01 17:11:47 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/03 04:15:03 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,13 @@ void	print_list(t_list *head)
 	while (head)
 	{
 		printf("=== Node %d ===\n", index);
+		printf("ADRESS %p \n", head);
 		printf("  pre_redir: %d\n", head->pre_redir);
 		//		printf("  mypipe[0]: %d\n", head->mypipe[0]);
 		//		printf("  mypipe[1]: %d\n", head->mypipe[1]);
 		printf("  command  : %s\n", head->command ? head->command : "(null)");
+
+		//printf("ADRESS OPT %p \n", head->option);
 		if (head->option)
 		{
 			printf("  options  :\n");
@@ -93,6 +96,7 @@ void	print_list(t_list *head)
 		{
 			printf("  options  : (null)\n");
 		}
+		//printf("ADRESS TAB %p \n", head->tab_file);
 		print_file_info(head->tab_file);
 //				print_channel(head->in_out);
 				printf("  subshell : %s\n",
@@ -110,10 +114,13 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	
+	
 	set_signal_action(sighandler);
 	shell_channel[0] = STDIN_FILENO;
 	shell_channel[1] = STDOUT_FILENO;
 	shell.env = set_env(envp);
+	shell.head = NULL;
 	shell.environment = NULL;
 	shell.environment = make_env(&shell, shell.env);
 	while (1)
@@ -125,34 +132,18 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(line);
 			shell.head = parsing(line);
+			free(line);
 			print_list(shell.head);
 			if (shell.head)
 			{
 				set_signal_action(handlexec);
 				execution(&shell, 0, shell_channel);
-				set_signal_action(sighandler);
 				dlist_clear(shell.head);
-				free(line);
-				/*char	*av[] = {"export", "A=test", "B", "C=", "_P=re", NULL};*/
-				/*ft_export(&shell, NULL);
-				printf("\033[1;94mMinishell >\033[0m export A=test B C= _P=re\n");
-				char **s = shell.environment;
-				while (*s)
-				{
-					printf("%s\n", *s);
-					s++;
-				}
-				char	*av1[] = {"unset", "A", "_P", NULL};
-				unset(&shell, av1);
-				printf("\033[1;94mMinishell >\033[0m unset A _p\n");
-				s = shell.environment;
-				while (*s)
-				{
-					printf("%s\n", *s);
-					s++;
-				}*/
+				set_signal_action(sighandler);
 			}
 		}
 	}
-	//free_shell(&shell, 0);
+	free_env(shell.env);
+	free_double_array(shell.environment);
+	return (g_status);
 }

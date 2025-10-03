@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:33:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/23 15:32:32 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/09/29 17:26:56 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	open_infile(t_file_info *tmp_tab)
 		g_status = 1;
 		return (print_error_file(file_name));
 	}
+	g_status = 0;
 	flags = O_RDONLY;
 	fd = open(file_name, flags);
 	tmp_tab->fd = fd;
@@ -63,7 +64,7 @@ int	open_redirection(t_list *head, t_file_info *tmp_tab)
 	else
 		fd = tmp_tab->fd;
 	if (fd == -1)
-		return (1);
+		return (-1);
 	if (type == INPUT || type == HERE_DOC)
 		head->in_out[0] = fd;
 	else
