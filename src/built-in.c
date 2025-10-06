@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:27:57 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/03 18:05:05 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/06 17:00:49 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_is_built_in(char *command)
 {
-	int	i;
+	int		i;
 	char	*tab_buit_in[7];
 
 	tab_buit_in[0] = "echo";
@@ -34,23 +34,43 @@ int	ft_is_built_in(char *command)
 	return (0);
 }
 
+int	ft_echo_utils(char **tab, int *add_back_slash)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	*add_back_slash = 1;
+	while (tab[i] != NULL)
+	{
+		j = 1;
+		while (tab[i][0] == '-' && tab[i][j] == 'n')
+			j++;
+		if (tab[i][0] != '-' || tab[i][j] != '\0' || ft_strlen(tab[i]) == 1)
+		{
+			if (i > 1)
+				*add_back_slash = 0;
+			return (i);
+		}
+		i++;
+	}
+	if (i > 1)
+		*add_back_slash = 0;
+	return (i);
+}
+
 void	ft_echo(char **tab_option)
 {
 	int	add_back_slash;
 	int	i;
 
-	add_back_slash = 1;
-	printf("MY ECHO\n");
-	/*Do a functionn to pass -n*/
-	if (ft_strncmp(tab_option[1], "-n", ft_strlen(tab_option[1])) == 0)
-		add_back_slash = 0;
-	else
-		write(1, tab_option[1], ft_strlen(tab_option[1]));
-	i = 2;
+	i = ft_echo_utils(tab_option, &add_back_slash);
 	while (tab_option[i] != NULL)
 	{
 		write(1, tab_option[i], ft_strlen(tab_option[i]));
 		i++;
+		if (tab_option[i] != NULL)
+			write(1, " ", 1);
 	}
 	if (add_back_slash)
 		write(1, "\n", 1);

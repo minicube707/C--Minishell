@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/03 17:53:28 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/06 16:34:04 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@ void	execute_correct_built_in(t_shell *shell)
 {
 	char	*cp_command;
 
-	printf("OUR BUILT IN\n");
 	cp_command = shell->head->command;
-	printf("COMMAND %s \n", cp_command);
 	if (ft_strncmp(cp_command, "echo", ft_strlen(cp_command)) == 0)
 		ft_echo(shell->head->option);
 	else if (ft_strncmp(cp_command, "pwd", ft_strlen(cp_command)) == 0)
@@ -38,7 +36,6 @@ static void	execute_programm(t_shell *shell)
 	int	exit_code;
 
 	exit_code = manage_path(shell, 0);
-	printf("CMD %s \n", shell->head->command);
 	if (exit_code)
 		free_shell(shell, EXIT_FAILURE);
 	execute_correct_built_in(shell);
@@ -74,7 +71,6 @@ static void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 
 	if (shell->head->next != NULL && shell->head->next->pre_redir == PIPE)
 	{
-		printf("FORK \n");
 		pid = fork();
 		if (pid == 0)
 			manage_pipe(shell);
@@ -82,7 +78,6 @@ static void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 	}
 	else
 	{
-		printf("NO FORK \n");
 		execute_correct_built_in(shell);
 		*ptr_pid = -1;
 	}
