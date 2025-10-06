@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/02 18:15:12 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/06 16:32:59 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int	main(int argc, char **argv, char **envp)
 			shell.head = parsing(line);
 
 			free(line);
-			print_list(shell.head);
+			//print_list(shell.head);
       
 			if (shell.head)
 			{
