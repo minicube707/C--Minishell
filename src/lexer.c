@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/03 18:16:32 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/06 04:21:58 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,21 @@ char	*dup_subshell(char *str)
 char	*dup_quote(char *str)
 {
 	size_t	l;
+	int		skip;
 
 	l = 1;
-	while (str[l] && str[l] != c)
+	while (str[l] && (str[l] != '"' && !skip))
+	{
+		if (str[l] == '\' && (str[l] == '\' || str[l] == '"' || str[l] == '$' || str[l] == '''))
+		{
+			i = i + 2;
+			skip = 1;
+			/* if strlcat 
+			 if strlcat != lensrc + lendst {buffer ++; strcpy}*/
+		}
+		else if
 		l++;
+	}
 	if (str[l] == c)
 		l++;
 	return (ft_substr(str, 0, l));
