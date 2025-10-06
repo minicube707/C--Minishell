@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/03 14:10:43 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/06 10:17:35 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,4 +206,7 @@ char					**free_double_array(char **list);
 
 void					reset_signal_handlers(void);
 int						strlenc(char *str, const char c);
+
+/*Utils*/
+void	*ft_realloc(void *ptr, size_t size, size_t oldsize);
 #endif

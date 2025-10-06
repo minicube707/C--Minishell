@@ -37,6 +37,7 @@ FILE_NAMES =	double_list \
 				export \
 				export_utils \
 				unset \
+				utils \
 
 #execute_built_in \
 # =======================================

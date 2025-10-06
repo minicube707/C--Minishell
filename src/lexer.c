@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/06 04:21:58 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/06 11:55:55 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,26 +83,35 @@ char	*dup_subshell(char *str)
 	return (ft_substr(str, 0, i));
 }
 
+void	escape_handler(char *arg, char *str, int *l)
+{
+}
+
+void	
+
 char	*dup_quote(char *str)
 {
-	size_t	l;
-	int		skip;
+	size_t	i;
+	size_t	len;
+	size_t	buff;
+	char	*arg;
 
-	l = 1;
-	while (str[l] && (str[l] != '"' && !skip))
+	i = 1;
+	arg = ft_calloc(sizeof(char) * 11);
+	if (!arg)
+		free_shell(NULL, 1);
+	while (str[i] && str[i] != '"')
 	{
-		if (str[l] == '\' && (str[l] == '\' || str[l] == '"' || str[l] == '$' || str[l] == '''))
+		if (str[i] == '\' && (str[i + 1] == '\' || str[i + 1] == '"' || str[i + 1] == '''))
 		{
+			if (strlen)
+			strlcat(arg, str[i + 1], 1);
 			i = i + 2;
-			skip = 1;
-			/* if strlcat 
-			 if strlcat != lensrc + lendst {buffer ++; strcpy}*/
+			len++
 		}
 		else if
-		l++;
+		i++;
 	}
-	if (str[l] == c)
-		l++;
 	return (ft_substr(str, 0, l));
 }
 
