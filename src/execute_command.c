@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/03 17:53:47 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/06 19:08:34 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ int	execute_command(t_shell *shell)
 
 	manage_fork(shell, &pid);
 	// Let run until the last
-	if (shell->head->next == NULL || shell->head->pre_redir == AND
-		|| shell->head->pre_redir == OR || shell->head->next->pre_redir == AND
+	if (shell->head->next == NULL || shell->head->next->pre_redir == AND
 		|| shell->head->next->pre_redir == OR)
 	{
 		if (waitpid(pid, &status, 0))

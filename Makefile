@@ -22,7 +22,9 @@ FILE_NAMES =	double_list \
                 execute_here_doc \
                 execute_open_file \
                 execution \
+				expand_dollar \
 				free_shell \
+				ft_cd \
 				ft_env \
 				ft_exit \
                 here_doc \
@@ -125,7 +127,7 @@ run: $(NAME)
 
 test: $(NAME)
 	valgrind \
-	--suppressions=./dev_tools/.ignore_rl_leaks.supp \
+	--suppressions=$$(pwd)/dev_tools/.ignore_rl_leaks.supp \
 	--leak-check=full \
 	--show-leak-kinds=all \
 	--track-origins=yes \

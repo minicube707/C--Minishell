@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/06 16:34:04 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/08 17:02:00 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	execute_correct_built_in(t_shell *shell)
 	if (ft_strncmp(cp_command, "echo", ft_strlen(cp_command)) == 0)
 		ft_echo(shell->head->option);
 	else if (ft_strncmp(cp_command, "pwd", ft_strlen(cp_command)) == 0)
-		ft_pwd(shell);
+		ft_pwd();
 	else if (ft_strncmp(cp_command, "export", ft_strlen(cp_command)) == 0)
 		ft_export(shell, shell->head->option);
 	else if (ft_strncmp(cp_command, "unset", ft_strlen(cp_command)) == 0)
@@ -29,6 +29,8 @@ void	execute_correct_built_in(t_shell *shell)
 		ft_env(shell->environment);
 	else if (ft_strncmp(cp_command, "exit", ft_strlen(cp_command)) == 0)
 		ft_exit(shell);
+	else if (ft_strncmp(cp_command, "cd", ft_strlen(cp_command)) == 0)
+		ft_cd(shell, shell->head->option);
 }
 
 static void	execute_programm(t_shell *shell)
@@ -88,6 +90,7 @@ int	execute_built_in(t_shell *shell)
 	int		status;
 	pid_t	pid;
 
+	printf("BUILT IN\n");
 	manage_fork(shell, &pid);
 	// Caught SIGFAULT Upate exit status
 	if (pid != -1 && waitpid(pid, &status, WNOHANG))
