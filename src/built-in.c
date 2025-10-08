@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:27:57 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/06 17:00:49 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/08 17:01:16 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,26 +76,17 @@ void	ft_echo(char **tab_option)
 		write(1, "\n", 1);
 }
 
-void	ft_pwd(t_shell *shell)
+void	ft_pwd(void)
 {
-	t_list_env	*tmp;
 	char		buff[1024];
-
-	tmp = shell->env;
-	printf("MY PWD\n");
-	while (ft_strncmp(tmp->name, "PWD", ft_strlen(tmp->name)))
-		tmp = tmp->next;
-	if (ft_strncmp(tmp->name, "PWD", ft_strlen(tmp->name)) == 0)
-	{
-		write(1, tmp->content, ft_strlen(tmp->content));
-		write(1, "\n", 1);
-		return ;
-	}
+	
 	if (getcwd(buff, 1024) == NULL)
 	{
 		print_error("Cannot get current working directory path\n");
 		return ;
 	}
-	write(1, buff, 1024);
+	write(1, buff, ft_strlen(buff));
 	write(1, "\n", 1);
+	return ;
 }
+

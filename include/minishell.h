@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/03 17:48:13 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/08 17:44:46 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-
-#include <mcheck.h>
+#include <errno.h>
 
 /*===================*/
 /*=======GLOBAL======*/
@@ -122,8 +121,12 @@ void					free_shell(t_shell *shell, int exit_code);
 /*Manage Error*/
 int						print_error(char *string);
 int						print_error_unknow_cmd(char *string);
-int						print_error_file(char *file);
+int						print_error_file(char *cmd, char *file);
 int						print_error_is_directory(char *file);
+int						print_error_not_directory(char *cmd, char *file);
+int						print_error_to_much(char *file);
+int						print_error_env_not_set(char *file, char *env);
+int						print_error_access_denied(char *file, char *path);
 
 /*===================*/
 /*=====EXECUTION=====*/
@@ -155,13 +158,16 @@ int						execute_built_in(t_shell *shell);
 void					execution(t_shell *shell, int subshell,
 							int	shell_channel[2]);
 
+/*Expand dollar*/
+char    				*expand_dollard(t_shell *shell, char *string);
+
 /*===================*/
 /*======BUILTIN======*/
 /*===================*/
 
 int 					ft_is_built_in(char *command);
 void    				ft_echo(char **tab_option);
-void    				ft_pwd(t_shell *shell);
+void    				ft_pwd(void);
 int						ft_export(t_shell *shell, char **arg);
 int						ft_unset(t_shell *shell, char **arg);
 void    				ft_env(char **environment);
@@ -169,6 +175,7 @@ int						size_t_list_env(t_list_env *env);
 t_list_env				**set_export_list(t_list_env *env, int size);
 int						ft_strcmp(const char *s1, const char *s2);
 void 					ft_exit(t_shell *shell);
+void    				ft_cd(t_shell *shell, char **tab_option);
 
 /*===================*/
 /*======PARSING======*/

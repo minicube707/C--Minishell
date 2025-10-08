@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:51:49 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/03 17:58:56 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/06 18:19:45 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,10 @@ int	ft_export(t_shell *shell, char **arg)
 		if (!name_is_valid(*arg))
 			return (error_id(*arg));
 		while (curr->next)
+		{
+			//Create a function that delete if is already exist, (simul change)
 			curr = curr->next;
+		}
 		curr->next = malloc(sizeof(t_list_env));
 		set_new_env(curr->next, *arg);
 		arg++;

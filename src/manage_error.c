@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 22:34:24 by florent           #+#    #+#             */
-/*   Updated: 2025/09/23 14:50:17 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/08 17:44:03 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,14 @@ int	print_error_unknow_cmd(char *string)
 	return (-1);
 }
 
-int	print_error_file(char *file)
+int	print_error_file(char *cmd, char *file)
 {
 	ft_putstr_fd("minishell: ", 2);
+	if (cmd != NULL)
+	{
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": ", 2);
+	}
 	ft_putstr_fd(file, 2);
 	ft_putstr_fd(": No such file or directory", 2);
 	ft_putstr_fd("\n", 2);
@@ -42,6 +47,48 @@ int	print_error_is_directory(char *file)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(file, 2);
 	ft_putstr_fd(": Is a directory", 2);
+	ft_putstr_fd("\n", 2);
+	return (-1);
+}
+
+int	print_error_to_much(char *file)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(file, 2);
+	ft_putstr_fd(": too many arguments", 2);
+	ft_putstr_fd("\n", 2);
+	return (-1);
+}
+
+int	print_error_env_not_set(char *file, char *env)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(file, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(env, 2);
+	ft_putstr_fd(" not set", 2);
+	ft_putstr_fd("\n", 2);
+	return (-1);
+}
+
+int	print_error_access_denied(char *file, char *path)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(file, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(path, 2);
+	ft_putstr_fd(": Permission denied", 2);
+	ft_putstr_fd("\n", 2);
+	return (-1);
+}
+
+int	print_error_not_directory(char *cmd, char *file)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(file, 2);
+	ft_putstr_fd(": Not a directory", 2);
 	ft_putstr_fd("\n", 2);
 	return (-1);
 }
