@@ -6,13 +6,13 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 17:39:03 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/08 17:42:41 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/09 10:08:51 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_getenv(char **envp, char *var)
+char	*ft_getenvironement(char **envp, char *var)
 {
 	int	i;
 
@@ -52,7 +52,7 @@ char	*execute_add_path(t_shell *shell, char *name_env)
 	char	*new_path;
 	char	**tab_env;
 
-	path = ft_getenv(shell->environment, name_env);
+	path = ft_getenvironement(shell->environment, name_env);
 	if (path == NULL)
 		return (NULL);
 	path += ft_strlen(name_env);

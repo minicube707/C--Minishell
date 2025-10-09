@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 22:34:24 by florent           #+#    #+#             */
-/*   Updated: 2025/10/08 17:44:03 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/09 10:32:38 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,17 @@ int	print_error_not_directory(char *cmd, char *file)
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(file, 2);
 	ft_putstr_fd(": Not a directory", 2);
+	ft_putstr_fd("\n", 2);
+	return (-1);
+}
+
+int	print_error_invalide_option(char *cmd, char *file)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(file, 2);
+	ft_putstr_fd(": invalid option", 2);
 	ft_putstr_fd("\n", 2);
 	return (-1);
 }

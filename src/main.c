@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/06 16:32:59 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/09 10:28:28 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	sighandler(int signal)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	g_status = 130;
 	return ;
 }
 
@@ -134,7 +135,7 @@ int	main(int argc, char **argv, char **envp)
 			shell.head = parsing(line);
 
 			free(line);
-			//print_list(shell.head);
+			print_list(shell.head);
       
 			if (shell.head)
 			{

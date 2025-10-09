@@ -25,6 +25,7 @@ FILE_NAMES =	double_list \
 				expand_dollar \
 				free_shell \
 				ft_cd \
+				ft_cd_utils \
 				ft_env \
 				ft_exit \
                 here_doc \
@@ -33,6 +34,7 @@ FILE_NAMES =	double_list \
 				tab_char \
 				tab_info \
 				env \
+				env_utils \
 				parser \
 				parser_utils \
 				token_utils \

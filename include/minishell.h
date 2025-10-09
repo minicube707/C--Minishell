@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/08 17:44:46 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/09 13:46:40 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ int						print_error_not_directory(char *cmd, char *file);
 int						print_error_to_much(char *file);
 int						print_error_env_not_set(char *file, char *env);
 int						print_error_access_denied(char *file, char *path);
+int						print_error_invalide_option(char *cmd, char *file);
 
 /*===================*/
 /*=====EXECUTION=====*/
@@ -176,6 +177,7 @@ t_list_env				**set_export_list(t_list_env *env, int size);
 int						ft_strcmp(const char *s1, const char *s2);
 void 					ft_exit(t_shell *shell);
 void    				ft_cd(t_shell *shell, char **tab_option);
+void    				chdir2(char *pwd);
 
 /*===================*/
 /*======PARSING======*/
@@ -184,6 +186,8 @@ void    				ft_cd(t_shell *shell, char **tab_option);
 /*Environment*/
 t_list_env				*set_env(char **envp);
 char					**make_env(t_shell *shell, t_list_env *list);
+char    				*ft_getenv(t_shell *shell, char *name);
+char    				*ft_join_env(char *name, char *content);
 
 /*Parsing*/
 t_list					*parsing(char *line);
