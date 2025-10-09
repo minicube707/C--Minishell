@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:51:49 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/06 18:19:45 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/09 10:11:59 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,9 @@ static void	sort_list(t_list_env **arr, int size)
 		}
 		i++;
 	}
-	i = 0;
-	while (i < size)
-	{
+	i = -1;
+	while (++i < size)
 		printf("export %s=%s\n", arr[i]->name, arr[i]->content);
-		i++;
-	}
 	free(arr);
 }
 
