@@ -31,6 +31,7 @@ FILE_NAMES =	double_list \
                 here_doc \
                 main \
                 manage_error \
+				norme_env \
 				tab_char \
 				tab_info \
 				env \

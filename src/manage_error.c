@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 22:34:24 by florent           #+#    #+#             */
-/*   Updated: 2025/10/09 10:32:38 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/10 13:40:15 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	print_error_to_much(char *file)
 	ft_putstr_fd(file, 2);
 	ft_putstr_fd(": too many arguments", 2);
 	ft_putstr_fd("\n", 2);
+	g_status = 1;
 	return (-1);
 }
 

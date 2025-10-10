@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   norme_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/03 14:23:21 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/10 16:32:00 by fmotte           ###   ########.fr       */
+/*   Created: 2025/10/10 13:55:21 by fmotte            #+#    #+#             */
+/*   Updated: 2025/10/10 16:25:23 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_env(char **environment)
+char	*norme_env(char *env, int n)
 {
 	int	i;
 
+	if (env == NULL)
+		return (NULL);
+	if (ft_isdigit(env[0]))
+		return (NULL);
 	i = 0;
-	while (environment[i] != NULL)
+	while (env[i] != '\0' && i < n)
 	{
-		write(1, environment[i], ft_strlen(environment[i]));
-		write(1, "\n", 1);
+		if (!ft_isalnum(env[i]) && env[i] != '_')
+			return (NULL);
 		i++;
 	}
+	return (env);
 }

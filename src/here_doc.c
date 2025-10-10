@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 17:22:05 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/13 16:55:43 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/10 16:31:12 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	write_here_doc(int fd)
 	return (0);
 }
 
-static int	here_doc_loop(int fd, char *limiter, int * true)
+static int	here_doc_loop(int fd, char *limiter, int *true)
 {
 	char	*input;
 	int		condition1;

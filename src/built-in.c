@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:27:57 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/08 17:01:16 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/10 16:29:05 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ void	ft_echo(char **tab_option)
 
 void	ft_pwd(void)
 {
-	char		buff[1024];
-	
+	char	buff[1024];
+
 	if (getcwd(buff, 1024) == NULL)
 	{
 		print_error("Cannot get current working directory path\n");
@@ -89,4 +89,3 @@ void	ft_pwd(void)
 	write(1, "\n", 1);
 	return ;
 }
-
