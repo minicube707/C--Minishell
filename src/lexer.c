@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/06 11:55:55 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/10 16:58:23 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,45 +82,66 @@ char	*dup_subshell(char *str)
 			i++;
 	return (ft_substr(str, 0, i));
 }
-
+/*
 void	escape_handler(char *arg, char *str, int *l)
 {
+}*/
+
+void	append_chars(char **arg,  char *str, size_t *buff, size_t s, size_t e)
+{
+	size_t l_arg;
+	
+	l_arg = ft_strlen(*arg);
+	if (l_arg + e > *buff)
+	{
+		*buff += 10;
+		*arg = ft_realloc(*arg, *buff, l_arg);
+	}
+	ft_strncat(*arg, &str[s], e);
 }
 
-void	
-
-char	*dup_quote(char *str)
+char	*dup_quote(char *str, int *j)
 {
 	size_t	i;
-	size_t	len;
+	size_t	e;
 	size_t	buff;
 	char	*arg;
 
 	i = 1;
-	arg = ft_calloc(sizeof(char) * 11);
+	e = 0;
+	buff = 11;
+	arg = ft_calloc(sizeof(char), buff);
 	if (!arg)
 		free_shell(NULL, 1);
 	while (str[i] && str[i] != '"')
 	{
-		if (str[i] == '\' && (str[i + 1] == '\' || str[i + 1] == '"' || str[i + 1] == '''))
+		if (str[i] == '\\' && (str[i + 1] == '\\' || str[i + 1] == '"' || str[i + 1] == '\''))
 		{
-			if (strlen)
-			strlcat(arg, str[i + 1], 1);
+			*j += 2;
+			append_chars(&arg, str, &buff, i - e, e);
+			append_chars(&arg, str, &buff, i + 1, 1);
 			i = i + 2;
-			len++
+			e = 0;
 		}
-		else if
-		i++;
+		else
+		{
+			i++;
+			e++;
+		}
 	}
-	return (ft_substr(str, 0, l));
+	if (!str[i])
+		return(unclosed_quote());
+	return (arg);
 }
 
-char	*duparg(char *str)
+char	*duparg(char *str, int *j)
 {
 	size_t	i;
 
 	if (*str == '"')
-		return (strcdup(str, '"'));
+	{
+		return (dup_quote(str, j));
+	}
 	if (*str == '\'')
 		return (strcdup(str, '\''));
 	if (*str == '(')
@@ -144,18 +165,18 @@ static void	set_token(t_token **result, char *str, int *i)
 	}
 	else
 	{
-		arg = duparg(&str[*i]);
-		if (*arg == '"')
+		arg = duparg(&str[*i], i);
+		/*if (*arg == '"')
 		{
 			add_back(result, ft_substr(str, (*i) + 1, (ft_strlen(arg) - 2)), code);
 			*i += ft_strlen(arg);
 			free(arg);
 		}
 		else
-		{
+		{*/
 			add_back(result, arg, code);
 			*i += ft_strlen(arg);
-		}
+		//}
 	}
 }
 
