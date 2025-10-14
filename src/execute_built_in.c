@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/08 17:02:00 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/14 20:05:50 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	execute_correct_built_in(t_shell *shell)
 
 	cp_command = shell->head->command;
 	if (ft_strncmp(cp_command, "echo", ft_strlen(cp_command)) == 0)
-		ft_echo(shell->head->option);
+		ft_echo(shell, shell->head->option);
 	else if (ft_strncmp(cp_command, "pwd", ft_strlen(cp_command)) == 0)
 		ft_pwd();
 	else if (ft_strncmp(cp_command, "export", ft_strlen(cp_command)) == 0)
@@ -28,7 +28,7 @@ void	execute_correct_built_in(t_shell *shell)
 	else if (ft_strncmp(cp_command, "env", ft_strlen(cp_command)) == 0)
 		ft_env(shell->environment);
 	else if (ft_strncmp(cp_command, "exit", ft_strlen(cp_command)) == 0)
-		ft_exit(shell);
+		ft_exit(shell, shell->head->option);
 	else if (ft_strncmp(cp_command, "cd", ft_strlen(cp_command)) == 0)
 		ft_cd(shell, shell->head->option);
 }
@@ -97,7 +97,7 @@ int	execute_built_in(t_shell *shell)
 	{
 		if (WIFEXITED(status))
 			g_status = WEXITSTATUS(status);
-		else if (WIFEXITED(status))
+		else if (WIFSIGNALED(status))
 			g_status = 128 + WTERMSIG(status);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/03 15:37:53 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/13 16:19:01 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void	execution(t_shell *shell, int subshell, int shell_channel[2])
 			close(shell->head->mypipe[0]);
 		close(shell->head->mypipe[1]);
 		execute_close_fd(shell->head);
-		
 		last_head = shell->head;
 		shell->head = shell->head->next;
 	}

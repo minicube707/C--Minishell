@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 17:39:03 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/09 10:08:51 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/13 17:34:28 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	manage_path(t_shell *shell, int change)
 	struct stat	buff;
 	char		*path;
 
+	// if (strchr(shell->head->command, '/') == NULL)
 	if (shell->head->command[0] != '/')
 	{
 		path = execute_add_path(shell, "PATH=");

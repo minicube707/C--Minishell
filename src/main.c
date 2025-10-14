@@ -140,9 +140,9 @@ int	main(int argc, char **argv, char **envp)
 				set_signal_action(handlexec);
 				execution(&shell, 0, shell_channel);
 				write(1, "\n", 1);
-				dlist_clear(shell.head);
 				set_signal_action(sighandler);
 			}
+			dlist_clear(shell.head);
 		}
 	}
 	free_env(shell.env);
