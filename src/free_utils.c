@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 22:55:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/03 17:56:20 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/14 17:00:11 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	free_env(t_list_env *head)
 	}
 }
 
-void	free_token(t_token *head)
+t_token	*free_token(t_token *head)
 {
 	t_token	*next;
 
@@ -45,6 +45,7 @@ void	free_token(t_token *head)
 		free(head);
 		head = next;
 	}
+	return (NULL);
 }
 
 char	**free_double_array(char **list)

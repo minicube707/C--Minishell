@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:05:15 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/03 17:52:46 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/14 17:01:27 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	set_list_loop(t_list *curr, t_list *prev, t_token *token)
 	o = 0;
 	while (token)
 	{
-		if (token->op >= 5 && token->op <= 7)
+		if (token->op >= 5 && token->op <= 8)
 		{
 			curr = new_node(curr, prev, token);
 			prev = curr;
@@ -95,12 +95,11 @@ t_list	*parsing(char *line)
 	t_token	*token;
 
 	token = lexer(line);
-	if (token->op > 3 && token->op <= 7)
-	{
-		write(2, "\033[91mparse error\n\033[", 17);
-		free_token(token);
+	if (!token)
 		return (NULL);
-	}
+	token = checker(token);
+	if (!token)
+		return (NULL);
 	list = set_list(token);
 	if (!list)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/10 16:38:50 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/14 16:58:42 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,10 @@ extern int				g_status;
 
 /*CONTROL OPERATOR*/
 # define EMPTY 4
-# define PIPE 5 // |
-# define AND 6 // &&
-# define OR 7 // ||
+# define PIPE 5 		// |
+# define AND 6			// &&
+# define OR 7			// ||
+# define SEMICOL 8		// ;
 
 /*===================*/
 /*=====STRUCTURE=====*/
@@ -70,6 +71,7 @@ typedef struct s_token
 {
 	int					op;
 	char				*content;
+	int					len;
 	struct s_token		*next;
 }						t_token;
 
@@ -205,20 +207,34 @@ void					option_or_subs(t_list *curr, int *o, t_token *token);
 t_token					*lexer(char *str);
 
 /*Lexer Utils*/
+int						is_op(char *str);
 size_t					op_len(int op);
+void					in_quote(char *str, int *i);
 
 /*Token Utils*/
 t_token					*end_list(t_token *lst);
 t_token					*new_token(char *content, int op);
 int						add_back(t_token **head, char *content, int op);
 
+/*Syntax*/
+int						is_redirection(int op);
+int						is_operator(int op);
+char					*unclosed_quote(void);
+int						check_redirection(char *str);
+t_token					*checker(t_token *token);
+int						error_token(int op);
+
 /*Free Utils*/
 void					free_env(t_list_env *head);
-void					free_token(t_token *head);
+t_token					*free_token(t_token *head);
 void					free_shell(t_shell *shell, int init);
 void					free_env_node(t_list_env *env);
 char					**free_double_array(char **list);
 
 void					reset_signal_handlers(void);
 int						strlenc(char *str, const char c);
+
+/*Utils*/
+void					*ft_realloc(void *ptr, size_t size, size_t oldsize);
+char					*ft_strncat(char *dest, char *src, unsigned int nb);
 #endif
