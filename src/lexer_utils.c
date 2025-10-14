@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:37:42 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/23 15:50:55 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/14 16:52:26 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 size_t	op_len(int op)
 {
-	if (op == INPUT || op == OUTPUT || op == PIPE)
+	if (op == INPUT || op == OUTPUT || op == PIPE || op == SEMICOL)
 		return (1);
 	return (2);
 }

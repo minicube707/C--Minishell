@@ -38,6 +38,9 @@ FILE_NAMES =	double_list \
 				export_utils \
 				unset \
 				utils \
+				syntax \
+				syntax_err \
+				syntax_utils
 
 #execute_built_in \
 # =======================================

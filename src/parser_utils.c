@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:49:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/03 04:15:33 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/14 11:27:08 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int	count_option(t_token *token)
 	int	c;
 
 	c = 0;
-	if (token->op >= 5 && token->op <= 7)
+	if (token->op >= 5 && token->op <= 8)
 		token = token->next;
-	while (token != NULL && !(token->op >= 5 && token->op <= 7))
+	while (token != NULL && !(token->op >= 5 && token->op <= 8))
 	{
 		if (token->op >= 0 && token->op <= 3)
 			token = token->next;
@@ -69,8 +69,6 @@ int	new_tab_file(t_list *curr, t_token **token, int f)
 		curr->tab_file[f]->file_name = (*token)->content;
 		curr->tab_file[f]->fd = -1;
 	}
-	else
-		write(2, "error\n", 6);
 	return (++f);
 }
 

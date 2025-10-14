@@ -6,13 +6,13 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/10 16:58:23 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/14 16:38:49 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_op(char *str)
+int	is_op(char *str)
 {
 	if (str[0] == '<')
 	{
@@ -32,6 +32,8 @@ static int	is_op(char *str)
 			return (OR);
 		return (PIPE);
 	}
+	if (str[0] == ';')
+		return (SEMICOL);
 	if (str[0] == '&' && str[1] == '&')
 		return (AND);
 	return (-1);
@@ -82,10 +84,6 @@ char	*dup_subshell(char *str)
 			i++;
 	return (ft_substr(str, 0, i));
 }
-/*
-void	escape_handler(char *arg, char *str, int *l)
-{
-}*/
 
 void	append_chars(char **arg,  char *str, size_t *buff, size_t s, size_t e)
 {
@@ -129,10 +127,44 @@ char	*dup_quote(char *str, int *j)
 			e++;
 		}
 	}
+	append_chars(&arg, str, &buff, i - e, e);
 	if (!str[i])
 		return(unclosed_quote());
 	return (arg);
+}/*
+static void	handle_escape(char **arg, char *str, size_t *i, size_t *len, size_t *buff, int *j)
+{
+	append_chars(arg, str, buff, *i - *len, *len);
+	append_chars(arg, str, buff, *i + 1, 1);
+	*j += 2;
+	*i += 2;
+	*len = 0;
 }
+char	*dup_quote(char *str, int *j)
+{
+	size_t	i;
+	size_t	len;
+	size_t	buff;
+	char	*arg;
+
+	i = 1;
+	len = 0;
+	buff = 11;
+	arg = ft_calloc(buff, sizeof(char));
+	if (!arg)
+		free_shell(NULL, 1);
+	while (str[i] && str[i] != '"')
+		if (str[i] == '\\' && (str[i + 1] == '\\' || str[i + 1] == '"' || str[i + 1] == '\''))
+			handle_escape(&arg, str, &i, &len, &buff, j);
+		else
+		{
+			i++;
+			len++;
+		}
+	if (!str[i])
+		return (unclosed_quote());
+	return (arg);
+}*/
 
 char	*duparg(char *str, int *j)
 {
@@ -140,6 +172,7 @@ char	*duparg(char *str, int *j)
 
 	if (*str == '"')
 	{
+		*j += 2;
 		return (dup_quote(str, j));
 	}
 	if (*str == '\'')
@@ -152,7 +185,7 @@ char	*duparg(char *str, int *j)
 	return (ft_substr(str, 0, i));
 }
 
-static void	set_token(t_token **result, char *str, int *i)
+static int	set_token(t_token **result, char *str, int *i)
 {
 	char	*arg;
 	int		code;
@@ -160,24 +193,20 @@ static void	set_token(t_token **result, char *str, int *i)
 	code = is_op(&str[*i]);
 	if (code >= 0)
 	{
+		if (code >= 0 && code <= 3)
+			if (!check_redirection(&str[*i]))
+				return (0);
 		add_back(result, NULL, code);
 		*i += op_len(code);
 	}
 	else
 	{
 		arg = duparg(&str[*i], i);
-		/*if (*arg == '"')
-		{
-			add_back(result, ft_substr(str, (*i) + 1, (ft_strlen(arg) - 2)), code);
-			*i += ft_strlen(arg);
-			free(arg);
-		}
-		else
-		{*/
-			add_back(result, arg, code);
-			*i += ft_strlen(arg);
-		//}
+	//	printf("%s\n", arg);
+		add_back(result, arg, code);
+		*i += ft_strlen(arg);
 	}
+	return (1);
 }
 
 t_token	*lexer(char *str)
@@ -193,7 +222,11 @@ t_token	*lexer(char *str)
 			i++;
 		else
 		{
-			set_token(&result, str, &i);
+			if (!set_token(&result, str, &i))
+			{
+				result = free_token(result);
+				break ;
+			}
 		}
 	}
 	return (result);

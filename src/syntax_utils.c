@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 00:39:03 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/14 00:42:52 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/14 11:52:34 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_redirection(int op)
 
 int	is_operator(int op)
 {
-	if (op >= 4 && op <= 7)
+	if (op >= 4 && op <= 8)
 		return (1);
 	return (0);
 }
