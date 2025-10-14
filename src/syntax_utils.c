@@ -1,36 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax.c                                           :+:      :+:    :+:   */
+/*   syntax_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/10 15:48:47 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/14 07:35:11 by lupayet          ###   ########.fr       */
+/*   Created: 2025/10/14 00:39:03 by lupayet           #+#    #+#             */
+/*   Updated: 2025/10/14 00:42:52 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	unclose_quote()
+int	is_redirection(int op)
 {
-	ft_putstr_fd("minishell: unclose quotes are not supported\n", 2);
-	return (1);
+	if (op >= 0 && op <= 3)
+		return (1);
+	return (0);
 }
 
-static check_redirection(t_token *token)
+int	is_operator(int op)
 {
-	if (!token->content)
-
-}
-
-t_token	*checker(t_token *token)
-{
-	t_token	*curr;
-
-	curr = token;
-	while (curr)
-	{
-
-	}
+	if (op >= 4 && op <= 7)
+		return (1);
+	return (0);
 }
