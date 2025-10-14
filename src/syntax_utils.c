@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   syntax_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/23 15:37:42 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/14 16:52:26 by lupayet          ###   ########.fr       */
+/*   Created: 2025/10/14 00:39:03 by lupayet           #+#    #+#             */
+/*   Updated: 2025/10/14 11:52:34 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	op_len(int op)
+int	is_redirection(int op)
 {
-	if (op == INPUT || op == OUTPUT || op == PIPE || op == SEMICOL)
+	if (op >= 0 && op <= 3)
 		return (1);
-	return (2);
+	return (0);
+}
+
+int	is_operator(int op)
+{
+	if (op >= 4 && op <= 8)
+		return (1);
+	return (0);
 }

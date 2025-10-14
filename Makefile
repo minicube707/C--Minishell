@@ -46,6 +46,10 @@ FILE_NAMES =	double_list \
 				export \
 				export_utils \
 				unset \
+				utils \
+				syntax \
+				syntax_err \
+				syntax_utils
 
 # =======================================
 #              VARIABLE
