@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:27:57 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/10 16:29:05 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/14 19:32:27 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,29 @@ int	ft_echo_utils(char **tab, int *add_back_slash)
 	return (i);
 }
 
-void	ft_echo(char **tab_option)
+void	ft_echo(t_shell *shell, char **tab_option)
 {
-	int	add_back_slash;
-	int	i;
+	char	*string;
+	char	*expand;
+	int		add_back_slash;
+	int		i;
 
+	string = NULL;
 	i = ft_echo_utils(tab_option, &add_back_slash);
 	while (tab_option[i] != NULL)
 	{
-		write(1, tab_option[i], ft_strlen(tab_option[i]));
+		string = ft_strdup(tab_option[i]);
+		if (string == NULL)
+			return ((void)print_error("Error malloc\n"));
+		expand = expand_dollard(shell, string);
+		if (expand == NULL)
+			return ((void)print_error("Error malloc\n"));
+		if (ft_strncmp(expand, string, ft_strlen(expand)) != 0)
+			write(1, expand, ft_strlen(expand));
+		write(1, " ", 1);
+		free(expand);
+		free(string);
 		i++;
-		if (tab_option[i] != NULL)
-			write(1, " ", 1);
 	}
 	if (add_back_slash)
 		write(1, "\n", 1);

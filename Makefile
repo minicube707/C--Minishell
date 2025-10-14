@@ -23,6 +23,7 @@ FILE_NAMES =	double_list \
                 execute_open_file \
                 execution \
 				expand_dollar \
+				expand_dollar_utils \
 				free_shell \
 				ft_cd \
 				ft_cd_utils \

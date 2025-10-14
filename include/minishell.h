@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/10 16:38:50 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/14 18:35:07 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ int						print_error_to_much(char *file);
 int						print_error_env_not_set(char *file, char *env);
 int						print_error_access_denied(char *file, char *path);
 int						print_error_invalide_option(char *cmd, char *file);
+int						print_error_nuremic_re(char *cmd, char *file);
 
 /*===================*/
 /*=====EXECUTION=====*/
@@ -166,7 +167,7 @@ char					*expand_dollard(t_shell *shell, char *string);
 /*===================*/
 
 int						ft_is_built_in(char *command);
-void					ft_echo(char **tab_option);
+void					ft_echo(t_shell *shell, char **tab_option);
 void					ft_pwd(void);
 int						ft_export(t_shell *shell, char **arg);
 int						ft_unset(t_shell *shell, char **arg);
@@ -174,14 +175,13 @@ void					ft_env(char **environment);
 int						size_t_list_env(t_list_env *env);
 t_list_env				**set_export_list(t_list_env *env, int size);
 int						ft_strcmp(const char *s1, const char *s2);
-void					ft_exit(t_shell *shell);
+void					ft_exit(t_shell *shell, char **tab_option);
 void					ft_cd(t_shell *shell, char **tab_option);
 void					chdir2(char *pwd);
-char					*expand_path(t_shell *shell, char *pwd);
+char					*expand_path(t_shell *shell, char *pwd, char *change);
 char					*norme_env(char *env, int n);
-int						cd_expand_home(t_shell *shell, char **tab_option,
-							char **pwd);
-
+char					*cd_expand_home(t_shell *shell, char **tab_option);
+int 					add_expand(t_shell *shell, char **pwd, char *string, char *before);	
 /*===================*/
 /*======PARSING======*/
 /*===================*/
