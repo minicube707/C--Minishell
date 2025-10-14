@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:05:15 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/14 11:55:39 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/14 17:01:27 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	set_list_loop(t_list *curr, t_list *prev, t_token *token)
 		if (token->op >= 5 && token->op <= 8)
 		{
 			curr = new_node(curr, prev, token);
-			prev = curr;	
+			prev = curr;
 			f = 0;
 			o = 0;
 		}

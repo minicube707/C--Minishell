@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_shell.c                                       :+:      :+:    :+:   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/23 12:06:44 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/02 18:00:57 by fmotte           ###   ########.fr       */
+/*   Created: 2025/10/03 17:44:44 by fmotte            #+#    #+#             */
+/*   Updated: 2025/10/06 19:17:58 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_shell(t_shell *shell, int exit_code)
+void ft_exit(t_shell *shell)
 {
-	dlist_clear(shell->head);
-	free_env(shell->env);
-	free_double_array(shell->environment);
-	exit(exit_code);
+    //Add in more detail exit function
+    //Add code to exit
+    free_shell(shell, g_status);
 }

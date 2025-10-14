@@ -6,18 +6,18 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 17:39:03 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/02 15:41:09 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/09 10:08:51 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_getenv(char **envp, char *var)
+char	*ft_getenvironement(char **envp, char *var)
 {
 	int	i;
 
 	i = 0;
-	while (ft_strncmp(var, envp[i], ft_strlen(var)))
+	while (envp[i] != NULL && ft_strncmp(var, envp[i], ft_strlen(var)))
 		i++;
 	return (envp[i]);
 }
@@ -46,46 +46,45 @@ char	*join_path(char *command, char **tab_env)
 	return (ft_strdup(command));
 }
 
-char	*execute_add_path(char *command, char *name_env, char **envp)
+char	*execute_add_path(t_shell *shell, char *name_env)
 {
 	char	*path;
 	char	*new_path;
 	char	**tab_env;
 
-	path = ft_getenv(envp, name_env);
+	path = ft_getenvironement(shell->environment, name_env);
 	if (path == NULL)
 		return (NULL);
 	path += ft_strlen(name_env);
 	tab_env = ft_split(path, ':');
 	if (tab_env == NULL)
 		return (NULL);
-	new_path = join_path(command, tab_env);
+	new_path = join_path(shell->head->command, tab_env);
 	tab_char_clear(tab_env);
 	return (new_path);
 }
 
-int	manage_path(t_shell *shell)
+int	manage_path(t_shell *shell, int change)
 {
 	struct stat	buff;
 	char		*path;
 
-	if (shell->head->command == NULL)
-		return (0);
 	if (shell->head->command[0] != '/')
 	{
-		path = execute_add_path(shell->head->command, "PATH=",
-				shell->environment);
-		if (shell->head->command != NULL)
+		path = execute_add_path(shell, "PATH=");
+		if (shell->head->command != NULL && change && path != NULL)
 		{
 			free(shell->head->command);
 			shell->head->command = path;
 			shell->head->option[0] = path;
 		}
+		else
+			free(path);
 	}
-	else
+	else if (shell->head->command != NULL)
 	{
 		if (access(shell->head->command, F_OK) == -1)
-			return (print_error_file(shell->head->command));
+			return (print_error_file(NULL, shell->head->command));
 		stat(shell->head->command, &buff);
 		if (S_ISDIR(buff.st_mode))
 			return (print_error_is_directory(shell->head->command));

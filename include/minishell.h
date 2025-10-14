@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/14 15:10:15 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/14 16:58:42 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "get_next_line_bonus.h"
 # include "libft.h"
+# include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -26,8 +27,6 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-#include <mcheck.h>
-
 /*===================*/
 /*=======GLOBAL======*/
 /*===================*/
@@ -37,10 +36,10 @@ extern int				g_status;
 /*=======MACRO=======*/
 /*===================*/
 /*REDIRECTION*/
-# define INPUT 0		// <
-# define OUTPUT 1		// >
-# define HERE_DOC 2		// <<
-# define APPEND 3		// >>
+# define INPUT 0 // <
+# define OUTPUT 1 // >
+# define HERE_DOC 2 // <<
+# define APPEND 3 // >>
 
 /*CONTROL OPERATOR*/
 # define EMPTY 4
@@ -48,7 +47,6 @@ extern int				g_status;
 # define AND 6			// &&
 # define OR 7			// ||
 # define SEMICOL 8		// ;
-
 
 /*===================*/
 /*=====STRUCTURE=====*/
@@ -85,7 +83,7 @@ typedef struct s_list
 	char				*command;
 	char				**option;
 	t_file_info			**tab_file;
-	int 				in_out[2];
+	int					in_out[2];
 	char				*subshell;
 	struct s_list		*next;
 	struct s_list		*previous;
@@ -111,8 +109,8 @@ void					tab_info_clear(t_file_info **tab);
 /*===================*/
 /*=======DLIST=======*/
 /*===================*/
-t_list 					*dlist_clear(t_list *head);
-t_list 					*dlist_get_top(t_list *head);
+t_list					*dlist_clear(t_list *head);
+t_list					*dlist_get_top(t_list *head);
 
 /*===================*/
 /*=======COMMUN======*/
@@ -124,8 +122,13 @@ void					free_shell(t_shell *shell, int exit_code);
 /*Manage Error*/
 int						print_error(char *string);
 int						print_error_unknow_cmd(char *string);
-int						print_error_file(char *file);
+int						print_error_file(char *cmd, char *file);
 int						print_error_is_directory(char *file);
+int						print_error_not_directory(char *cmd, char *file);
+int						print_error_to_much(char *file);
+int						print_error_env_not_set(char *file, char *env);
+int						print_error_access_denied(char *file, char *path);
+int						print_error_invalide_option(char *cmd, char *file);
 
 /*===================*/
 /*=====EXECUTION=====*/
@@ -135,40 +138,51 @@ int						print_error_is_directory(char *file);
 int						here_doc(int *file_fd, char *limiter);
 
 /*Execute_close_file*/
-int						manage_path(t_shell *shell);
+int						manage_path(t_shell *shell, int change);
 
 /*Execute_here_doc*/
 void					execute_here_doc(t_list *head);
 
 /*Execute_close_file*/
-void    				execute_close_fd(t_list *head);
-void    				execute_close_all_fd(t_list *head);
+void					execute_close_fd(t_list *head);
+void					execute_close_all_fd(t_list *head);
 
 /*Execute_open_file*/
 int						execute_open_file(t_list *head);
 
 /*Execution Command*/
-int 					execute_command(t_shell *shell);
+int						execute_command(t_shell *shell);
 
 /*Execution Built In*/
 int						execute_built_in(t_shell *shell);
 
 /*Main Execution*/
 void					execution(t_shell *shell, int subshell,
-							int	shell_channel[2]);
+							int shell_channel[2]);
+
+/*Expand dollar*/
+char					*expand_dollard(t_shell *shell, char *string);
 
 /*===================*/
 /*======BUILTIN======*/
 /*===================*/
 
-int 					ft_is_built_in(char *command);
-void    				ft_echo(char **tab_option);
-void    				ft_pwd(t_shell *shell);
+int						ft_is_built_in(char *command);
+void					ft_echo(char **tab_option);
+void					ft_pwd(void);
 int						ft_export(t_shell *shell, char **arg);
 int						ft_unset(t_shell *shell, char **arg);
+void					ft_env(char **environment);
 int						size_t_list_env(t_list_env *env);
 t_list_env				**set_export_list(t_list_env *env, int size);
 int						ft_strcmp(const char *s1, const char *s2);
+void					ft_exit(t_shell *shell);
+void					ft_cd(t_shell *shell, char **tab_option);
+void					chdir2(char *pwd);
+char					*expand_path(t_shell *shell, char *pwd);
+char					*norme_env(char *env, int n);
+int						cd_expand_home(t_shell *shell, char **tab_option,
+							char **pwd);
 
 /*===================*/
 /*======PARSING======*/
@@ -177,6 +191,8 @@ int						ft_strcmp(const char *s1, const char *s2);
 /*Environment*/
 t_list_env				*set_env(char **envp);
 char					**make_env(t_shell *shell, t_list_env *list);
+char					*ft_getenv(t_shell *shell, char *name);
+char					*ft_join_env(char *name, char *content);
 
 /*Parsing*/
 t_list					*parsing(char *line);
@@ -197,8 +213,8 @@ void					in_quote(char *str, int *i);
 
 /*Token Utils*/
 t_token					*end_list(t_token *lst);
-t_token 				*new_token(char *content, int op);
-int						add_back(t_token **head, char *content,  int op);
+t_token					*new_token(char *content, int op);
+int						add_back(t_token **head, char *content, int op);
 
 /*Syntax*/
 int						is_redirection(int op);
@@ -212,7 +228,7 @@ int						error_token(int op);
 void					free_env(t_list_env *head);
 t_token					*free_token(t_token *head);
 void					free_shell(t_shell *shell, int init);
-void    				free_env_node(t_list_env *env);
+void					free_env_node(t_list_env *env);
 char					**free_double_array(char **list);
 
 void					reset_signal_handlers(void);

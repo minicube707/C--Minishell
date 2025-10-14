@@ -1,21 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_shell.c                                       :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/23 12:06:44 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/02 18:00:57 by fmotte           ###   ########.fr       */
+/*   Created: 2025/10/03 14:23:21 by fmotte            #+#    #+#             */
+/*   Updated: 2025/10/10 16:32:00 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_shell(t_shell *shell, int exit_code)
+void	ft_env(char **environment)
 {
-	dlist_clear(shell->head);
-	free_env(shell->env);
-	free_double_array(shell->environment);
-	exit(exit_code);
+	int	i;
+
+	i = 0;
+	while (environment[i] != NULL)
+	{
+		write(1, environment[i], ft_strlen(environment[i]));
+		write(1, "\n", 1);
+		i++;
+	}
 }

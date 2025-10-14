@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:38:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/03 16:52:45 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/14 17:02:28 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,10 @@ int	strlenc(char *str, const char c)
 
 static void	set_new_env(t_list_env *new, char *envp)
 {
-	char	*content;
-
 	new->name = ft_substr(envp, 0, strlenc(envp, '='));
 	if (!new->name)
 		write(1, "Error env-name\n", 15);
-	content = getenv(new->name);
-	new->content = ft_strdup(content);
+	new->content = ft_strdup(getenv(new->name));
 }
 
 t_list_env	*set_env(char **envp)
@@ -64,40 +61,41 @@ t_list_env	*set_env(char **envp)
 	}
 	return (head);
 }
+
 int	list_size(t_list_env *list)
 {
-    int	s;
+	int	s;
 
-    s = 0;
-    while (list)
-    {
-        s++;
-        list = list->next;
-    }
-    return (s);
+	s = 0;
+	while (list)
+	{
+		s++;
+		list = list->next;
+	}
+	return (s);
 }
 
 char	**make_env(t_shell *shell, t_list_env *list)
 {
-    char	**env;
-    int		size;
-    int		i;
-    char	*p;
+	char	**env;
+	int		size;
+	int		i;
+	char	*p;
 
-    i = 0;
+	i = 0;
 	shell->environment = free_double_array(shell->environment);
-    size = list_size(list);
-    env = malloc(sizeof(char *) * (size + 1));
-    if (!env)
-        return (NULL);
-    env[size] = NULL;
-    while (list)
-    {
-        p = ft_strjoin(list->name, "=");
-        env[i] = ft_strjoin(p, list->content);
-        free(p);
-        i++;
-        list = list->next;
-    }
-    return (env);
+	size = list_size(list);
+	env = malloc(sizeof(char *) * (size + 1));
+	if (!env)
+		return (NULL);
+	env[size] = NULL;
+	while (list)
+	{
+		p = ft_strjoin(list->name, "=");
+		env[i] = ft_strjoin(p, list->content);
+		free(p);
+		i++;
+		list = list->next;
+	}
+	return (env);
 }

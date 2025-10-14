@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/03 04:15:03 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/14 17:01:09 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	sighandler(int signal)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	g_status = 130;
 	return ;
 }
 
@@ -138,6 +139,7 @@ int	main(int argc, char **argv, char **envp)
 			{
 				set_signal_action(handlexec);
 				execution(&shell, 0, shell_channel);
+				write(1, "\n", 1);
 				dlist_clear(shell.head);
 				set_signal_action(sighandler);
 			}

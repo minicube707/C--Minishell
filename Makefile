@@ -16,18 +16,26 @@ FILE_NAMES =	double_list \
 				double_list_utils \
 				built-in \
 				execute_add_path \
+				execute_built_in \
 				execute_close_file \
                 execute_command \
                 execute_here_doc \
                 execute_open_file \
                 execution \
+				expand_dollar \
 				free_shell \
+				ft_cd \
+				ft_cd_utils \
+				ft_env \
+				ft_exit \
                 here_doc \
                 main \
                 manage_error \
+				norme_env \
 				tab_char \
 				tab_info \
 				env \
+				env_utils \
 				parser \
 				parser_utils \
 				token_utils \
@@ -42,7 +50,6 @@ FILE_NAMES =	double_list \
 				syntax_err \
 				syntax_utils
 
-#execute_built_in \
 # =======================================
 #              VARIABLE
 # =======================================		
@@ -127,7 +134,7 @@ run: $(NAME)
 
 test: $(NAME)
 	valgrind \
-	--suppressions=./dev_tools/.ignore_rl_leaks.supp \
+	--suppressions=$$(pwd)/dev_tools/.ignore_rl_leaks.supp \
 	--leak-check=full \
 	--show-leak-kinds=all \
 	--track-origins=yes \

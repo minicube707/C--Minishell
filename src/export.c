@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:51:49 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/29 23:14:15 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/09 10:11:59 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,13 @@ static void	sort_list(t_list_env **arr, int size)
 	int			j;
 
 	i = 0;
-	while (i < size - 1) {
+	while (i < size - 1)
+	{
 		j = 0;
-		while (j < size - i - 1) {
-			if (ft_strcmp(arr[j]->name, arr[j + 1]->name) > 0) {
+		while (j < size - i - 1)
+		{
+			if (ft_strcmp(arr[j]->name, arr[j + 1]->name) > 0)
+			{
 				tmp = arr[j];
 				arr[j] = arr[j + 1];
 				arr[j + 1] = tmp;
@@ -65,27 +68,22 @@ static void	sort_list(t_list_env **arr, int size)
 		}
 		i++;
 	}
-	i = 0;
-	while (i < size)
-	{
+	i = -1;
+	while (++i < size)
 		printf("export %s=%s\n", arr[i]->name, arr[i]->content);
-		i++;
-	}
 	free(arr);
 }
 
 int	ft_export(t_shell *shell, char **arg)
 {
-	t_list_env  *curr;
-	t_list_env	**list;
+	t_list_env	*curr;
 	int			size;
 
-    if (!arg)
+	if (!arg[1])
 	{
 		size = size_t_list_env(shell->env);
-		list = set_export_list(shell->env, size);
-		sort_list(list, size);
-		return 0;
+		sort_list(set_export_list(shell->env, size), size);
+		return (0);
 	}
 	arg++;
 	while (*arg)
@@ -94,7 +92,10 @@ int	ft_export(t_shell *shell, char **arg)
 		if (!name_is_valid(*arg))
 			return (error_id(*arg));
 		while (curr->next)
+		{
+			//Create a function that delete if is already exist, (simul change)
 			curr = curr->next;
+		}
 		curr->next = malloc(sizeof(t_list_env));
 		set_new_env(curr->next, *arg);
 		arg++;
