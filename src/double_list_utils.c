@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:13:52 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/02 14:10:16 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/14 19:37:37 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_list	*dlist_get_top(t_list *head)
 {
 	t_list	*tmp_list;
-	
+
 	tmp_list = head;
 	if (tmp_list == NULL)
 		return (NULL);

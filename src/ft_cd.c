@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 17:05:40 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/10 16:46:54 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/14 20:02:55 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,20 @@ void	cd_only(t_shell *shell)
 {
 	char	*pwd;
 
-	pwd = expand_dollard(shell, ft_strdup("$HOME"));
+	pwd = expand_dollard(shell, "$HOME");
+	if (pwd == NULL)
+		return ((void)print_error("Error malloc\n"));
 	if (ft_strncmp("$HOME", pwd, 5) == 0)
 		print_error_env_not_set("cd", "HOME");
 	else
 		chdir2(pwd);
-	if (pwd != NULL)
-		free(pwd);
+	free(pwd);
 }
 
 void	cd_else(char **tab_option, char **pwd)
 {
-	char	buff[1024];
-	char	*cp_pwd;
-
-	*pwd = getcwd(buff, 1024);
-	if (*pwd == NULL)
-		return ((void)print_error("Failed to get current directory\n"));
-	cp_pwd = ft_strjoin(*pwd, "/");
-	if (cp_pwd == NULL)
-		return ((void)print_error("Error malloc\n"));
-	*pwd = ft_strjoin(cp_pwd, tab_option[1]);
-	free(cp_pwd);
+	(void)pwd;
+	chdir2(tab_option[1]);
 }
 
 void	cd_minus(t_shell *shell, char **tab_option)
@@ -49,7 +41,9 @@ void	cd_minus(t_shell *shell, char **tab_option)
 		print_error_invalide_option("cd", tab_option[1]);
 		return ;
 	}
-	pwd = expand_dollard(shell, ft_strdup("$OLDPWD"));
+	pwd = expand_dollard(shell, "$OLDPWD");
+	if (pwd == NULL)
+		return ;
 	if (ft_strncmp("$OLDPWD", pwd, 7) == 0)
 		print_error_env_not_set("cd", "OLDPWD");
 	else
@@ -57,15 +51,33 @@ void	cd_minus(t_shell *shell, char **tab_option)
 		chdir2(pwd);
 		printf("%s\n", pwd);
 	}
-	if (pwd != NULL)
-		free(pwd);
+	free(pwd);
+}
+
+void	ft_cd_utils(t_shell *shell, char *pwd)
+{
+	char	*change;
+
+	change = expand_dollard(shell, "$HOME");
+	if (change == NULL)
+		return ((void)print_error("Error malloc\n"));
+	if (ft_strncmp(change, "$HOME", ft_strlen(change)) == 0)
+	{
+		free(change);
+		return ((void)print_error_env_not_set("cd", "HOME"));
+	}
+	pwd = expand_path(shell, pwd, change);
+	printf("CD %s \n", pwd);
+	chdir2(pwd);
+	free(pwd);
+	free(change);
+	// Expot PWD et OLDPWD
 }
 
 void	ft_cd(t_shell *shell, char **tab_option)
 {
 	char	*pwd;
 
-	pwd = NULL;
 	if (tab_option[1] != NULL && tab_option[2] != NULL)
 		return ((void)print_error_to_much("cd"));
 	if (tab_option[1] == NULL)
@@ -75,17 +87,13 @@ void	ft_cd(t_shell *shell, char **tab_option)
 	else if (tab_option[1][0] == '$' || ft_strncmp(tab_option[1], "~",
 			ft_strlen(tab_option[1])) == 0)
 	{
-		if (cd_expand_home(shell, tab_option, &pwd))
-			return ;
+		pwd = cd_expand_home(shell, tab_option);
+		if (pwd == NULL)
+			return ((void)print_error("Error malloc\n"));
 	}
-	else if (tab_option[1][0] == '/')
-		pwd = ft_strdup(tab_option[1]);
 	else
-		cd_else(tab_option, &pwd);
+		pwd = ft_strdup(tab_option[1]);
 	if (pwd == NULL)
 		return ((void)print_error("Error malloc\n"));
-	pwd = expand_path(shell, pwd);
-	chdir2(pwd);
-	free(pwd);
-	// Expot PWD et OLDPWD
+	ft_cd_utils(shell, pwd);
 }

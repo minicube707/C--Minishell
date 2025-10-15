@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/10 16:25:55 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/13 17:16:12 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static void	execute_programm(t_shell *shell)
 	int	exit_code;
 
 	exit_code = manage_path(shell, 1);
-	printf("COMMAND %s \n", shell->head->command);
 	if (exit_code)
 		free_shell(shell, EXIT_FAILURE);
 	if (shell->head->command != NULL)
@@ -67,15 +66,17 @@ int	execute_command(t_shell *shell)
 	int		status;
 	pid_t	pid;
 
+	printf("COMMAND %s \n", shell->head->command);
 	manage_fork(shell, &pid);
+		
 	if (shell->head->next == NULL || shell->head->next->pre_redir == AND
 		|| shell->head->next->pre_redir == OR)
 	{
-		if (waitpid(pid, &status, 0))
+		if (waitpid(pid, &status, 0	))
 		{
 			if (WIFEXITED(status))
 				g_status = WEXITSTATUS(status);
-			else if (WIFEXITED(status))
+			else if (WIFSIGNALED(status))
 				g_status = 128 + WTERMSIG(status);
 		}
 		else
