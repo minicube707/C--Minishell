@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/16 05:31:04 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/16 10:06:16 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ char	*dup_quote(char *str, int *j)
 	{
 		if (escape_in_double_quote(&str[i]))
 		{
-			*j += 1 + escape_char_len(&str[i]);
+			*j += 1;
 			append_chars(&arg, str, &buff, i - e, e);
 			append_escaped_char(&arg, str, &buff, i + 1);
 			i += 1 + escape_char_len(&str[i]);
@@ -170,7 +170,6 @@ static int	set_token(t_token **result, char *str, int *i)
 	else
 	{
 		arg = duparg(&str[*i], i);
-	//	printf("%s\n", arg);
 		add_back(result, arg, code);
 		*i += ft_strlen(arg);
 	}

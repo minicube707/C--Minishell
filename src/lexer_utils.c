@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:37:42 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/16 06:31:51 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/16 10:21:43 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,14 @@ void	append_escaped_char(char **arg,  char *str, size_t *buff, size_t s)
 	if (str[s + 1] && str[s] == '>' && str[s + 1] == '>')
 	{
 		ft_strncat(*arg, ">>", 2);
+	}
+	else if (str[s] == 'n')
+	{
+		ft_strncat(*arg, "\n", 2);
+	}
+	else if (str[s] == 't')
+	{
+		ft_strncat(*arg, "\t", 2);
 	}
 	else
 		ft_strncat(*arg, &str[s], 1);

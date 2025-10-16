@@ -6,11 +6,20 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 05:23:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/16 06:01:42 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/16 09:04:06 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int is_delimiter(char c)
+{
+	if (c == ' ' || c == '"' || c == '<' || c == '>' || c == ';' || c == '|')
+		return (1);
+	if (c == '&' || c == '(' || c == ')')
+		return (1);
+	return (0);
+}
 
 char	*dup_unquote(char *str, int *j)
 {
@@ -25,11 +34,11 @@ char	*dup_unquote(char *str, int *j)
 	arg = ft_calloc(sizeof(char), buff);
 	if (!arg)
 		free_shell(NULL, 1);
-	while (str[i] && str[i] != '"' && str[i] != ' ')
+	while (str[i] && !is_delimiter(str[i]))
 	{
 		if (escape_in_no_quote(&str[i]))
 		{
-			*j += 1 + escape_char_len(&str[i]);
+			*j += 1;
 			append_chars(&arg, str, &buff, i - e, e);
 			append_escaped_char(&arg, str, &buff, i + 1);
 			i += 1 + escape_char_len(&str[i]);
