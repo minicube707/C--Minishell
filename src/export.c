@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:51:49 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/16 13:36:10 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/16 13:39:51 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ static void	set_new_env(t_list_env *new, char *arg)
 {
 	size_t	l;
 
-//	l = strlenc(arg, '=');
-//	new->name = ft_substr(arg, 0, l);
+	l = strlenc(arg, '=');
+	new->name = ft_substr(arg, 0, l);
 	if (arg[l] == '=')
 		l++;
 	new->content = ft_strdup(&arg[l]);
@@ -73,7 +73,7 @@ static void	sort_list(t_list_env **arr, int size)
 		printf("export %s=%s\n", arr[i]->name, arr[i]->content);
 	free(arr);
 }
-
+/*
 void	export_arg(char *arg, t_list_env *curr)
 {
 	while (*arg)
@@ -92,13 +92,13 @@ void	export_arg(char *arg, t_list_env *curr)
 		arg++;
 	}
 }
-
+*/
 int	ft_export(t_shell *shell, char **arg)
 {
 	t_list_env	*curr;
 	int			size;
-	char		*name;
-	size_t		l;
+//	char		*name;
+//	size_t		l;
 
 	if (!arg[1])
 	{
@@ -107,9 +107,24 @@ int	ft_export(t_shell *shell, char **arg)
 		return (0);
 	}
 	arg++;
-	l = strlenc(arg, '=');
-	name = ft_substr(arg, 0, l);
-	export_arg(arg, curr);
+	while (*arg)
+	{
+		curr = shell->env;
+		if (!name_is_valid(*arg))
+			return (error_id(*arg));
+		while (curr->next)
+		{
+		//	if (ft_strcmp(curr->name, ))
+			
+			curr = curr->next;
+		}
+		curr->next = malloc(sizeof(t_list_env));
+		set_new_env(curr->next, *arg);
+		arg++;
+	}
+//	l = strlenc(arg, '=');
+	//name = ft_substr(arg, 0, l);
+	//export_arg(arg, curr);
 	shell->environment = make_env(shell, shell->env);
 	return (0);
 }

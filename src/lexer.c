@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/16 10:06:16 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/16 15:04:39 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	append_chars(char **arg,  char *str, size_t *buff, size_t s, size_t len)
 	ft_strncat(*arg, &str[s], len);
 }
 
-char	*dup_quote(char *str, int *j)
+char	*dup_quote(char *str, int *j, int single)
 {
 	size_t	i;
 	size_t	e;
@@ -112,9 +112,9 @@ char	*dup_quote(char *str, int *j)
 	arg = ft_calloc(sizeof(char), buff);
 	if (!arg)
 		free_shell(NULL, 1);
-	while (str[i] && str[i] != '"')
+	while (str[i] && str[i] != ' ')
 	{
-		if (escape_in_double_quote(&str[i]))
+		if (escape_in_double_quote(&str[i]) && !single)
 		{
 			*j += 1;
 			append_chars(&arg, str, &buff, i - e, e);
@@ -129,8 +129,8 @@ char	*dup_quote(char *str, int *j)
 		}
 	}
 	append_chars(&arg, str, &buff, i - e, e);
-	if ((str[0] == '"' || str[0] == '\'') && !str[i])
-		return(unclosed_quote());
+//	if ((str[0] == '"' || str[0] == '\'') && !str[i])
+//		return(unclosed_quote());
 	return (arg);
 }
 
@@ -141,10 +141,11 @@ char	*duparg(char *str, int *j)
 	if (*str == '"')
 	{
 		*j += 2;
-		return (dup_quote(str, j));
+		return (dup_quote(str, j, 0));
 	}
 	if (*str == '\'')
-		return (strcdup(str, '\''));
+		//return (strcdup(str, '\''));
+		return (dup_quote(str, j, 1));
 	if (*str == '(')
 		return (dup_subshell(str));
 	i = 0;
