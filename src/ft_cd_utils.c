@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:24:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/14 19:31:57 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/16 17:49:00 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	chdir2(char *pwd)
 	}
 }
 
-char	*cd_expand_home_utils(t_shell *shell, char *target)
+char	*cd_expand_home_utils(t_shell *shell, char *target, int *i)
 {
 	char	*change;
 	char	*pwd;
@@ -41,18 +41,20 @@ char	*cd_expand_home_utils(t_shell *shell, char *target)
 	{
 		free(change);
 		free(target);
-		return (change);
+		*i = 1;
+		return (NULL);
 	}
 	pwd = expand_path(shell, target, change);
 	free(change);
+	*i = 0;
 	return (pwd);
 }
 
-char	*cd_expand_home(t_shell *shell, char **tab_option)
+char	*cd_expand_home(t_shell *shell, char **tab_option, int *i)
 {
 	char	*pwd;
-	char	*target;
-
+	char	*target;	
+	
 	if (tab_option[1][0] == '$')
 		target = ft_strdup(tab_option[1]);
 	else
@@ -64,7 +66,7 @@ char	*cd_expand_home(t_shell *shell, char **tab_option)
 	}
 	if (ft_strlen(ft_strchr(tab_option[1],
 				'$')) == ft_strlen(ft_strrchr(tab_option[1], '$')))
-		pwd = cd_expand_home_utils(shell, target);
+		pwd = cd_expand_home_utils(shell, target, i);
 	else
 		pwd = expand_path(shell, target, "");
 	return (pwd);
