@@ -42,6 +42,7 @@ FILE_NAMES =	double_list \
 				token_utils \
 				lexer \
 				lexer_utils \
+				dup_arg \
 				free_utils \
 				export \
 				export_utils \

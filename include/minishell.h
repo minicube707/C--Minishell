@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/14 16:58:42 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/16 05:52:11 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,13 @@ t_token					*lexer(char *str);
 int						is_op(char *str);
 size_t					op_len(int op);
 void					in_quote(char *str, int *i);
+int						escape_in_double_quote(char *str);
+int						escape_in_no_quote(char *str);
+int						escape_char_len(char *str);
+void					append_escaped_char(char **arg,  char *str, size_t *buff, size_t s);
+
+void					append_chars(char **arg,  char *str, size_t *buff, size_t s, size_t len);
+char					*dup_unquote(char *str, int *j);
 
 /*Token Utils*/
 t_token					*end_list(t_token *lst);

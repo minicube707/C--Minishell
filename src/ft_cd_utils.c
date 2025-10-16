@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:24:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/14 19:31:57 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/16 03:28:02 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*cd_expand_home_utils(t_shell *shell, char *target)
 	{
 		free(change);
 		free(target);
-		return (change);
+		return (NULL);
 	}
 	pwd = expand_path(shell, target, change);
 	free(change);
