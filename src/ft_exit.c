@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 17:44:44 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/14 19:35:40 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/15 18:35:22 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int	ft_string_isalpha(char *string)
 }
 
 void	ft_exit(t_shell *shell, char **tab_option)
-{
+{	
+	g_status = 0;
 	write(1, "exit\n", 5);
 	if (tab_option[1] == NULL)
 		free_shell(shell, g_status);
@@ -41,7 +42,6 @@ void	ft_exit(t_shell *shell, char **tab_option)
 	if (tab_option[2] != NULL)
 	{
 		print_error_to_much("exit");
-		g_status = 1;
 		return ;
 	}
 	free_shell(shell, ft_atoi(tab_option[1]));

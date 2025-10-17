@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:27:57 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/14 16:58:57 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/17 18:40:45 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_is_built_in(char *command)
 	i = 0;
 	while (i < 7)
 	{
-		if (ft_strncmp(tab_buit_in[i], command, ft_strlen(command)) == 0)
+		if (ft_strncmp(tab_buit_in[i], command, ft_strlen(command)) == 0 && ft_strlen(tab_buit_in[i]) == ft_strlen(command))
 			return (1);
 		i++;
 	}
@@ -62,35 +62,31 @@ int	ft_echo_utils(char **tab, int *add_back_slash)
 void	ft_echo(t_shell *shell, char **tab_option)
 {
 	char	*string;
-	char	*expand;
 	int		add_back_slash;
 	int		i;
-
-	string = NULL;
+	
 	i = ft_echo_utils(tab_option, &add_back_slash);
 	while (tab_option[i] != NULL)
 	{
 		string = ft_strdup(tab_option[i]);
 		if (string == NULL)
 			return ((void)print_error("Error malloc\n"));
-		expand = expand_dollard(shell, string);
-		if (expand == NULL)
-			return ((void)print_error("Error malloc\n"));
-		if (ft_strncmp(expand, string, ft_strlen(expand)) != 0)
-			write(1, expand, ft_strlen(expand));
+		string = expand_path(shell, string, "");
+		write(1, string, ft_strlen(string));
 		write(1, " ", 1);
-		free(expand);
 		free(string);
 		i++;
 	}
 	if (add_back_slash)
 		write(1, "\n", 1);
+	g_status = 0;
 }
 
 void	ft_pwd(void)
 {
 	char	buff[1024];
 
+	g_status = 0;
 	if (getcwd(buff, 1024) == NULL)
 	{
 		print_error("Cannot get current working directory path\n");

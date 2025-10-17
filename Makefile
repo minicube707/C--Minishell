@@ -35,6 +35,7 @@ FILE_NAMES =	double_list \
 				norme_env \
 				tab_char \
 				tab_info \
+				tab_add_shell \
 				env \
 				env_utils \
 				parser \

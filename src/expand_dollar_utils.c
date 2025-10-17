@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 18:04:55 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/14 19:32:02 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/16 15:44:42 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 static int	lenght_expand(char *string)
 {
 	int	i;
-
+	
+	if (ft_strncmp(string, "?",  1) == 0)
+		return (2);
 	i = 1;
 	while (norme_env(string, i) && i < ft_strlen(string) + 1)
 		i++;

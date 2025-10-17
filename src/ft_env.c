@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:23:21 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/10 16:32:00 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/15 18:41:59 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ void	ft_env(char **environment)
 {
 	int	i;
 
+	//Check argument
+	//IF env env .... execute
+	
 	i = 0;
 	while (environment[i] != NULL)
 	{

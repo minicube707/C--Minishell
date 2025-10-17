@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:45:15 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/14 19:36:35 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/17 18:17:17 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_list	*dlist_pop_front(t_list *pop_head)
 	tab_info_clear(pop_head->tab_file);
 	if (pop_head->mypipe[0] > 2)
 		close(pop_head->mypipe[0]);
-	if (pop_head->mypipe[0] > 2)
+	if (pop_head->mypipe[1] > 2)
 		close(pop_head->mypipe[1]);
 	if (pop_head->subshell != NULL)
 		free(pop_head->subshell);

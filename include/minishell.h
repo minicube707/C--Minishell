@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/16 17:44:39 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/17 19:03:49 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ typedef struct s_shell
 	char				**environment;
 	t_list_env			*env;
 	t_list				*head;
+	struct s_shell		**tab_shell;
+	int 				shell_channel[2];
 }						t_shell;
 
 /*===================*/
@@ -115,6 +117,8 @@ t_list					*dlist_get_top(t_list *head);
 /*===================*/
 /*=======COMMUN======*/
 /*===================*/
+
+void  tab_add_shell(t_shell *shell, t_shell *subshell);
 
 /*Free Shell*/
 void					free_shell(t_shell *shell, int exit_code);
@@ -151,7 +155,7 @@ void					execute_here_doc(t_list *head);
 
 /*Execute_close_file*/
 void					execute_close_fd(t_list *head);
-void					execute_close_all_fd(t_list *head);
+void					execute_close_all_fd(t_shell *shell);
 
 /*Execute_open_file*/
 int						execute_open_file(t_list *head);
@@ -163,7 +167,7 @@ int						execute_command(t_shell *shell);
 int						execute_built_in(t_shell *shell);
 
 /*Main Execution*/
-void					execution(t_shell *shell,  int shell_channel[2]);
+void					execution(t_shell *shell);
 
 /*Expand dollar*/
 char					*expand_dollard(t_shell *shell, char *string);
