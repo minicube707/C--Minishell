@@ -3,22 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/17 19:10:02 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/19 19:03:24 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execution(t_shell *shell)
+void	execution(t_shell *shell, int shell_channel[2])
 {
 	t_shell	sub_shell;
 	int	exit_code;
 	
 	exit_code = 0;
 	execute_here_doc(shell->head);
+	
+	printf("SHELL %p \n", shell);
 	
 	t_list *last_head;
 	int prev_redir;
@@ -40,11 +42,11 @@ void	execution(t_shell *shell)
 		
 		
 		if (is_logical || prev_redir == EMPTY)
-    	shell->head->in_out[0] = shell->shell_channel[0];
+    	shell->head->in_out[0] = shell_channel[0];
 
 		// Détermination de la sortie
 		if (is_last_or_next_is_logical)
-			shell->head->in_out[1] = shell->shell_channel[1];
+			shell->head->in_out[1] = shell_channel[1];
 		else
 			shell->head->in_out[1] = shell->head->mypipe[1];
 		
@@ -59,27 +61,25 @@ void	execution(t_shell *shell)
 			
 			if (shell->head->subshell != NULL)
 			{
+				printf("\nSUBSHELL\n");
+				
 				sub_shell.env = set_env(shell->environment);
 				sub_shell.head = NULL;
 				sub_shell.environment = NULL;
 				sub_shell.environment = make_env(&sub_shell, sub_shell.env);
 				sub_shell.head = parsing(shell->head->subshell);
-				sub_shell.shell_channel[0] = shell->shell_channel[0];
-				sub_shell.shell_channel[1] = shell->shell_channel[1];
-				tab_add_shell(shell, &sub_shell);
-				
-				printf("\nSUBSHELL\n");
+				sub_shell.is_subshell = 1;
+				sub_shell.parent_shell = shell;
 				print_list(sub_shell.head);
 				if (sub_shell.head)
 				{
-					execution(&sub_shell);
+					execution(&sub_shell, shell->head->in_out);
 					write(1, "\n", 1);
 				}
 				
 				dlist_clear(sub_shell.head);
 				free_env(sub_shell.env);
 				free_double_array(sub_shell.environment);
-				free(sub_shell.tab_shell);
 				printf("\nEND SUBSHELL\n");
 			}
 			else if (ft_is_built_in(shell->head->command))

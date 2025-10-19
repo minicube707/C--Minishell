@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_built_in.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/17 19:11:36 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/19 19:25:49 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,17 @@ static void	manage_pipe(t_shell *shell)
 
 	exit_code = 0;
 	
-	printf("FORK\n");
+	printf("BUILT FORK\n");
 	if (shell->head->in_out[0] != 0)
 	{
-		exit_code = dup2(shell->head->in_out[0], shell->shell_channel[0]);
+		exit_code = dup2(shell->head->in_out[0], STDIN_FILENO);
 		if (exit_code < 0)
 			free_shell(shell, EXIT_FAILURE);
 		close(shell->head->in_out[0]);
 	}
 	if (shell->head->in_out[1] != 1)
 	{
-		exit_code = dup2(shell->head->in_out[1], shell->shell_channel[1]);
+		exit_code = dup2(shell->head->in_out[1], STDOUT_FILENO);
 		if (exit_code < 0)
 			free_shell(shell, EXIT_FAILURE);
 		close(shell->head->in_out[1]);
@@ -73,10 +73,7 @@ static void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 {
 	pid_t	pid;
 	
-	printf("STDIN %d \n", shell->shell_channel[0]);
-	printf("STDOUT %d \n", shell->shell_channel[1]);
-	
-	if (shell->head->next != NULL && shell->head->next->pre_redir == PIPE)
+	if ((shell->head->next != NULL && shell->head->next->pre_redir == PIPE) || shell->is_subshell)
 	{
 		pid = fork();
 		if (pid == 0)
@@ -108,7 +105,7 @@ int	execute_built_in(t_shell *shell)
 		
 	// Let run until the last
 	if (shell->head->next == NULL || shell->head->next->pre_redir == AND
-		|| shell->head->next->pre_redir == OR)
+		|| shell->head->next->pre_redir == OR || shell->is_subshell)
 		waitpid(pid, NULL, 0);
 	return (0);
 }

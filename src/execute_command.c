@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/17 19:05:30 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/19 17:19:53 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@ static void	manage_pipe(t_shell *shell)
 	int	exit_code;
 
 	exit_code = 0;
-	printf("FORK\n");
+	printf("CMD FORK\n");
 	if (shell->head->in_out[0] != 0)
 	{
-		exit_code = dup2(shell->head->in_out[0], shell->shell_channel[0]);
+		exit_code = dup2(shell->head->in_out[0], STDIN_FILENO);
 		if (exit_code < 0)
 			free_shell(shell, EXIT_FAILURE);
 		close(shell->head->in_out[0]);
 	}
 	if (shell->head->in_out[1] != 1)
 	{
-		exit_code = dup2(shell->head->in_out[1], shell->shell_channel[1]);
+		exit_code = dup2(shell->head->in_out[1], STDOUT_FILENO);
 		if (exit_code < 0)
 			free_shell(shell, EXIT_FAILURE);
 		close(shell->head->in_out[1]);

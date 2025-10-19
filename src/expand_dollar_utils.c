@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollar_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 18:04:55 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/16 15:44:42 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/19 22:08:18 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,32 @@ int	add_expand(t_shell *shell, char **pwd, char *string, char *change)
 	return (0);
 }
 
+static 	char *search_dollars(char *string)
+{
+	int	i;
+	int	count;
+	
+	i = 0;
+	count = 0;
+	while(string[i] != '\0')
+	{
+		if (string[i] == '\'')
+			count++;
+		if (string[i] == '$' && count % 2 == 0)
+			return(&string[i]);
+		i++;
+	}
+	return (NULL);
+}
+
 char	*expand_path(t_shell *shell, char *pwd, char *change)
 {
 	char	*string;
+	char    *new_string;
 	int		i;
-
+	
 	i = 0;
-	string = ft_strchr(pwd, '$');
+	string = search_dollars(pwd);
 	while (string != NULL && i < 10)
 	{
 		add_expand(shell, &pwd, string, change);
@@ -91,5 +110,7 @@ char	*expand_path(t_shell *shell, char *pwd, char *change)
 		string = ft_strchr(pwd, '$');
 		i++;
 	}
-	return (pwd);
+	new_string = remove_quote(pwd);
+	free(pwd);
+	return (new_string);
 }

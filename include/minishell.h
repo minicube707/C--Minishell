@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/17 19:03:49 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/19 22:05:06 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ typedef struct s_shell
 	char				**environment;
 	t_list_env			*env;
 	t_list				*head;
-	struct s_shell		**tab_shell;
-	int 				shell_channel[2];
+	struct s_shell		*parent_shell;
+	int					is_subshell;
 }						t_shell;
 
 /*===================*/
@@ -117,8 +117,6 @@ t_list					*dlist_get_top(t_list *head);
 /*===================*/
 /*=======COMMUN======*/
 /*===================*/
-
-void  tab_add_shell(t_shell *shell, t_shell *subshell);
 
 /*Free Shell*/
 void					free_shell(t_shell *shell, int exit_code);
@@ -167,10 +165,13 @@ int						execute_command(t_shell *shell);
 int						execute_built_in(t_shell *shell);
 
 /*Main Execution*/
-void					execution(t_shell *shell);
+void					execution(t_shell *shell, int shell_channel[2]);
 
 /*Expand dollar*/
 char					*expand_dollard(t_shell *shell, char *string);
+
+/*Remove quote*/
+char 					*remove_quote(char *string);
 
 /*===================*/
 /*======BUILTIN======*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/17 19:03:35 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/19 19:03:12 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,7 @@ int	main(int argc, char **argv, char **envp)
 	shell.head = NULL;
 	shell.environment = NULL;
 	shell.environment = make_env(&shell, shell.env);
-	shell.shell_channel[0] = STDIN_FILENO;
-	shell.shell_channel[1] = STDERR_FILENO;
+	shell.is_subshell = 0;
 	
 	while (1)
 	{
@@ -141,8 +140,8 @@ int	main(int argc, char **argv, char **envp)
 			if (shell.head)
 			{
 				set_signal_action(handlexec);
-				shell.tab_shell = NULL;
-				execution(&shell);
+				shell.parent_shell = NULL;
+				execution(&shell, shell_channel);
 				write(1, "\n", 1);
 				set_signal_action(sighandler);
 			}

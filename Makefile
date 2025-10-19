@@ -35,7 +35,6 @@ FILE_NAMES =	double_list \
 				norme_env \
 				tab_char \
 				tab_info \
-				tab_add_shell \
 				env \
 				env_utils \
 				parser \
@@ -46,6 +45,7 @@ FILE_NAMES =	double_list \
 				free_utils \
 				export \
 				export_utils \
+				remove_quote \
 				unset \
 				utils \
 				syntax \
