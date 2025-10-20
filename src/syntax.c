@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 15:48:47 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/16 09:37:03 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/20 02:06:44 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,17 @@ int	check_redirection(char *str)
 	int	c2;
 
 	c1 = count_max_redir(str);
+	c2 = 0;
 	i = c1;
 	while (str[i] && str[i] == ' ')
 		i++;
-	c2 = count_max_redir(&str[i]);
+	if (is_redirection(str[i]))
+		c2 = count_max_redir(&str[i]);
 	if (c1 && c2)
 		return(err_multi_redir(str[i], c2));
 	else if (c1 == 3)
 		return(err_multi_redir(str[0], 3));
-	else if (is_op(&str[i]) != -1 || str[i] == ' ' || !str[i])
+	else if (is_op(&str[i]) != -1 || !str[i])
 		return(error_token(is_op(&str[i])));
 	return (1);
 }
@@ -92,13 +94,13 @@ int	not_empty_subshell(t_token *curr)
 	int	i;
 
 	i = 0;
-	while (curr->content[i] != ')')
+	while (curr->content[i] && curr->content[i] != ')')
 		if (curr->content[i] == '"')
 			in_quote(&curr->content[i], &i);
 		else
 			i++;
 	i--;
-	while (curr->content[i] != '(')
+	while (curr->content[i] && curr->content[i] != '(')
 	{
 		if (curr->content[i] != ' ')
 			return (1);
@@ -107,13 +109,8 @@ int	not_empty_subshell(t_token *curr)
 	return (0);
 }
 
-t_token	*check_subshell(t_token *token, t_token *curr, int last_op)
+t_token	*check_subshell(t_token *token, t_token *curr)
 {
-	if (!is_operator(last_op))
-	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `(\'\n", 2);
-		return (free_token(token));
-	}
 	if (!not_empty_subshell(curr))
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `)\'\n", 2);
@@ -132,7 +129,6 @@ t_token	*check_subshell(t_token *token, t_token *curr, int last_op)
 t_token	*checker(t_token *token)
 {
 	t_token	*curr;
-	int		last_op;
 
 	curr = token;
 	if (token->op > 3 && token->op <= 8)
@@ -140,17 +136,15 @@ t_token	*checker(t_token *token)
 		error_token(token->op);
 		return(free_token(token));
 	}
-	last_op = curr->op;
 	while (curr)
 	{
 		if (is_operator(curr->op))
 			token = check_operator(token, curr);
 		else if (curr->op == -1)
 			if (curr->content[0] == '(')
-				token = check_subshell(token, curr, last_op);
+				token = check_subshell(token, curr);
 		if (!token)
 			break ;
-		last_op = curr->op;
 		curr = curr->next;
 	}
 	return (token);
