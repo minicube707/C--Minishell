@@ -6,7 +6,11 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/10/20 03:08:05 by lupayet          ###   ########.fr       */
+=======
+/*   Updated: 2025/10/16 17:44:39 by fmotte           ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +139,11 @@ int						print_error_nuremic_re(char *cmd, char *file);
 /*=====EXECUTION=====*/
 /*===================*/
 
+
+
+void	print_list(t_list *head);	
+
+
 /*Here_doc*/
 int						here_doc(int *file_fd, char *limiter);
 
@@ -158,8 +167,7 @@ int						execute_command(t_shell *shell);
 int						execute_built_in(t_shell *shell);
 
 /*Main Execution*/
-void					execution(t_shell *shell, int subshell,
-							int shell_channel[2]);
+void					execution(t_shell *shell,  int shell_channel[2]);
 
 /*Expand dollar*/
 char					*expand_dollard(t_shell *shell, char *string);
@@ -182,7 +190,7 @@ void					ft_cd(t_shell *shell, char **tab_option);
 void					chdir2(char *pwd);
 char					*expand_path(t_shell *shell, char *pwd, char *change);
 char					*norme_env(char *env, int n);
-char					*cd_expand_home(t_shell *shell, char **tab_option);
+char					*cd_expand_home(t_shell *shell, char **tab_option, int *i);
 int 					add_expand(t_shell *shell, char **pwd, char *string, char *before);	
 /*===================*/
 /*======PARSING======*/

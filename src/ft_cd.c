@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 17:05:40 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/14 20:02:55 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/16 17:47:22 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	ft_cd_utils(t_shell *shell, char *pwd)
 	if (ft_strncmp(change, "$HOME", ft_strlen(change)) == 0)
 	{
 		free(change);
+		free(pwd);
 		return ((void)print_error_env_not_set("cd", "HOME"));
 	}
 	pwd = expand_path(shell, pwd, change);
@@ -71,13 +72,15 @@ void	ft_cd_utils(t_shell *shell, char *pwd)
 	chdir2(pwd);
 	free(pwd);
 	free(change);
-	// Expot PWD et OLDPWD
+	// Export PWD et OLDPWD
 }
 
 void	ft_cd(t_shell *shell, char **tab_option)
 {
 	char	*pwd;
-
+	int		i;
+	
+	g_status = 0;
 	if (tab_option[1] != NULL && tab_option[2] != NULL)
 		return ((void)print_error_to_much("cd"));
 	if (tab_option[1] == NULL)
@@ -87,7 +90,9 @@ void	ft_cd(t_shell *shell, char **tab_option)
 	else if (tab_option[1][0] == '$' || ft_strncmp(tab_option[1], "~",
 			ft_strlen(tab_option[1])) == 0)
 	{
-		pwd = cd_expand_home(shell, tab_option);
+		pwd = cd_expand_home(shell, tab_option, &i);
+		if (i)
+			return ((void)print_error_env_not_set("cd", "HOME"));
 		if (pwd == NULL)
 			return ((void)print_error("Error malloc\n"));
 	}
