@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 15:48:47 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/14 15:16:13 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/20 15:10:36 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,17 @@ int	check_redirection(char *str)
 	int	c2;
 
 	c1 = count_max_redir(str);
+	c2 = 0;
 	i = c1;
 	while (str[i] && str[i] == ' ')
 		i++;
-	c2 = count_max_redir(&str[i]);
+	if (is_redirection(str[i]))
+		c2 = count_max_redir(&str[i]);
 	if (c1 && c2)
 		return(err_multi_redir(str[i], c2));
 	else if (c1 == 3)
 		return(err_multi_redir(str[0], 3));
-	else if (is_op(&str[i]))
+	else if (is_op(&str[i]) != -1 || !str[i])
 		return(error_token(is_op(&str[i])));
 	return (1);
 }
@@ -92,13 +94,13 @@ int	not_empty_subshell(t_token *curr)
 	int	i;
 
 	i = 0;
-	while (curr->content[i] != ')')
+	while (curr->content[i] && curr->content[i] != ')')
 		if (curr->content[i] == '"')
 			in_quote(&curr->content[i], &i);
 		else
 			i++;
 	i--;
-	while (curr->content[i] != '(')
+	while (curr->content[i] && curr->content[i] != '(')
 	{
 		if (curr->content[i] != ' ')
 			return (1);

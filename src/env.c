@@ -6,26 +6,11 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:38:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/14 17:02:28 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/20 03:26:46 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	strlenc(char *str, const char c)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (-1);
-	while (*str && *str != c)
-	{
-		i++;
-		str++;
-	}
-	return (i);
-}
 
 static void	set_new_env(t_list_env *new, char *envp)
 {
@@ -92,8 +77,13 @@ char	**make_env(t_shell *shell, t_list_env *list)
 	while (list)
 	{
 		p = ft_strjoin(list->name, "=");
-		env[i] = ft_strjoin(p, list->content);
-		free(p);
+		if (list->content)
+		{
+			env[i] = ft_strjoin(p, list->content);
+			free(p);
+		}
+		else
+			env[i] = p;
 		i++;
 		list = list->next;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/19 22:05:06 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/20 17:33:01 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,13 @@ t_token					*lexer(char *str);
 int						is_op(char *str);
 size_t					op_len(int op);
 void					in_quote(char *str, int *i);
+int						escape_in_double_quote(char *str);
+int						escape_in_no_quote(char *str);
+int						escape_char_len(char *str);
+void					append_escaped_char(char **arg,  char *str, size_t *buff, size_t s);
+
+void					append_chars(char **arg,  char *str, size_t *buff, size_t s, size_t len);
+char					*dup_unquote(char *str, int *j);
 
 /*Token Utils*/
 t_token					*end_list(t_token *lst);
@@ -244,6 +251,7 @@ void					reset_signal_handlers(void);
 int						strlenc(char *str, const char c);
 
 /*Utils*/
+int						strlenc(char *str, const char c);
 void					*ft_realloc(void *ptr, size_t size, size_t oldsize);
 char					*ft_strncat(char *dest, char *src, unsigned int nb);
 #endif

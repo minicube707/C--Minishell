@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:27:57 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/17 18:40:45 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/20 17:34:48 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	ft_echo(t_shell *shell, char **tab_option)
 	int		add_back_slash;
 	int		i;
 	
+
 	i = ft_echo_utils(tab_option, &add_back_slash);
 	while (tab_option[i] != NULL)
 	{
@@ -73,6 +74,11 @@ void	ft_echo(t_shell *shell, char **tab_option)
 			return ((void)print_error("Error malloc\n"));
 		string = expand_path(shell, string, "");
 		write(1, string, ft_strlen(string));
+		expand = expand_dollard(shell, string);
+		if (expand == NULL || string == NULL)
+			return ((void)print_error("Error malloc\n"));
+		if (expand[0] != '$')
+			write(1, expand, ft_strlen(expand));
 		write(1, " ", 1);
 		free(string);
 		i++;

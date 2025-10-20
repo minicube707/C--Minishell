@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/19 19:03:12 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/20 17:34:07 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	set_signal_action(void (*handler)(int))
 	sigemptyset(&qt.sa_mask);
 	qt.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &qt, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	print_file_info(t_file_info **tab_file)
@@ -135,12 +136,13 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(line);
 			shell.head = parsing(line);
+			if (!shell.head)
+				g_status = 2;
 			free(line);
 			print_list(shell.head);
 			if (shell.head)
 			{
 				set_signal_action(handlexec);
-				shell.parent_shell = NULL;
 				execution(&shell, shell_channel);
 				write(1, "\n", 1);
 				set_signal_action(sighandler);
