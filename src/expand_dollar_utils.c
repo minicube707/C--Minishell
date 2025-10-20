@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollar_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 18:04:55 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/19 22:08:18 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/20 14:58:03 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,15 @@ int	add_expand(t_shell *shell, char **pwd, char *string, char *change)
 
 	before = ft_substr(*pwd, 0, ft_strlen(*pwd) - ft_strlen(string));
 	if (before == NULL)
-		return (print_error("Error malloc\n"));
+		return (print_error("Error malloc"));
 	i = lenght_expand(string + 1);
 	cp_pwd = add_expand_utils(shell, string, before, change);
 	free(before);
 	if (cp_pwd == NULL)
-		return (print_error("Error malloc\n"));
+		return (print_error("Error malloc"));
 	after = ft_substr(string, i, ft_strlen(string) + 1);
 	if (after == NULL)
-		return (print_error("Error malloc\n"));
+		return (print_error("Error malloc"));
 	free(*pwd);
 	*pwd = ft_strjoin(cp_pwd, after);
 	free(after);
@@ -95,22 +95,23 @@ char	*expand_path(t_shell *shell, char *pwd, char *change)
 {
 	char	*string;
 	char    *new_string;
-	int		i;
 	
-	i = 0;
 	string = search_dollars(pwd);
-	while (string != NULL && i < 10)
+	while (string != NULL)
 	{
 		add_expand(shell, &pwd, string, change);
 		if (pwd == NULL)
 		{
-			print_error("Error malloc\n");
+			print_error("Error malloc");
 			return (NULL);
 		}
-		string = ft_strchr(pwd, '$');
-		i++;
+		string = search_dollars(pwd);
 	}
 	new_string = remove_quote(pwd);
-	free(pwd);
+	if (new_string == NULL)
+	{
+		print_error("Error malloc");
+		return (NULL);
+	}
 	return (new_string);
 }
