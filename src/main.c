@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/16 11:30:26 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/20 08:29:42 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int	main(int argc, char **argv, char **envp)
 			if (shell.head)
 			{
 				set_signal_action(handlexec);
-				execution(&shell, 0, shell_channel);
+				execution(&shell, shell_channel);
 				write(1, "\n", 1);
 				set_signal_action(sighandler);
 			}

@@ -6,17 +6,16 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/13 16:19:01 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/20 08:28:50 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execution(t_shell *shell, int subshell, int shell_channel[2])
+void	execution(t_shell *shell, int shell_channel[2])
 {
 	int	exit_code;
 	
-	(void)subshell;
 	exit_code = 0;
 	execute_here_doc(shell->head);
 	
