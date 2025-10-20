@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 05:23:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/20 15:11:18 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/20 17:15:41 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,35 +21,37 @@ int	is_delimiter(char c)
 	return (0);
 }
 
+void	add_escape_char(char *str, int *j, t_escape_utils *var)
+{
+	*j += 1;
+	append_chars(&var->arg, str, &var->buff, var->i - var->len, var->len);
+	append_escaped_char(&var->arg, str, &var->buff, var->i + 1);
+	var->i += 1 + escape_char_len(&str[var->i]);
+	var->len = 0;
+}
+
 char	*dup_unquote(char *str, int *j)
 {
-	size_t	i;
-	size_t	e;
-	size_t	buff;
-	char	*arg;
+	t_escape_utils	var;
 
-	i = 0;
-	e = 0;
-	buff = 11;
-	arg = ft_calloc(sizeof(char), buff);
-	if (!arg)
+	var.i = 0;
+	var.len = 0;
+	var.buff = 11;
+	var.arg = ft_calloc(sizeof(char), var.buff);
+	if (!var.arg)
 		free_shell(NULL, 1);
-	while (str[i] && !is_delimiter(str[i]))
+	while (str[var.i] && !is_delimiter(str[var.i]))
 	{
-		if (escape_in_no_quote(&str[i]))
+		if (escape_in_no_quote(&str[var.i]))
 		{
-			*j += 1;
-			append_chars(&arg, str, &buff, i - e, e);
-			append_escaped_char(&arg, str, &buff, i + 1);
-			i += 1 + escape_char_len(&str[i]);
-			e = 0;
+			add_escape_char(str, j, &var);
 		}
 		else
 		{
-			i++;
-			e++;
+			var.i++;
+			var.len++;
 		}
 	}
-	append_chars(&arg, str, &buff, i - e, e);
-	return (arg);
+	append_chars(&var.arg, str, &var.buff, var.i - var.len, var.len);
+	return (var.arg);
 }

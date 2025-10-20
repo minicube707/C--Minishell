@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:51:49 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/20 03:44:06 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/20 18:10:54 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	name_is_valid(char *arg)
 {
-	if (ft_isalpha(*arg))
+	if (!ft_isalpha(*arg) && *arg != '_')
 		return (0);
 	arg++;
 	while (*arg)
@@ -124,9 +124,9 @@ char	**get_name_value(char *arg)
 	result[0] = ft_substr(arg, 0, l);
 	if (!result[0])
 		free_shell(NULL, 1);
-	if (arg[l + 1] && arg[l + 2])
+	if (arg[l] && arg[l + 1])
 	{
-		result[1] = ft_strdup(&arg[l + 2]);
+		result[1] = ft_strdup(&arg[l + 1]);
 		if (!result[0])
 			free_shell(NULL, 1);
 	}
