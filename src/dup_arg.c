@@ -6,13 +6,13 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 05:23:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/16 14:53:31 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/20 15:11:18 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int is_delimiter(char c)
+int	is_delimiter(char c)
 {
 	if (c == ' ' || c == '<' || c == '>' || c == ';' || c == '|')
 		return (1);
