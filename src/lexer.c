@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/14 16:38:49 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/20 02:12:07 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,23 +82,26 @@ char	*dup_subshell(char *str)
 		}
 		else
 			i++;
+	if (op != cl)
+		return (NULL);
 	return (ft_substr(str, 0, i));
 }
 
-void	append_chars(char **arg,  char *str, size_t *buff, size_t s, size_t e)
+void	append_chars(char **arg,  char *str, size_t *buff, size_t s, size_t len)
 {
-	size_t l_arg;
+	size_t	l_arg;
 	
 	l_arg = ft_strlen(*arg);
-	if (l_arg + e > *buff)
+	if (l_arg + len > *buff)
 	{
-		*buff += 10;
+		while (l_arg + len >= *buff)
+			*buff += 10;
 		*arg = ft_realloc(*arg, *buff, l_arg);
 	}
-	ft_strncat(*arg, &str[s], e);
+	ft_strncat(*arg, &str[s], len);
 }
 
-char	*dup_quote(char *str, int *j)
+char	*dup_quote(char *str, int *j, int single)
 {
 	size_t	i;
 	size_t	e;
@@ -111,14 +114,14 @@ char	*dup_quote(char *str, int *j)
 	arg = ft_calloc(sizeof(char), buff);
 	if (!arg)
 		free_shell(NULL, 1);
-	while (str[i] && str[i] != '"')
+	while (str[i] && str[i] != ' ')
 	{
-		if (str[i] == '\\' && (str[i + 1] == '\\' || str[i + 1] == '"' || str[i + 1] == '\''))
+		if (escape_in_double_quote(&str[i]) && !single)
 		{
-			*j += 2;
+			*j += 1;
 			append_chars(&arg, str, &buff, i - e, e);
-			append_chars(&arg, str, &buff, i + 1, 1);
-			i = i + 2;
+			append_escaped_char(&arg, str, &buff, i + 1);
+			i += 1 + escape_char_len(&str[i]);
 			e = 0;
 		}
 		else
@@ -128,61 +131,35 @@ char	*dup_quote(char *str, int *j)
 		}
 	}
 	append_chars(&arg, str, &buff, i - e, e);
-	if (!str[i])
-		return(unclosed_quote());
+//	if ((str[0] == '"' || str[0] == '\'') && !str[i])
+//		return(unclosed_quote());
 	return (arg);
-}/*
-static void	handle_escape(char **arg, char *str, size_t *i, size_t *len, size_t *buff, int *j)
-{
-	append_chars(arg, str, buff, *i - *len, *len);
-	append_chars(arg, str, buff, *i + 1, 1);
-	*j += 2;
-	*i += 2;
-	*len = 0;
 }
-char	*dup_quote(char *str, int *j)
-{
-	size_t	i;
-	size_t	len;
-	size_t	buff;
-	char	*arg;
-
-	i = 1;
-	len = 0;
-	buff = 11;
-	arg = ft_calloc(buff, sizeof(char));
-	if (!arg)
-		free_shell(NULL, 1);
-	while (str[i] && str[i] != '"')
-		if (str[i] == '\\' && (str[i + 1] == '\\' || str[i + 1] == '"' || str[i + 1] == '\''))
-			handle_escape(&arg, str, &i, &len, &buff, j);
-		else
-		{
-			i++;
-			len++;
-		}
-	if (!str[i])
-		return (unclosed_quote());
-	return (arg);
-}*/
 
 char	*duparg(char *str, int *j)
 {
 	size_t	i;
+	char	*arg;
 
 	if (*str == '"')
 	{
 		*j += 2;
-		return (dup_quote(str, j));
+		return (dup_quote(str, j, 0));
 	}
 	if (*str == '\'')
-		return (strcdup(str, '\''));
+		//return (strcdup(str, '\''));
+		return (dup_quote(str, j, 1));
 	if (*str == '(')
-		return (dup_subshell(str));
+	{
+		arg = dup_subshell(str);
+		if (!arg)
+			ft_putstr_fd("minishell: unclose subshell\n", 2);
+		return (arg);
+	}
 	i = 0;
 	while (str[i] && is_op(&str[i]) == -1 && str[i] != ' ')
 		i++;
-	return (ft_substr(str, 0, i));
+	return (dup_unquote(str, j));
 }
 
 static int	set_token(t_token **result, char *str, int *i)
@@ -202,7 +179,8 @@ static int	set_token(t_token **result, char *str, int *i)
 	else
 	{
 		arg = duparg(&str[*i], i);
-	//	printf("%s\n", arg);
+		if (!arg)
+			return (0);
 		add_back(result, arg, code);
 		*i += ft_strlen(arg);
 	}

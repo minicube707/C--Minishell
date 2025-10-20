@@ -6,11 +6,26 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 09:42:26 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/07 16:05:36 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/20 03:07:00 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+int	strlenc(char *str, const char c)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (-1);
+	while (*str && *str != c)
+	{
+		i++;
+		str++;
+	}
+	return (i);
+}
 
 void	*ft_realloc(void *ptr, size_t size, size_t oldsize)
 {

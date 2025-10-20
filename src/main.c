@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/14 17:01:09 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/20 08:29:42 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	set_signal_action(void (*handler)(int))
 	sigemptyset(&qt.sa_mask);
 	qt.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &qt, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	print_file_info(t_file_info **tab_file)
@@ -133,12 +134,14 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(line);
 			shell.head = parsing(line);
+			if (!shell.head)
+				g_status = 2;
 			free(line);
 			print_list(shell.head);
 			if (shell.head)
 			{
 				set_signal_action(handlexec);
-				execution(&shell, 0, shell_channel);
+				execution(&shell, shell_channel);
 				write(1, "\n", 1);
 				set_signal_action(sighandler);
 			}

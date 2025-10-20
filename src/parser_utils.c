@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:49:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/14 11:27:08 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/17 19:21:58 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	option_or_subs(t_list *curr, int *o, t_token *token)
 	if (*token->content == '(')
 	{
 		curr->subshell = ft_substr(token->content, 1, ft_strlen(token->content) - 2);
+		free(token->content);
 	}
 	else
 	{
