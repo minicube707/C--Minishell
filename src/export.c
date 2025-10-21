@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:51:49 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/21 02:08:56 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/21 16:21:31 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,32 +70,15 @@ static void	sort_list(t_list_env **arr, int size)
 	}
 	i = -1;
 	while (++i < size)
+	{
 		if (arr[i]->content)
 			printf("export %s=\"%s\"\n", arr[i]->name, arr[i]->content);
 		else
 			printf("export %s\n", arr[i]->name);
+	}
 	free(arr);
 }
-/*
-void	export_arg(char *arg, t_list_env *curr)
-{
-	while (*arg)
-	{
-		curr = shell->env;
-		if (!name_is_valid(*arg))
-			return (error_id(*arg));
-		while (curr->next)
-		{
-			if (ft_strcmp(curr->name, ))
-			
-			curr = curr->next;
-		}
-		curr->next = malloc(sizeof(t_list_env));
-		set_new_env(curr->next, *arg);
-		arg++;
-	}
-}
-*/
+
 t_list_env	*update_env_value(t_list_env *target, char **name_val)
 {
 	if (!target)

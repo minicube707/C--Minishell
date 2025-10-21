@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 18:21:11 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/20 17:38:05 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/21 16:32:35 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	unset_arg(t_shell *shell, char *arg)
 	curr = shell->env;
 	prev = NULL;
 	while (curr)
+	{
 		if (l1 == ft_strlen(curr->name) && !strncmp(arg, curr->name, l1))
 		{
 			next = curr->next;
@@ -30,14 +31,14 @@ static void	unset_arg(t_shell *shell, char *arg)
 				shell->env = next;
 			else
 				prev->next = next;
-			free_env_node(curr);
-			curr = next;
+			(free_env_node(curr), curr = next);
 		}
 		else
 		{
 			prev = curr;
 			curr = curr->next;
 		}
+	}
 }
 
 int	ft_unset(t_shell *shell, char **arg)

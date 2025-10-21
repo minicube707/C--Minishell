@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/21 14:47:36 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/21 17:13:26 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ typedef struct	s_escape_utils
 	size_t	buff;
 	char	*arg;
 }						t_escape_utils;
+
+void					init_shell(t_shell *shell, int *shell_channel, char **envp);
 
 /*===================*/
 /*=====TAB_CHAR======*/

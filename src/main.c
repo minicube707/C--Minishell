@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/20 17:42:37 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/21 17:13:11 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,18 +115,9 @@ int	main(int argc, char **argv, char **envp)
 	char	*line;
 
 	(void)argc;
-	(void)argv;
-	
-	
+	(void)argv;	
 	set_signal_action(sighandler);
-	shell_channel[0] = STDIN_FILENO;
-	shell_channel[1] = STDOUT_FILENO;
-	shell.env = set_env(envp);
-	shell.head = NULL;
-	shell.environment = NULL;
-	shell.environment = make_env(&shell, shell.env);
-	shell.is_subshell = 0;
-	shell.parent_shell = NULL;
+	init_shell(&shell, shell_channel, envp);
 	while (1)
 	{
 		line = readline("\033[1;94mMinishell >\033[0m ");
