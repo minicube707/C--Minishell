@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/20 17:23:14 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/21 14:48:01 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,53 +87,44 @@ char	*dup_subshell(char *str)
 	return (ft_substr(str, 0, i));
 }
 
-void	append_chars(char **arg,  char *str, size_t *buff, size_t s, size_t len)
+void	append_chars(char *str, t_escape_utils *var)
 {
 	size_t	l_arg;
 	
-	l_arg = ft_strlen(*arg);
-	if (l_arg + len > *buff)
+	l_arg = ft_strlen(var->arg);
+	if (l_arg + var->len > var->buff)
 	{
-		while (l_arg + len >= *buff)
-			*buff += 10;
-		*arg = ft_realloc(*arg, *buff, l_arg);
+		while (l_arg + var->len >= var->buff)
+			var->buff += 10;
+		var->arg = ft_realloc(var->arg, var->buff, l_arg);
 	}
-	ft_strncat(*arg, &str[s], len);
+	ft_strncat(var->arg, &str[var->i - var->len], var->len);
 }
 
 char	*dup_quote(char *str, int *j, int single)
 {
-	size_t	i;
-	size_t	e;
-	size_t	buff;
-	char	*arg;
+	t_escape_utils	var;
 
-	i = 1;
-	e = 0;
-	buff = 11;
-	arg = ft_calloc(sizeof(char), buff);
-	if (!arg)
+	var.i = 1;
+	var.len = 0;
+	var.buff = 11;
+	var.arg = ft_calloc(sizeof(char), var.buff);
+	if (!var.arg)
 		free_shell(NULL, 1);
-	while (str[i] && str[i] != ' ')
+	while (str[var.i] && str[var.i] != ' ')
 	{
-		if (escape_in_double_quote(&str[i]) && !single)
-		{
-			*j += 1;
-			append_chars(&arg, str, &buff, i - e, e);
-			append_escaped_char(&arg, str, &buff, i + 1);
-			i += 1 + escape_char_len(&str[i]);
-			e = 0;
-		}
+		if (escape_in_double_quote(&str[var.i]) && !single)
+			add_escape_char(str, j, &var);
 		else
 		{
-			i++;
-			e++;
+			var.i++;
+			var.len++;
 		}
 	}
-	append_chars(&arg, str, &buff, i - e, e);
+	append_chars(str, &var);
 //	if ((str[0] == '"' || str[0] == '\'') && !str[i])
 //		return(unclosed_quote());
-	return (arg);
+	return (var.arg);
 }
 
 char	*duparg(char *str, int *j)

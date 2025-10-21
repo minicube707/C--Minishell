@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/20 08:28:50 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/20 17:33:45 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 
 void	execution(t_shell *shell, int shell_channel[2])
 {
+	t_shell	sub_shell;
 	int	exit_code;
 	
 	exit_code = 0;
 	execute_here_doc(shell->head);
+	
+	printf("SHELL %p \n", shell);
 	
 	t_list *last_head;
 	int prev_redir;
@@ -55,16 +58,33 @@ void	execution(t_shell *shell, int shell_channel[2])
 		
 		if (exit_code == 0 && ((prev_redir == AND && g_status == 0) || (prev_redir == OR && g_status != 0) || prev_redir == PIPE || prev_redir == EMPTY))
 		{
-			/*
-			if subshell
-				Do subshell
-			else
-				Do command
-			*/
 			
-			if (ft_is_built_in(shell->head->command))
+			if (shell->head->subshell != NULL)
+			{
+				printf("\nSUBSHELL\n");
+				
+				sub_shell.env = set_env(shell->environment);
+				sub_shell.head = NULL;
+				sub_shell.environment = NULL;
+				sub_shell.environment = make_env(&sub_shell, sub_shell.env);
+				sub_shell.head = parsing(shell->head->subshell);
+				sub_shell.is_subshell = 1;
+				sub_shell.parent_shell = shell;
+				print_list(sub_shell.head);
+				if (sub_shell.head)
+				{
+					execution(&sub_shell, shell->head->in_out);
+					write(1, "\n", 1);
+				}
+				
+				dlist_clear(sub_shell.head);
+				free_env(sub_shell.env);
+				free_double_array(sub_shell.environment);
+				printf("\nEND SUBSHELL\n");
+			}
+			else if (ft_is_built_in(shell->head->command))
 				execute_built_in(shell);
-			else
+			else if (shell->head->command != NULL)
 				execute_command(shell);
 
 		}

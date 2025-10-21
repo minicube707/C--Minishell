@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_built_in.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/14 20:05:50 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/19 19:25:49 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	execute_correct_built_in(t_shell *shell)
 {
 	char	*cp_command;
-
+	
 	cp_command = shell->head->command;
 	if (ft_strncmp(cp_command, "echo", ft_strlen(cp_command)) == 0)
 		ft_echo(shell, shell->head->option);
@@ -36,12 +36,12 @@ void	execute_correct_built_in(t_shell *shell)
 static void	execute_programm(t_shell *shell)
 {
 	int	exit_code;
-
+	
 	exit_code = manage_path(shell, 0);
 	if (exit_code)
-		free_shell(shell, EXIT_FAILURE);
+		free_shell(shell, g_status);
 	execute_correct_built_in(shell);
-	free_shell(shell, EXIT_SUCCESS);
+	free_shell(shell, g_status);
 }
 
 static void	manage_pipe(t_shell *shell)
@@ -49,6 +49,8 @@ static void	manage_pipe(t_shell *shell)
 	int	exit_code;
 
 	exit_code = 0;
+	
+	printf("BUILT FORK\n");
 	if (shell->head->in_out[0] != 0)
 	{
 		exit_code = dup2(shell->head->in_out[0], STDIN_FILENO);
@@ -63,15 +65,15 @@ static void	manage_pipe(t_shell *shell)
 			free_shell(shell, EXIT_FAILURE);
 		close(shell->head->in_out[1]);
 	}
-	execute_close_all_fd(shell->head);
+	execute_close_all_fd(shell);
 	execute_programm(shell);
 }
 
 static void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 {
 	pid_t	pid;
-
-	if (shell->head->next != NULL && shell->head->next->pre_redir == PIPE)
+	
+	if ((shell->head->next != NULL && shell->head->next->pre_redir == PIPE) || shell->is_subshell)
 	{
 		pid = fork();
 		if (pid == 0)
@@ -90,22 +92,20 @@ int	execute_built_in(t_shell *shell)
 	int		status;
 	pid_t	pid;
 
-	printf("BUILT IN\n");
+	printf("\nBUILT IN %s \n", shell->head->command);
 	manage_fork(shell, &pid);
-	// Caught SIGFAULT Upate exit status
+	
 	if (pid != -1 && waitpid(pid, &status, WNOHANG))
 	{
 		if (WIFEXITED(status))
 			g_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
+		else if (WIFEXITED(status))
 			g_status = 128 + WTERMSIG(status);
 	}
-	else
-		g_status = 0;
+		
 	// Let run until the last
-	if (shell->head->next == NULL || shell->head->pre_redir == AND
-		|| shell->head->pre_redir == OR || shell->head->next->pre_redir == AND
-		|| shell->head->next->pre_redir == OR)
+	if (shell->head->next == NULL || shell->head->next->pre_redir == AND
+		|| shell->head->next->pre_redir == OR || shell->is_subshell)
 		waitpid(pid, NULL, 0);
 	return (0);
 }

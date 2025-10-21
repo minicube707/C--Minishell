@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:51:49 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/20 18:10:54 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/21 02:08:56 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ static void	sort_list(t_list_env **arr, int size)
 	}
 	i = -1;
 	while (++i < size)
-		printf("export %s=%s\n", arr[i]->name, arr[i]->content);
+		if (arr[i]->content)
+			printf("export %s=\"%s\"\n", arr[i]->name, arr[i]->content);
+		else
+			printf("export %s\n", arr[i]->name);
 	free(arr);
 }
 /*
@@ -97,11 +100,12 @@ t_list_env	*update_env_value(t_list_env *target, char **name_val)
 {
 	if (!target)
 	{
-		target = malloc(sizeof(t_list_env *));
+		target = malloc(sizeof(t_list_env));
 		if (!target)
 			free_shell(NULL, 1);
 		target->name = name_val[0];
 		target->content = NULL;
+		target->next = NULL;
 	}
 	else
 		free(name_val[0]);
@@ -124,9 +128,12 @@ char	**get_name_value(char *arg)
 	result[0] = ft_substr(arg, 0, l);
 	if (!result[0])
 		free_shell(NULL, 1);
-	if (arg[l] && arg[l + 1])
+	if (arg[l])
 	{
-		result[1] = ft_strdup(&arg[l + 1]);
+		if (arg[l + 1])
+			result[1] = ft_strdup(&arg[l + 1]);
+		else
+			result[1] = ft_strdup("");
 		if (!result[0])
 			free_shell(NULL, 1);
 	}
@@ -141,6 +148,7 @@ int	ft_export(t_shell *shell, char **arg)
 	int			size;
 	char		**name_value;
 
+	g_status = 0;
 	if (!arg[1])
 	{
 		size = size_t_list_env(shell->env);

@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 18:04:55 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/14 19:32:02 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/20 14:58:03 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 static int	lenght_expand(char *string)
 {
 	int	i;
-
+	
+	if (ft_strncmp(string, "?",  1) == 0)
+		return (2);
 	i = 1;
 	while (norme_env(string, i) && i < ft_strlen(string) + 1)
 		i++;
@@ -55,15 +57,15 @@ int	add_expand(t_shell *shell, char **pwd, char *string, char *change)
 
 	before = ft_substr(*pwd, 0, ft_strlen(*pwd) - ft_strlen(string));
 	if (before == NULL)
-		return (print_error("Error malloc\n"));
+		return (print_error("Error malloc"));
 	i = lenght_expand(string + 1);
 	cp_pwd = add_expand_utils(shell, string, before, change);
 	free(before);
 	if (cp_pwd == NULL)
-		return (print_error("Error malloc\n"));
+		return (print_error("Error malloc"));
 	after = ft_substr(string, i, ft_strlen(string) + 1);
 	if (after == NULL)
-		return (print_error("Error malloc\n"));
+		return (print_error("Error malloc"));
 	free(*pwd);
 	*pwd = ft_strjoin(cp_pwd, after);
 	free(after);
@@ -71,23 +73,45 @@ int	add_expand(t_shell *shell, char **pwd, char *string, char *change)
 	return (0);
 }
 
+static 	char *search_dollars(char *string)
+{
+	int	i;
+	int	count;
+	
+	i = 0;
+	count = 0;
+	while(string[i] != '\0')
+	{
+		if (string[i] == '\'')
+			count++;
+		if (string[i] == '$' && count % 2 == 0)
+			return(&string[i]);
+		i++;
+	}
+	return (NULL);
+}
+
 char	*expand_path(t_shell *shell, char *pwd, char *change)
 {
 	char	*string;
-	int		i;
-
-	i = 0;
-	string = ft_strchr(pwd, '$');
-	while (string != NULL && i < 10)
+	char    *new_string;
+	
+	string = search_dollars(pwd);
+	while (string != NULL)
 	{
 		add_expand(shell, &pwd, string, change);
 		if (pwd == NULL)
 		{
-			print_error("Error malloc\n");
+			print_error("Error malloc");
 			return (NULL);
 		}
-		string = ft_strchr(pwd, '$');
-		i++;
+		string = search_dollars(pwd);
 	}
-	return (pwd);
+	new_string = remove_quote(pwd);
+	if (new_string == NULL)
+	{
+		print_error("Error malloc");
+		return (NULL);
+	}
+	return (new_string);
 }

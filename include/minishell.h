@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/20 08:24:03 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/21 14:47:36 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,17 @@ typedef struct s_shell
 	char				**environment;
 	t_list_env			*env;
 	t_list				*head;
+	struct s_shell		*parent_shell;
+	int					is_subshell;
 }						t_shell;
+
+typedef struct	s_escape_utils
+{
+	size_t	i;
+	size_t	len;
+	size_t	buff;
+	char	*arg;
+}						t_escape_utils;
 
 /*===================*/
 /*=====TAB_CHAR======*/
@@ -151,7 +161,7 @@ void					execute_here_doc(t_list *head);
 
 /*Execute_close_file*/
 void					execute_close_fd(t_list *head);
-void					execute_close_all_fd(t_list *head);
+void					execute_close_all_fd(t_shell *shell);
 
 /*Execute_open_file*/
 int						execute_open_file(t_list *head);
@@ -163,10 +173,13 @@ int						execute_command(t_shell *shell);
 int						execute_built_in(t_shell *shell);
 
 /*Main Execution*/
-void					execution(t_shell *shell,  int shell_channel[2]);
+void					execution(t_shell *shell, int shell_channel[2]);
 
 /*Expand dollar*/
 char					*expand_dollard(t_shell *shell, char *string);
+
+/*Remove quote*/
+char 					*remove_quote(char *string);
 
 /*===================*/
 /*======BUILTIN======*/
@@ -219,8 +232,9 @@ int						escape_in_no_quote(char *str);
 int						escape_char_len(char *str);
 void					append_escaped_char(char **arg,  char *str, size_t *buff, size_t s);
 
-void					append_chars(char **arg,  char *str, size_t *buff, size_t s, size_t len);
+void					append_chars(char *str, t_escape_utils *var);
 char					*dup_unquote(char *str, int *j);
+void					add_escape_char(char *str, int *j, t_escape_utils *var);
 
 /*Token Utils*/
 t_token					*end_list(t_token *lst);

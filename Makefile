@@ -46,6 +46,7 @@ FILE_NAMES =	double_list \
 				free_utils \
 				export \
 				export_utils \
+				remove_quote \
 				unset \
 				utils \
 				syntax \
