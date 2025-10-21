@@ -6,42 +6,42 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 17:22:05 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/10 16:31:12 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/21 10:31:13 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	write_content(int fd, char *input)
+static int	write_content(t_shell *shell, int fd, char *input)
 {
 	if (write(fd, input, ft_strlen(input)) == -1)
 	{
 		free(input);
-		print_error("failure writing in here_doc");
+		print_error(shell, "failure writing in here_doc");
 		close(fd);
 		return (1);
 	}
 	return (0);
 }
 
-static int	write_here_doc(int fd)
+static int	write_here_doc(t_shell *shell, int fd)
 {
 	if (write(1, "here_doc> ", 10) == -1)
 	{
-		print_error("failure writing in here_doc");
+		print_error(shell, "failure writing in here_doc");
 		close(fd);
 		return (1);
 	}
 	return (0);
 }
 
-static int	here_doc_loop(int fd, char *limiter, int *true)
+static int	here_doc_loop(t_shell *shell, int fd, char *limiter, int *true)
 {
 	char	*input;
 	int		condition1;
 	int		condition2;
 
-	if (write_here_doc(fd))
+	if (write_here_doc(shell, fd))
 		return (1);
 	input = get_next_line(STDIN_FILENO);
 	if (input == NULL)
@@ -52,14 +52,14 @@ static int	here_doc_loop(int fd, char *limiter, int *true)
 		*true = 0;
 	else
 	{
-		if (write_content(fd, input))
+		if (write_content(shell, fd, input))
 			return (1);
 	}
 	free(input);
 	return (0);
 }
 
-int	here_doc(int *file_fd, char *limiter)
+int	here_doc(t_shell *shell, int *file_fd, char *limiter)
 {
 	char	*name_file;
 	int		true;
@@ -70,16 +70,16 @@ int	here_doc(int *file_fd, char *limiter)
 	fd = open(name_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		print_error("failure creation here_doc file");
+		print_error(shell, "failure creation here_doc file");
 		return (1);
 	}
 	while (true)
-		here_doc_loop(fd, limiter, &true);
+		here_doc_loop(shell, fd, limiter, &true);
 	close(fd);
 	fd = open(name_file, 0644);
 	if (unlink(name_file))
 	{
-		print_error("failure unlink here_doc");
+		print_error(shell, "failure unlink here_doc");
 		close(fd);
 		return (1);
 	}

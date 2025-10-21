@@ -6,13 +6,13 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:33:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/10 16:27:52 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/21 10:26:06 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	open_infile(t_file_info *tmp_tab)
+int	open_infile(t_shell *shell, t_file_info *tmp_tab)
 {
 	int		fd;
 	int		flags;
@@ -23,10 +23,10 @@ int	open_infile(t_file_info *tmp_tab)
 	get_access = access(file_name, F_OK);
 	if (get_access == -1)
 	{
-		g_status = 1;
-		return (print_error_file(NULL, file_name));
+		shell->exit_code = 1;
+		return (print_error_file(shell, NULL, file_name));
 	}
-	g_status = 0;
+	shell->exit_code = 0;
 	flags = O_RDONLY;
 	fd = open(file_name, flags);
 	tmp_tab->fd = fd;
@@ -51,14 +51,14 @@ int	open_outfile(t_file_info *tmp_tab)
 	return (fd);
 }
 
-int	open_redirection(t_list *head, t_file_info *tmp_tab)
+int	open_redirection(t_shell *shell, t_list *head, t_file_info *tmp_tab)
 {
 	int	fd;
 	int	type;
 
 	type = tmp_tab->type;
 	if (type == INPUT)
-		fd = open_infile(tmp_tab);
+		fd = open_infile(shell, tmp_tab);
 	else if (type == OUTPUT || type == APPEND)
 		fd = open_outfile(tmp_tab);
 	else
@@ -72,7 +72,7 @@ int	open_redirection(t_list *head, t_file_info *tmp_tab)
 	return (0);
 }
 
-int	execute_open_file(t_list *head)
+int	execute_open_file(t_shell *shell, t_list *head)
 {
 	t_file_info	**tmp_tab;
 	int			i;
@@ -83,7 +83,7 @@ int	execute_open_file(t_list *head)
 	tmp_tab = head->tab_file;
 	while (tmp_tab[i] != NULL && exit_code == 0)
 	{
-		exit_code = open_redirection(head, tmp_tab[i]);
+		exit_code = open_redirection(shell, head, tmp_tab[i]);
 		i++;
 	}
 	return (exit_code);

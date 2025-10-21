@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/20 17:42:37 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/21 10:44:52 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int	main(int argc, char **argv, char **envp)
 	
 	
 	set_signal_action(sighandler);
+	g_status = shell.exit_code;
 	shell_channel[0] = STDIN_FILENO;
 	shell_channel[1] = STDOUT_FILENO;
 	shell.env = set_env(envp);
@@ -130,6 +131,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("\033[1;94mMinishell >\033[0m ");
+		printf("READ %s \n", line);
 		if (!line)
 			break ;
 		if (*line)
@@ -143,6 +145,7 @@ int	main(int argc, char **argv, char **envp)
 			if (shell.head)
 			{
 				set_signal_action(handlexec);
+				g_status = shell.exit_code;
 				execution(&shell, shell_channel);
 				write(1, "\n", 1);
 				set_signal_action(sighandler);
