@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/21 17:40:05 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/22 02:02:02 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,8 @@ char	*dup_quote(char *str, int *j, int single)
 	var.arg = ft_calloc(sizeof(char), var.buff);
 	if (!var.arg)
 		free_shell(NULL, 1);
-	while (str[var.i] && str[var.i] != ' ')
+	while (str[var.i] && str[var.i] != ' ' && str[var.i] != '"'
+			&& str[var.i] != '\'')
 	{
 		if (escape_in_double_quote(&str[var.i]) && !single)
 			add_escape_char(str, j, &var);
