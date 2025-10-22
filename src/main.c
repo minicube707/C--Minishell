@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/22 16:19:05 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/22 16:33:52 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,10 @@ void	handlexec(int signal)
 	return ;
 }
 
-void	set_signal_action(void (*handler)(int), char *input, int fd)
+void	set_signal_action(void (*handler)(int))
 {
 	struct sigaction	qt;
 
-	if (input)
-		free(input);
-	if (fd > -1)
-		close(fd);
 	qt.sa_handler = handler;
 	sigemptyset(&qt.sa_mask);
 	qt.sa_flags = SA_RESTART;
@@ -126,7 +122,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;	
-	set_signal_action(sighandler, NULL, -1);
+	set_signal_action(sighandler);
 	init_shell(&shell, shell_channel, envp);
 	while (1)
 	{
@@ -143,10 +139,10 @@ int	main(int argc, char **argv, char **envp)
 			print_list(shell.head);
 			if (shell.head)
 			{
-				set_signal_action(handlexec, NULL, -1);
+				set_signal_action(handlexec);
 				execution(&shell, shell_channel);
 				write(1, "\n", 1);
-				set_signal_action(sighandler, NULL, -1);
+				set_signal_action(sighandler);
 			}
 			dlist_clear(shell.head);
 		}
