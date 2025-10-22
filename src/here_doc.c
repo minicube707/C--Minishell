@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 17:22:05 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/10 16:31:12 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/22 16:02:50 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ static int	here_doc_loop(int fd, char *limiter, int *true)
 	int		condition1;
 	int		condition2;
 
+	input = NULL;
+	set_signal_action(sig_free_shell, input, fd);
 	if (write_here_doc(fd))
 		return (1);
 	input = get_next_line(STDIN_FILENO);
@@ -75,6 +77,7 @@ int	here_doc(int *file_fd, char *limiter)
 	}
 	while (true)
 		here_doc_loop(fd, limiter, &true);
+	set_signal_action(sighandler, NULL, -1);
 	close(fd);
 	fd = open(name_file, 0644);
 	if (unlink(name_file))

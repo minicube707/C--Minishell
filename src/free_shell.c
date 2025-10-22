@@ -6,16 +6,19 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:06:44 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/19 19:23:08 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/22 16:16:19 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 void	free_shell(t_shell *shell, int exit_code)
-{	
+{
+	static curr_shell;
 	t_shell *tmp;
-	
+
+	if (shell)
+		curr_shell = shell;
 	tmp = shell->parent_shell;
 	free_env(shell->env);
 	free_double_array(shell->environment);

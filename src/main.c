@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/21 17:13:11 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/22 16:19:05 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ void	sighandler(int signal)
 	return ;
 }
 
+void	sig_free_shell(int signal)
+{
+	(void)signal;
+	free_shell(NULL, 130);
+}
+
 void	handlexec(int signal)
 {
 	(void)signal;
@@ -32,10 +38,14 @@ void	handlexec(int signal)
 	return ;
 }
 
-void	set_signal_action(void (*handler)(int))
+void	set_signal_action(void (*handler)(int), char *input, int fd)
 {
 	struct sigaction	qt;
 
+	if (input)
+		free(input);
+	if (fd > -1)
+		close(fd);
 	qt.sa_handler = handler;
 	sigemptyset(&qt.sa_mask);
 	qt.sa_flags = SA_RESTART;
@@ -116,7 +126,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;	
-	set_signal_action(sighandler);
+	set_signal_action(sighandler, NULL, -1);
 	init_shell(&shell, shell_channel, envp);
 	while (1)
 	{
@@ -133,10 +143,10 @@ int	main(int argc, char **argv, char **envp)
 			print_list(shell.head);
 			if (shell.head)
 			{
-				set_signal_action(handlexec);
+				set_signal_action(handlexec, NULL, -1);
 				execution(&shell, shell_channel);
 				write(1, "\n", 1);
-				set_signal_action(sighandler);
+				set_signal_action(sighandler, NULL, -1);
 			}
 			dlist_clear(shell.head);
 		}

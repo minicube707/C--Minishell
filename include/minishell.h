@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/21 17:13:26 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/22 15:44:26 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,4 +265,8 @@ int						strlenc(char *str, const char c);
 int						strlenc(char *str, const char c);
 void					*ft_realloc(void *ptr, size_t size, size_t oldsize);
 char					*ft_strncat(char *dest, char *src, unsigned int nb);
+
+void					set_signal_action(void (*handler)(int));
+void					sighandler(int signal);
+void    				sig_free_shell(int signal);
 #endif
