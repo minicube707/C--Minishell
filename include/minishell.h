@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/22 19:16:06 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/23 14:55:37 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ typedef struct s_shell
 	t_list				*head;
 	struct s_shell		*parent_shell;
 	int					is_subshell;
-	char				*heredoc;
 	int					fd;
+	char				*input;
 }						t_shell;
 
 typedef struct	s_escape_utils
@@ -156,13 +156,13 @@ void	print_list(t_list *head);
 
 
 /*Here_doc*/
-int						here_doc(int *file_fd, char *limiter);
+int						here_doc(t_shell *shell, int *file_fd, char *limiter);
 
 /*Execute_close_file*/
 int						manage_path(t_shell *shell, int change);
 
 /*Execute_here_doc*/
-void					execute_here_doc(t_list *head);
+void					execute_here_doc(t_shell *shell, t_list *head);
 
 /*Execute_close_file*/
 void					execute_close_fd(t_list *head);

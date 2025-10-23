@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute_here_doc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:07:51 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/13 16:56:01 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/23 14:56:09 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_here_doc(t_list *head)
+void	execute_here_doc(t_shell *shell, t_list *head)
 {
 	t_file_info	*tmp_ptr;
 	int			i;
@@ -27,7 +27,7 @@ void	execute_here_doc(t_list *head)
 		{
 			if (tmp_ptr->type == HERE_DOC)
 			{
-				here_doc(&ptr, tmp_ptr->file_name);
+				here_doc(shell, &ptr, tmp_ptr->file_name);
 				head->tab_file[i]->fd = ptr;
 			}
 			i++;

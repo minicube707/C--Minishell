@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:06:44 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/22 23:54:35 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/23 15:02:11 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,11 @@ void	free_shell(t_shell *shell, int exit_code)
 	free_env(shell->env);
 	free_double_array(shell->environment);
 	dlist_clear(shell->head);
-	if (shell->fd)
+	if (shell->fd > -1)
 		close(shell->fd);
-	if (shell->heredoc)
-		free(shell->heredoc);
+	while (get_next_line(shell->fd))
+	if (shell->input)
+		free(shell->input);
 	if (tmp != NULL)
 		free_shell(tmp, exit_code);
 	if (shell->is_subshell == 0)

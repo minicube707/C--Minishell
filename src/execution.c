@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/20 17:33:45 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/23 14:56:30 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	execution(t_shell *shell, int shell_channel[2])
 	int	exit_code;
 	
 	exit_code = 0;
-	execute_here_doc(shell->head);
+	execute_here_doc(shell, shell->head);
 	
 	printf("SHELL %p \n", shell);
 	
