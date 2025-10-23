@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:51:49 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/20 17:34:27 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/23 22:12:36 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int	ft_export(t_shell *shell, char **arg)
 	int			size;
 	char		**name_value;
 
-	g_status = 0;
+	shell->exit_code = 0;
 	if (!arg[1])
 	{
 		size = size_t_list_env(shell->env);

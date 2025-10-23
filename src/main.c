@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/21 10:44:52 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/23 22:13:31 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int	main(int argc, char **argv, char **envp)
 	
 	
 	set_signal_action(sighandler);
-	g_status = shell.exit_code;
+	shell.exit_code = g_status;
 	shell_channel[0] = STDIN_FILENO;
 	shell_channel[1] = STDOUT_FILENO;
 	shell.env = set_env(envp);
@@ -145,7 +145,7 @@ int	main(int argc, char **argv, char **envp)
 			if (shell.head)
 			{
 				set_signal_action(handlexec);
-				g_status = shell.exit_code;
+				shell.exit_code = g_status;
 				execution(&shell, shell_channel);
 				write(1, "\n", 1);
 				set_signal_action(sighandler);
@@ -155,5 +155,5 @@ int	main(int argc, char **argv, char **envp)
 	}
 	free_env(shell.env);
 	free_double_array(shell.environment);
-	return (g_status);
+	return (shell.exit_code);
 }

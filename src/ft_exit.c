@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 17:44:44 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/21 10:30:02 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/23 22:10:40 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,9 @@ int	ft_string_isalpha(char *string)
 
 void	ft_exit(t_shell *shell, char **tab_option)
 {	
-	g_status = 0;
 	write(1, "exit\n", 5);
 	if (tab_option[1] == NULL)
-		free_shell(shell, g_status);
+		free_shell(shell, shell->exit_code);
 	if (ft_string_isalpha(tab_option[1]))
 	{
 		print_error_nuremic_re(shell, "exit", tab_option[1]);
