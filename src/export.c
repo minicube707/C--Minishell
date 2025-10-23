@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:51:49 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/23 19:07:38 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/23 20:23:04 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,7 @@ static int	error_id(char *arg)
 /*
 static void	set_new_env(t_list_env *new, char *arg)
 {
-	size_t		l;
-	t_list_env	*tmp;
-	int			i;
-	int			j;
+	size_t	l;
 
 	l = strlenc(arg, '=');
 	new->name = ft_substr(arg, 0, l);
@@ -48,6 +45,7 @@ static void	set_new_env(t_list_env *new, char *arg)
 	new->content = ft_strdup(&arg[l]);
 	new->next = NULL;
 }*/
+
 static void	sort_list(t_list_env **arr, int size)
 {
 	t_list_env	*tmp;
@@ -133,7 +131,7 @@ int	ft_export(t_shell *shell, char **arg)
 	int			size;
 	char		**name_value;
 
-	g_status = 0;
+	shell->exit_code = 0;
 	if (!arg[1])
 	{
 		size = size_t_list_env(shell->env);
