@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/23 18:50:33 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/23 19:54:33 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	execution(t_shell *shell, int shell_channel[2])
 				sub_shell.head = parsing(shell->head->subshell);
 				sub_shell.is_subshell = 1;
 				sub_shell.parent_shell = shell;
+				get_shell(&sub_shell);
 				sub_shell.exit_code = 0;
 				print_list(sub_shell.head);
 				if (sub_shell.head)
@@ -82,6 +83,7 @@ void	execution(t_shell *shell, int shell_channel[2])
 				free_env(sub_shell.env);
 				free_double_array(sub_shell.environment);
 				printf("\nEND SUBSHELL\n");
+				get_shell(shell);
 			}
 			else if (ft_is_built_in(shell->head->command))
 				execute_built_in(shell);
