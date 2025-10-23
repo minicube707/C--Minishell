@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/23 14:56:30 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/23 18:50:33 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	execution(t_shell *shell, int shell_channel[2])
 	{
 		if (pipe(shell->head->mypipe))
 		{
-			print_error("failure creation of pipe");
+			print_error(shell, "failure creation of pipe");
 			// Stock exit code
 			return ;
 		}
@@ -51,12 +51,12 @@ void	execution(t_shell *shell, int shell_channel[2])
 			shell->head->in_out[1] = shell->head->mypipe[1];
 		
 			
-		exit_code = execute_open_file(shell->head);
+		exit_code = execute_open_file(shell, shell->head);
 	
 		if (shell->head->next != NULL)
 			shell->head->next->in_out[0] = shell->head->mypipe[0];
 		
-		if (exit_code == 0 && ((prev_redir == AND && g_status == 0) || (prev_redir == OR && g_status != 0) || prev_redir == PIPE || prev_redir == EMPTY))
+		if (exit_code == 0 && ((prev_redir == AND && shell->exit_code == 0) || (prev_redir == OR && shell->exit_code != 0) || prev_redir == PIPE || prev_redir == EMPTY))
 		{
 			
 			if (shell->head->subshell != NULL)
@@ -70,6 +70,7 @@ void	execution(t_shell *shell, int shell_channel[2])
 				sub_shell.head = parsing(shell->head->subshell);
 				sub_shell.is_subshell = 1;
 				sub_shell.parent_shell = shell;
+				sub_shell.exit_code = 0;
 				print_list(sub_shell.head);
 				if (sub_shell.head)
 				{

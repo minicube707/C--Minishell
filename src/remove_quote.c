@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 19:58:14 by florent           #+#    #+#             */
-/*   Updated: 2025/10/20 14:57:06 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/21 10:49:07 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static char	*remove_quote1(char *string, char *tmp1, char **after)
 static char	*remove_quote2(char *string, char *tmp2, char *after)
 {
 	char	*new_string;
-	
+
 	new_string = ft_strjoin(tmp2, after + 1);
 	free(tmp2);
 	free(string);

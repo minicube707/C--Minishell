@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/23 14:59:51 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/23 18:57:20 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("\033[1;94mMinishell >\033[0m ");
+		printf("READ %s \n", line);
 		if (!line)
 			break ;
 		if (*line)
@@ -140,6 +141,7 @@ int	main(int argc, char **argv, char **envp)
 			if (shell.head)
 			{
 				set_signal_action(handlexec);
+				g_status = shell.exit_code;
 				execution(&shell, shell_channel);
 				write(1, "\n", 1);
 				set_signal_action(sighandler);

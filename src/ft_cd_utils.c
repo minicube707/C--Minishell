@@ -6,22 +6,22 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:24:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/20 08:21:51 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/21 10:28:21 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	chdir2(char *pwd)
+void	chdir2(t_shell *shell, char *pwd)
 {
 	if (chdir(pwd))
 	{
 		if (errno == EACCES)
-			print_error_access_denied("cd", pwd);
+			print_error_access_denied(shell, "cd", pwd);
 		if (errno == ENOTDIR)
-			print_error_not_directory("cd", pwd);
+			print_error_not_directory(shell, "cd", pwd);
 		if (errno == ENOENT)
-			print_error_file("cd", pwd);
+			print_error_file(shell, "cd", pwd);
 	}
 }
 
@@ -33,7 +33,7 @@ char	*cd_expand_home_utils(t_shell *shell, char *target, int *i)
 	change = expand_dollard(shell, "$HOME");
 	if (change == NULL)
 	{
-		print_error("Error malloc\n");
+		print_error(shell, "Error malloc");
 		free(target);
 		return (NULL);
 	}
@@ -61,7 +61,7 @@ char	*cd_expand_home(t_shell *shell, char **tab_option, int *i)
 		target = ft_strdup("$HOME");
 	if (target == NULL)
 	{
-		print_error("Error malloc\n");
+		print_error(shell, "Error malloc");
 		return (NULL);
 	}
 	if (ft_strlen(ft_strchr(tab_option[1],

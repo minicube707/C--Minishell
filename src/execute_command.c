@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/19 17:19:53 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/21 10:50:20 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	execute_programm(t_shell *shell)
 
 	exit_code = manage_path(shell, 1);
 	if (exit_code)
-		free_shell(shell, g_status);
+		free_shell(shell, shell->exit_code);
 	if (shell->head->command != NULL)
 	{
 		execve(shell->head->command, shell->head->option, shell->environment);
@@ -69,21 +69,20 @@ int	execute_command(t_shell *shell)
 
 	printf("\nCOMMAND %s \n", shell->head->command);
 	manage_fork(shell, &pid);
-	
-	printf("G STATUS %d \n", g_status);
+	printf("G STATUS %d \n", shell->exit_code);
 	if (shell->head->next == NULL || shell->head->next->pre_redir == AND
 		|| shell->head->next->pre_redir == OR)
 	{
-		if (waitpid(pid, &status, 0	))
+		if (waitpid(pid, &status, 0))
 		{
 			if (WIFEXITED(status))
-				g_status = WEXITSTATUS(status);
+				shell->exit_code = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-				g_status = 128 + WTERMSIG(status);
+				shell->exit_code = 128 + WTERMSIG(status);
 		}
 		else
-			g_status = 0;
+			shell->exit_code = 0;
 	}
-	printf("G STATUS %d \n", g_status);
+	printf("G STATUS %d \n", shell->exit_code);
 	return (0);
 }

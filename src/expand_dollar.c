@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 14:55:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/14 19:32:09 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/21 10:48:44 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*expand_dollard(t_shell *shell, char *string)
 	suffix = ft_substr(string, 1, ft_strlen(string) - 1);
 	if (suffix == NULL)
 	{
-		print_error("Error Malloc");
+		print_error(shell, "Error Malloc");
 		return (NULL);
 	}
 	res = expand_dollard_status(suffix);

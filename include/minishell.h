@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/23 14:55:37 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/23 19:03:28 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ extern int				g_status;
 
 /*CONTROL OPERATOR*/
 # define EMPTY 4
-# define PIPE 5 		// |
-# define AND 6			// &&
-# define OR 7			// ||
-# define SEMICOL 8		// ;
+# define PIPE 5 // |
+# define AND 6 // &&
+# define OR 7 // ||
+# define SEMICOL 8 // ;
 
 /*===================*/
 /*=====STRUCTURE=====*/
@@ -98,6 +98,7 @@ typedef struct s_shell
 	int					is_subshell;
 	int					fd;
 	char				*input;
+	int					exit_code;
 }						t_shell;
 
 typedef struct	s_escape_utils
@@ -135,25 +136,27 @@ t_list					*dlist_get_top(t_list *head);
 void					free_shell(t_shell *shell, int exit_code);
 
 /*Manage Error*/
-int						print_error(char *string);
+int						print_error(t_shell *shell, char *string);
 int						print_error_unknow_cmd(char *string);
-int						print_error_file(char *cmd, char *file);
-int						print_error_is_directory(char *file);
-int						print_error_not_directory(char *cmd, char *file);
-int						print_error_to_much(char *file);
-int						print_error_env_not_set(char *file, char *env);
-int						print_error_access_denied(char *file, char *path);
-int						print_error_invalide_option(char *cmd, char *file);
-int						print_error_nuremic_re(char *cmd, char *file);
+int						print_error_file(t_shell *shell, char *cmd, char *file);
+int						print_error_is_directory(t_shell *shell, char *file);
+int						print_error_not_directory(t_shell *shell, char *cmd,
+							char *file);
+int						print_error_to_much(t_shell *shell, char *file);
+int						print_error_env_not_set(t_shell *shell, char *file,
+							char *env);
+int						print_error_access_denied(t_shell *shell, char *file,
+							char *path);
+int						print_error_invalide_option(t_shell *shell, char *cmd,
+							char *file);
+int						print_error_nuremic_re(t_shell *shell, char *cmd,
+							char *file);
 
 /*===================*/
 /*=====EXECUTION=====*/
 /*===================*/
 
-
-
-void	print_list(t_list *head);	
-
+void					print_list(t_list *head);
 
 /*Here_doc*/
 int						here_doc(t_shell *shell, int *file_fd, char *limiter);
@@ -169,7 +172,7 @@ void					execute_close_fd(t_list *head);
 void					execute_close_all_fd(t_shell *shell);
 
 /*Execute_open_file*/
-int						execute_open_file(t_list *head);
+int						execute_open_file(t_shell *shell, t_list *head);
 
 /*Execution Command*/
 int						execute_command(t_shell *shell);
@@ -184,7 +187,7 @@ void					execution(t_shell *shell, int shell_channel[2]);
 char					*expand_dollard(t_shell *shell, char *string);
 
 /*Remove quote*/
-char 					*remove_quote(char *string);
+char					*remove_quote(char *string);
 
 /*===================*/
 /*======BUILTIN======*/
@@ -192,7 +195,7 @@ char 					*remove_quote(char *string);
 
 int						ft_is_built_in(char *command);
 void					ft_echo(t_shell *shell, char **tab_option);
-void					ft_pwd(void);
+void					ft_pwd(t_shell *shell);
 int						ft_export(t_shell *shell, char **arg);
 int						ft_unset(t_shell *shell, char **arg);
 void					ft_env(char **environment);
@@ -201,11 +204,13 @@ t_list_env				**set_export_list(t_list_env *env, int size);
 int						ft_strcmp(const char *s1, const char *s2);
 void					ft_exit(t_shell *shell, char **tab_option);
 void					ft_cd(t_shell *shell, char **tab_option);
-void					chdir2(char *pwd);
+void					chdir2(t_shell *shell, char *pwd);
 char					*expand_path(t_shell *shell, char *pwd, char *change);
 char					*norme_env(char *env, int n);
-char					*cd_expand_home(t_shell *shell, char **tab_option, int *i);
-int 					add_expand(t_shell *shell, char **pwd, char *string, char *before);	
+char					*cd_expand_home(t_shell *shell, char **tab_option,
+							int *i);
+int						add_expand(t_shell *shell, char **pwd, char *string,
+							char *before);
 /*===================*/
 /*======PARSING======*/
 /*===================*/
@@ -235,7 +240,8 @@ void					in_quote(char *str, int *i);
 int						escape_in_double_quote(char *str);
 int						escape_in_no_quote(char *str);
 int						escape_char_len(char *str);
-void					append_escaped_char(char **arg,  char *str, size_t *buff, size_t s);
+void					append_escaped_char(char **arg, char *str, size_t *buff,
+							size_t s);
 
 void					append_chars(char *str, t_escape_utils *var);
 char					*dup_unquote(char *str, int *j);
