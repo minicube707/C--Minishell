@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:06:44 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/22 16:30:58 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/22 23:54:35 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,16 @@ void	free_shell(t_shell *shell, int exit_code)
 {
 	t_shell *tmp;
 
+	if (!shell)
+		shell = get_shell(NULL);
 	tmp = shell->parent_shell;
 	free_env(shell->env);
 	free_double_array(shell->environment);
 	dlist_clear(shell->head);
-
+	if (shell->fd)
+		close(shell->fd);
+	if (shell->heredoc)
+		free(shell->heredoc);
 	if (tmp != NULL)
 		free_shell(tmp, exit_code);
 	if (shell->is_subshell == 0)

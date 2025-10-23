@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/22 15:44:26 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/22 19:16:06 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ typedef struct s_shell
 	t_list				*head;
 	struct s_shell		*parent_shell;
 	int					is_subshell;
+	char				*heredoc;
+	int					fd;
 }						t_shell;
 
 typedef struct	s_escape_utils
@@ -107,6 +109,7 @@ typedef struct	s_escape_utils
 }						t_escape_utils;
 
 void					init_shell(t_shell *shell, int *shell_channel, char **envp);
+t_shell					*get_shell(t_shell *shell);
 
 /*===================*/
 /*=====TAB_CHAR======*/
