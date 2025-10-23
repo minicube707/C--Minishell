@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:51:49 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/21 10:51:25 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/20 17:34:27 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,7 @@ static int	error_id(char *arg)
 /*
 static void	set_new_env(t_list_env *new, char *arg)
 {
-	size_t		l;
-	t_list_env	*tmp;
-	int			i;
-	int			j;
+	size_t	l;
 
 	l = strlenc(arg, '=');
 	new->name = ft_substr(arg, 0, l);
@@ -48,8 +45,13 @@ static void	set_new_env(t_list_env *new, char *arg)
 	new->content = ft_strdup(&arg[l]);
 	new->next = NULL;
 }*/
+
 static void	sort_list(t_list_env **arr, int size)
 {
+	t_list_env	*tmp;
+	int			i;
+	int			j;
+
 	i = 0;
 	while (i < size - 1)
 	{
@@ -82,6 +84,7 @@ void	export_arg(char *arg, t_list_env *curr)
 		while (curr->next)
 		{
 			if (ft_strcmp(curr->name, ))
+			
 			curr = curr->next;
 		}
 		curr->next = malloc(sizeof(t_list_env));
