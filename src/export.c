@@ -14,7 +14,7 @@
 
 int	name_is_valid(char *arg)
 {
-	if (ft_isalpha(*arg))
+	if (!ft_isalpha(*arg) && *arg != '_')
 		return (0);
 	arg++;
 	while (*arg)
@@ -70,38 +70,25 @@ static void	sort_list(t_list_env **arr, int size)
 	}
 	i = -1;
 	while (++i < size)
-		printf("export %s=%s\n", arr[i]->name, arr[i]->content);
+	{
+		if (arr[i]->content)
+			printf("export %s=\"%s\"\n", arr[i]->name, arr[i]->content);
+		else
+			printf("export %s\n", arr[i]->name);
+	}
 	free(arr);
 }
-/*
-void	export_arg(char *arg, t_list_env *curr)
-{
-	while (*arg)
-	{
-		curr = shell->env;
-		if (!name_is_valid(*arg))
-			return (error_id(*arg));
-		while (curr->next)
-		{
-			if (ft_strcmp(curr->name, ))
-			
-			curr = curr->next;
-		}
-		curr->next = malloc(sizeof(t_list_env));
-		set_new_env(curr->next, *arg);
-		arg++;
-	}
-}
-*/
+
 t_list_env	*update_env_value(t_list_env *target, char **name_val)
 {
 	if (!target)
 	{
-		target = malloc(sizeof(t_list_env *));
+		target = malloc(sizeof(t_list_env));
 		if (!target)
 			free_shell(NULL, 1);
 		target->name = name_val[0];
 		target->content = NULL;
+		target->next = NULL;
 	}
 	else
 		free(name_val[0]);
@@ -124,9 +111,12 @@ char	**get_name_value(char *arg)
 	result[0] = ft_substr(arg, 0, l);
 	if (!result[0])
 		free_shell(NULL, 1);
-	if (arg[l + 1] && arg[l + 2])
+	if (arg[l])
 	{
-		result[1] = ft_strdup(&arg[l + 2]);
+		if (arg[l + 1])
+			result[1] = ft_strdup(&arg[l + 1]);
+		else
+			result[1] = ft_strdup("");
 		if (!result[0])
 			free_shell(NULL, 1);
 	}

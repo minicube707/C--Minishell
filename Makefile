@@ -12,7 +12,8 @@ CC = cc -Wall -Wextra -Werror -MMD -MP -g
 # =======================================
 #              FILE
 # =======================================
-FILE_NAMES =	double_list \
+FILE_NAMES =	init \
+				double_list \
 				double_list_utils \
 				built-in \
 				execute_add_path \

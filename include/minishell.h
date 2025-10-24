@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
 /*   Updated: 2025/10/24 13:23:32 by fmotte           ###   ########.fr       */
@@ -97,8 +97,21 @@ typedef struct s_shell
 	t_list				*head;
 	struct s_shell		*parent_shell;
 	int					is_subshell;
+	int					fd;
+	char				*input;
 	int					exit_code;
 }						t_shell;
+
+typedef struct	s_escape_utils
+{
+	size_t	i;
+	size_t	len;
+	size_t	buff;
+	char	*arg;
+}						t_escape_utils;
+
+void					init_shell(t_shell *shell, int *shell_channel, char **envp);
+t_shell					*get_shell(t_shell *shell);
 
 /*===================*/
 /*=====TAB_CHAR======*/
@@ -238,9 +251,9 @@ int						escape_char_len(char *str);
 void					append_escaped_char(char **arg, char *str, size_t *buff,
 							size_t s);
 
-void					append_chars(char **arg, char *str, size_t *buff,
-							size_t s, size_t len);
+void					append_chars(char *str, t_escape_utils *var);
 char					*dup_unquote(char *str, int *j);
+void					add_escape_char(char *str, int *j, t_escape_utils *var);
 
 /*Token Utils*/
 t_token					*end_list(t_token *lst);
@@ -269,4 +282,8 @@ int						strlenc(char *str, const char c);
 int						strlenc(char *str, const char c);
 void					*ft_realloc(void *ptr, size_t size, size_t oldsize);
 char					*ft_strncat(char *dest, char *src, unsigned int nb);
+
+void					set_signal_action(void (*handler)(int));
+void					sighandler(int signal);
+void    				sig_free_shell(int signal);
 #endif
