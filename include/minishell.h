@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/21 10:48:13 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/24 13:23:32 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+#include <dirent.h>
 
 /*===================*/
 /*=======GLOBAL======*/
@@ -103,6 +104,8 @@ typedef struct s_shell
 /*=====TAB_CHAR======*/
 /*===================*/
 void					tab_char_clear(char **tab);
+int						lenght_tab(char **tab);
+void					sort_tab(char **tab);
 
 /*===================*/
 /*=====TAB_INFO======*/
@@ -175,6 +178,11 @@ char					*expand_dollard(t_shell *shell, char *string);
 
 /*Remove quote*/
 char					*remove_quote(char *string);
+
+/*Wildcard*/
+void					backtracking_loop(char ***tab_file, char *content_folder, char *path_file, char *path, char *new_wilcard);
+int						check_expand(char *string, char *wilcard);
+char					**ft_realloc_flo(char **tab, char *string, int before);
 
 /*===================*/
 /*======BUILTIN======*/
