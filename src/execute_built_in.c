@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_built_in.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/21 10:49:48 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/23 23:41:29 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	execute_correct_built_in(t_shell *shell)
 {
 	char	*cp_command;
-
+	
 	cp_command = shell->head->command;
 	if (ft_strncmp(cp_command, "echo", ft_strlen(cp_command)) == 0)
 		ft_echo(shell, shell->head->option);
@@ -71,7 +71,7 @@ static void	manage_pipe(t_shell *shell)
 static void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 {
 	pid_t	pid;
-
+	
 	if ((shell->head->next != NULL && shell->head->next->pre_redir == PIPE)
 		|| shell->is_subshell)
 	{
@@ -101,6 +101,8 @@ int	execute_built_in(t_shell *shell)
 		else if (WIFEXITED(status))
 			shell->exit_code = 128 + WTERMSIG(status);
 	}
+	else if (pid != -1 && !waitpid(pid, &status, WNOHANG))
+		shell->exit_code = 0;
 	if (shell->head->next == NULL || shell->head->next->pre_redir == AND
 		|| shell->head->next->pre_redir == OR || shell->is_subshell)
 		waitpid(pid, NULL, 0);
