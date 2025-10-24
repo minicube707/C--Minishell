@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/23 19:03:28 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/24 13:23:32 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+#include <dirent.h>
 
 /*===================*/
 /*=======GLOBAL======*/
@@ -116,6 +117,8 @@ t_shell					*get_shell(t_shell *shell);
 /*=====TAB_CHAR======*/
 /*===================*/
 void					tab_char_clear(char **tab);
+int						lenght_tab(char **tab);
+void					sort_tab(char **tab);
 
 /*===================*/
 /*=====TAB_INFO======*/
@@ -188,6 +191,11 @@ char					*expand_dollard(t_shell *shell, char *string);
 
 /*Remove quote*/
 char					*remove_quote(char *string);
+
+/*Wildcard*/
+void					backtracking_loop(char ***tab_file, char *content_folder, char *path_file, char *path, char *new_wilcard);
+int						check_expand(char *string, char *wilcard);
+char					**ft_realloc_flo(char **tab, char *string, int before);
 
 /*===================*/
 /*======BUILTIN======*/
