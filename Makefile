@@ -41,6 +41,8 @@ FILE_NAMES =	built-in \
 		init \
 		lexer \
 		lexer_utils \
+		lexer_bis \
+		syntax_bis \
 		main \
 		manage_error \
 		norme_env \

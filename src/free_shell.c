@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:06:44 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/24 14:10:11 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/24 15:49:58 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_shell(t_shell *shell, int exit_code)
 {
-	t_shell *tmp;
+	t_shell	*tmp;
 
 	if (!shell)
 		shell = get_shell(NULL);
