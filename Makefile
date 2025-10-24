@@ -42,6 +42,8 @@ FILE_NAMES =	init \
 				parser_utils \
 				token_utils \
 				lexer \
+				lexer_bis \
+				syntax_bis \
 				lexer_utils \
 				dup_arg \
 				free_utils \

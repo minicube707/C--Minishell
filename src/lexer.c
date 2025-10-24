@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/24 15:42:47 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/24 16:21:02 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,75 +39,6 @@ int	is_op(char *str)
 	return (-1);
 }
 
-char	*strcdup(char *str, char c)
-{
-	size_t	l;
-
-	l = 1;
-	while (str[l] && str[l] != c)
-		l++;
-	if (str[l] == c)
-		l++;
-	return (ft_substr(str, 0, l));
-}
-
-void	in_quote(char *str, int *i)
-{
-	(*i)++;
-	while (str[(*i)] && str[(*i)] != '"')
-		(*i)++;
-}
-
-char	*dup_shell_return(int op, int cl, char *str, int i)
-{
-	if (op != cl)
-		return (NULL);
-	return (ft_substr(str, 0, i));
-}
-
-char	*dup_subshell(char *str)
-{
-	int	i;
-	int	op;
-	int	cl;
-
-	i = 1;
-	op = 1;
-	cl = 0;
-	while (str[i] && op != cl)
-	{
-		if (str[i] == '"')
-			in_quote(str, &i);
-		else if (str[i] == '(')
-		{
-			op++;
-			i++;
-		}
-		else if (str[i] == ')')
-		{
-			cl++;
-			i++;
-		}
-		else
-			i++;
-	}
-	return (dup_shell_return(op, cl, str, i));
-}
-
-void	append_chars(char *str, t_escape_utils *var)
-{
-	size_t	l_arg;
-
-	l_arg = ft_strlen(var->arg);
-	if (l_arg + var->len > var->buff)
-	{
-		while (l_arg + var->len >= var->buff)
-			var->buff += 10;
-		var->arg = ft_realloc(var->arg, var->buff, l_arg);
-	}
-	ft_strncat(var->arg, &str[var->i - var->len], var->len);
-}
-
 char	*dup_quote(char *str, int *j, int single)
 {
 	t_escape_utils	var;
@@ -119,7 +50,7 @@ char	*dup_quote(char *str, int *j, int single)
 	if (!var.arg)
 		free_shell(NULL, 1);
 	while (str[var.i] && str[var.i] != ' ' && str[var.i] != '"'
-			&& str[var.i] != '\'')
+		&& str[var.i] != '\'')
 	{
 		if (escape_in_double_quote(&str[var.i]) && !single)
 			add_escape_char(str, j, &var);
@@ -141,14 +72,11 @@ char	*duparg(char *str, int *j)
 	if (*str == '"')
 	{
 		*j += 2;
-		printf("test\n");
 		return (dup_quote(str, j, 0));
 	}
 	if (*str == '\'')
 	{
-		*j += 2;
 		return (strcdup(str, '\''));
-		//return (dup_quote(str, j, 1));
 	}
 	if (*str == '(')
 	{
@@ -207,6 +135,7 @@ t_token	*lexer(char *str)
 				break ;
 			}
 		}
+		//printf("i = %d => %c\n", i, str[i]);
 	}
 	return (result);
 }

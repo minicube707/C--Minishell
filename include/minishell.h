@@ -251,6 +251,10 @@ int						escape_char_len(char *str);
 void					append_escaped_char(char **arg, char *str, size_t *buff,
 							size_t s);
 
+char					*strcdup(char *str, char c);
+char					*dup_shell_return(int op, int cl, char *str, int i);
+char					*dup_subshell(char *str);
+
 void					append_chars(char *str, t_escape_utils *var);
 char					*dup_unquote(char *str, int *j);
 void					add_escape_char(char *str, int *j, t_escape_utils *var);
@@ -267,6 +271,8 @@ char					*unclosed_quote(void);
 int						check_redirection(char *str);
 t_token					*checker(t_token *token);
 int						error_token(int op);
+int						count_max_redir(char *str);
+int						err_multi_redir(char c, int i);
 
 /*Free Utils*/
 void					free_env(t_list_env *head);
