@@ -6,23 +6,11 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 10:55:19 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/24 14:40:06 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/24 19:44:26 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	print_tab(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i] != NULL)
-	{
-		printf("%s \n", tab[i]);
-		i++;
-	}
-}
 
 char 	*bactracking_stat(char *path, char *content_folder)
 {
@@ -129,32 +117,62 @@ void	backtracking(char *path, char *wilcard, char *path_file, char ***tab_file)
 	backtracking_end(expand, tab_folder, tab_file, path_file);
 }
 
-void    wilcard(char *string)
+char    **wilcard(t_shell *shell, char *string)
 {
     char    *path;
-	char    *path_file;
+	char   *tmp1;
+	char   *tmp2;
+	char   *tmp3;
+	char   *expand;
 	char    **tab_file;
-    char    *expands;
+	char	buff[1024];
 	
-    path = ft_strdup("/home/fmotte/Documents/./../Documents/Cursus/C--Minishell");
-	path_file = "";
 	tab_file =  NULL;
-    expands = string;
-    
-    printf("PATH %s \n", path);
-    printf("EXPAND %s \n", expands);
-
-    backtracking(path, expands, path_file, &tab_file);
-	
-	// add / if path == /
-	printf("\nTAB FILE %p \n", tab_file);
-	if (tab_file != NULL)
+	tmp1 = ft_strchr(string, '*');
+	tmp2 = ft_strchr(string, '/');
+	if (tmp1 == NULL)
 	{
-		print_tab(tab_file);
-		tab_char_clear(tab_file);
+		tab_file = ft_realloc_flo(tab_file, string, 0);
+		if (tab_file == NULL)
+		{
+			print_error(shell, "Error malloc");
+			return (NULL);
+		}
+		return (tab_file);
 	}
-	else
-		printf("%s \n", expands);
-    free(path);
-    return ;  
+	else	
+	{
+		tmp3 = ft_substr(string, 0, ft_strlen(string) - ft_strlen(tmp1) -1);
+		path = ft_strrchr(tmp3, '/');
+		expand = ft_substr(string, 0, ft_strlen(string) - ft_strlen(path) -1);
+		printf("PATH %s \n", path);
+		printf("TMP3 %s \n", tmp3);
+    	printf("EXPAND %s \n", expand);
+		if (ft_strchr(path, '/') == NULL)
+		{
+			if (getcwd(buff, 1024) == NULL)
+			{
+				print_error(shell, "Cannot get current working directory path");
+				return (NULL);
+			}
+			path = ft_strdup(buff);
+			expand = string;
+		}
+	}
+		
+    printf("\nPATH %s \n", path);
+    printf("EXPAND %s \n", expand);
+	
+    backtracking(path, expand, "", &tab_file);
+	if (tab_file == NULL)
+	{
+		tab_file = ft_realloc_flo(tab_file, string, 0);
+		if (tab_file == NULL)
+		{
+			print_error(shell, "Error malloc");
+			return (NULL);
+		}
+	}
+	// add / if path == /
+    return (tab_file);
 }

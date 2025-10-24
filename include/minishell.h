@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/24 15:59:50 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/24 18:39:51 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ void 					expand_path_all(t_shell *shell, char *change);
 char					*remove_quote(char *string);
 
 /*Wildcard*/
-void    				wilcard(char *string);
+char    				**wilcard(t_shell *shell, char *string);
 void					backtracking(char *path, char *wilcard, char *path_file, char ***tab_file);
 void					backtracking_loop(char ***tab_file, char *content_folder, char *path_file, char *path, char *new_wilcard);
 int						check_expand(char *string, char *wilcard);
@@ -207,7 +207,7 @@ char					**ft_realloc_flo(char **tab, char *string, int before);
 /*===================*/
 
 int						ft_is_built_in(char *command);
-void					ft_echo(t_shell *shell, char **tab_option);
+void					ft_echo(t_shell *shell);
 void					ft_pwd(t_shell *shell);
 int						ft_export(t_shell *shell, char **arg);
 int						ft_unset(t_shell *shell, char **arg);
