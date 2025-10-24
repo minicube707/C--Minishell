@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 17:05:40 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/23 22:12:28 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/24 15:10:36 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ft_cd_utils(t_shell *shell, char *pwd)
 		free(pwd);
 		return ((void)print_error_env_not_set(shell, "cd", "HOME"));
 	}
-	pwd = expand_path(shell, pwd, change);
+	expand_path_all(shell, change);
 	printf("CD %s \n", pwd);
 	chdir2(shell, pwd);
 	free(pwd);

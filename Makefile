@@ -12,46 +12,52 @@ CC = cc -Wall -Wextra -Werror -MMD -MP -g
 # =======================================
 #              FILE
 # =======================================
-FILE_NAMES =	double_list \
-				double_list_utils \
-				built-in \
-				execute_add_path \
-				execute_built_in \
-				execute_close_file \
+FILE_NAMES =	built-in \
+                double_list \
+                double_list_utils \
+                dup_arg \
+                env \
+                env_utils \
+                execute_add_path \
+                execute_built_in \
+                execute_close_file \
                 execute_command \
                 execute_here_doc \
                 execute_open_file \
                 execution \
-				expand_dollar \
-				expand_dollar_utils \
-				free_shell \
-				ft_cd \
-				ft_cd_utils \
-				ft_env \
-				ft_exit \
+                expand_dollar \
+                expand_dollar_utils \
+                expand_dollar_utils_utils \
+                export \
+                export_utils \
+                free_shell \
+                free_utils \
+                ft_cd \
+                ft_cd_utils \
+                ft_env \
+                ft_exit \
+                ft_realloc \
                 here_doc \
+                lexer \
+                lexer_utils \
                 main \
                 manage_error \
-				norme_env \
-				tab_char \
-				tab_info \
-				env \
-				env_utils \
-				parser \
-				parser_utils \
-				token_utils \
-				lexer \
-				lexer_utils \
-				dup_arg \
-				free_utils \
-				export \
-				export_utils \
-				remove_quote \
-				unset \
-				utils \
-				syntax \
-				syntax_err \
-				syntax_utils
+                norme_env \
+                parser \
+                parser_utils \
+                redir_utils \
+                remove_quote \
+                syntax \
+                syntax_err \
+                syntax_utils \
+                tab_char \
+                tab_info \
+                token_utils \
+                unset \
+                utils \
+                wirldcard \
+                wirldcard_check_expand \
+                wirldcard_utils \
 
 # =======================================
 #              VARIABLE

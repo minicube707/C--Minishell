@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 13:07:45 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/24 13:12:00 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/24 14:34:13 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int		backtracking_register(char ***tab_file, char *content_folder, char *
 	new_new_path_file = backtracking_add_path(content_folder, path_file);
 	if (new_new_path_file == NULL)
 		return (1);
-	*tab_file =  ft_realloc(*tab_file, new_new_path_file, 0);
+	*tab_file =  ft_realloc_flo(*tab_file, new_new_path_file, 0);
 	free(new_new_path_file);
 	return (0);
 }

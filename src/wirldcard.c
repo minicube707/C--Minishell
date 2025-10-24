@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 10:55:19 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/24 14:10:04 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/24 14:40:06 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	print_tab(char **tab)
 	}
 }
 
-static char 	*bactracking_stat(char *path, char *content_folder)
+char 	*bactracking_stat(char *path, char *content_folder)
 {
 	char    *new_path;
 	char    *tmp;
@@ -102,7 +102,7 @@ static void	backtracking_end(char *expand, char	**tab_folder, char ***tab_file, 
 		tab_char_clear(tab_folder);
 }
 
-static void	backtracking(char *path, char *wilcard, char *path_file, char ***tab_file)
+void	backtracking(char *path, char *wilcard, char *path_file, char ***tab_file)
 {
 	char	*new_wilcard;
 	char	*expand;
@@ -129,26 +129,23 @@ static void	backtracking(char *path, char *wilcard, char *path_file, char ***tab
 	backtracking_end(expand, tab_folder, tab_file, path_file);
 }
 
-void    wilcard(t_shell *shell)
+void    wilcard(char *string)
 {
     char    *path;
 	char    *path_file;
 	char    **tab_file;
     char    *expands;
 	
-	printf("CMD %s", shell->head->command);
     path = ft_strdup("/home/fmotte/Documents/./../Documents/Cursus/C--Minishell");
-	//path = ft_strdup("/home/fmotte/goinfre");
-	//path = ft_strdup("/home/florent/Bureau/Programmation/C/42/Cursus/C--Minishell");
-	//path = ft_strdup("/home");
 	path_file = "";
 	tab_file =  NULL;
-    expands = "*";
+    expands = string;
     
     printf("PATH %s \n", path);
     printf("EXPAND %s \n", expands);
 
     backtracking(path, expands, path_file, &tab_file);
+	
 	// add / if path == /
 	printf("\nTAB FILE %p \n", tab_file);
 	if (tab_file != NULL)
