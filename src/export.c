@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:51:49 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/21 11:38:08 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/24 14:16:16 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int	ft_export(t_shell *shell, char **arg)
 	int			size;
 	char		**name_value;
 
-	g_status = 0;
+	shell->exit_code = 0;
 	if (!arg[1])
 	{
 		size = size_t_list_env(shell->env);

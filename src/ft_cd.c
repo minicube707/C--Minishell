@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 17:05:40 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/21 10:51:44 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/23 22:12:28 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ void	ft_cd(t_shell *shell, char **tab_option)
 {
 	char	*pwd;
 	int		i;
-
-	g_status = 0;
+	
+	shell->exit_code = 0;
 	if (tab_option[1] != NULL && tab_option[2] != NULL)
 		return ((void)print_error_to_much(shell, "cd"));
 	if (tab_option[1] == NULL)
