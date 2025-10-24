@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 16:45:32 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/23 19:37:26 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/24 15:50:47 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,4 @@ void	init_shell(t_shell *shell, int *shell_channel, char **envp)
 	shell->parent_shell = NULL;
 	shell->input = NULL;
 	shell->fd = -1;
-	//get_shell(shell);
 }
