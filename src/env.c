@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:38:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/20 03:26:46 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/21 16:33:30 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,9 @@ char	**make_env(t_shell *shell, t_list_env *list)
 	i = 0;
 	shell->environment = free_double_array(shell->environment);
 	size = list_size(list);
-	env = malloc(sizeof(char *) * (size + 1));
+	env = ft_calloc(sizeof(char *), (size + 1));
 	if (!env)
 		return (NULL);
-	env[size] = NULL;
 	while (list)
 	{
 		p = ft_strjoin(list->name, "=");

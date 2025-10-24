@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/23 22:13:31 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/23 20:24:17 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ void	sighandler(int signal)
 	rl_redisplay();
 	g_status = 130;
 	return ;
+}
+
+void	sig_free_shell(int signal)
+{
+	(void)signal;
+	free_shell(NULL, 130);
 }
 
 void	handlexec(int signal)
@@ -115,19 +121,10 @@ int	main(int argc, char **argv, char **envp)
 	char	*line;
 
 	(void)argc;
-	(void)argv;
-	
-	
+	(void)argv;	
 	set_signal_action(sighandler);
-	shell.exit_code = g_status;
-	shell_channel[0] = STDIN_FILENO;
-	shell_channel[1] = STDOUT_FILENO;
-	shell.env = set_env(envp);
-	shell.head = NULL;
-	shell.environment = NULL;
-	shell.environment = make_env(&shell, shell.env);
-	shell.is_subshell = 0;
-	shell.parent_shell = NULL;
+	init_shell(&shell, shell_channel, envp);
+	get_shell(&shell);
 	while (1)
 	{
 		line = readline("\033[1;94mMinishell >\033[0m ");

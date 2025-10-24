@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:49:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/17 19:21:58 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/21 16:23:43 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	count_redir(t_token *token)
 
 	c = 0;
 	if (token->op >= 5 && token->op <= 7)
-		token = token->next;	
+		token = token->next;
 	while (token && !(token->op >= 5 && token->op <= 7))
 	{
 		if (token->op >= 0 && token->op <= 3)
@@ -76,7 +76,8 @@ void	option_or_subs(t_list *curr, int *o, t_token *token)
 {
 	if (*token->content == '(')
 	{
-		curr->subshell = ft_substr(token->content, 1, ft_strlen(token->content) - 2);
+		curr->subshell = ft_substr(token->content, 1,
+				ft_strlen(token->content) - 2);
 		free(token->content);
 	}
 	else

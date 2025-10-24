@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:37:42 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/16 10:21:43 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/21 12:56:30 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	escape_char_len(char *str)
 	return (1);
 }
 
-void	append_escaped_char(char **arg,  char *str, size_t *buff, size_t s)
+void	append_escaped_char(char **arg, char *str, size_t *buff, size_t s)
 {
 	size_t	l_arg;
 
