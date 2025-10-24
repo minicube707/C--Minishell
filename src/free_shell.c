@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:06:44 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/23 19:03:37 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/24 14:10:11 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	free_shell(t_shell *shell, int exit_code)
 	dlist_clear(shell->head);
 	if (shell->fd > -1)
 		close(shell->fd);
-	while (get_next_line(shell->fd))
 	if (shell->input)
 		free(shell->input);
 	if (tmp != NULL)
