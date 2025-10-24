@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/24 15:32:42 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/24 15:59:50 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ void					backtracking_loop(char ***tab_file, char *content_folder, char *path_fi
 int						check_expand(char *string, char *wilcard);
 char					**ft_realloc_flo(char **tab, char *string, int before);
 char 					*bactracking_stat(char *path, char *content_folder);
+char					**ft_realloc_flo(char **tab, char *string, int before);
 
 /*===================*/
 /*======BUILTIN======*/
