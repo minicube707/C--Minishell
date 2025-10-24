@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/22 02:02:02 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/24 13:42:36 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,11 @@ char	*duparg(char *str, int *j)
 		return (dup_quote(str, j, 0));
 	}
 	if (*str == '\'')
+	{
+		*j += 2;
 		return (strcdup(str, '\''));
 		//return (dup_quote(str, j, 1));
+	}
 	if (*str == '(')
 	{
 		arg = dup_subshell(str);
