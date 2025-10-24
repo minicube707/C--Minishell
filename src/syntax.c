@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 15:48:47 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/20 15:10:36 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/21 16:28:52 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ int	check_redirection(char *str)
 	if (is_redirection(str[i]))
 		c2 = count_max_redir(&str[i]);
 	if (c1 && c2)
-		return(err_multi_redir(str[i], c2));
+		return (err_multi_redir(str[i], c2));
 	else if (c1 == 3)
-		return(err_multi_redir(str[0], 3));
+		return (err_multi_redir(str[0], 3));
 	else if (is_op(&str[i]) != -1 || !str[i])
-		return(error_token(is_op(&str[i])));
+		return (error_token(is_op(&str[i])));
 	return (1);
 }
 
@@ -71,19 +71,20 @@ t_token	*check_operator(t_token *token, t_token *curr)
 	if (!curr->next)
 	{
 		error_token(curr->op);
-		return(free_token(token));
+		return (free_token(token));
 	}
 	else if (is_operator(curr->next->op))
 	{
 		if (curr->op == SEMICOL)
 		{
-			ft_putstr_fd("minishell: syntax error near unexpected token `;;\'\n", 2);
-			return(free_token(token));
+			ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+			ft_putstr_fd(";;\'\n", 2);
+			return (free_token(token));
 		}
 		else
 		{
 			error_token(curr->next->op);
-			return(free_token(token));
+			return (free_token(token));
 		}
 	}
 	return (token);
@@ -95,10 +96,12 @@ int	not_empty_subshell(t_token *curr)
 
 	i = 0;
 	while (curr->content[i] && curr->content[i] != ')')
+	{
 		if (curr->content[i] == '"')
 			in_quote(&curr->content[i], &i);
 		else
 			i++;
+	}
 	i--;
 	while (curr->content[i] && curr->content[i] != '(')
 	{
@@ -121,7 +124,7 @@ t_token	*check_subshell(t_token *token, t_token *curr)
 		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 		ft_putstr_fd(curr->next->content, 2);
 		ft_putstr_fd("\'\n", 2);
-		return(free_token(token));
+		return (free_token(token));
 	}
 	return (token);
 }
@@ -134,7 +137,7 @@ t_token	*checker(t_token *token)
 	if (token->op > 3 && token->op <= 8)
 	{
 		error_token(token->op);
-		return(free_token(token));
+		return (free_token(token));
 	}
 	while (curr)
 	{

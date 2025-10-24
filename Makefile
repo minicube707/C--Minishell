@@ -12,15 +12,13 @@ CC = cc -Wall -Wextra -Werror -MMD -MP -g
 # =======================================
 #              FILE
 # =======================================
-FILE_NAMES =	built-in \
-                double_list \
-                double_list_utils \
-                dup_arg \
-                env \
-                env_utils \
-                execute_add_path \
-                execute_built_in \
-                execute_close_file \
+FILE_NAMES =	init \
+				double_list \
+				double_list_utils \
+				built-in \
+				execute_add_path \
+				execute_built_in \
+				execute_close_file \
                 execute_command \
                 execute_here_doc \
                 execute_open_file \

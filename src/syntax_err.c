@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 02:26:42 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/14 11:47:20 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/21 13:04:07 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	print_op(int op, int fd)
 		ft_putstr_fd(";", fd);
 }
 
-int	error_token(int	op)
+int	error_token(int op)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 	if (op != -1)
