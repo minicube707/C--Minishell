@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wirldcard_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 13:07:45 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/24 14:34:13 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/26 00:26:32 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,21 @@ void	backtracking_loop(char ***tab_file, char *content_folder, char *path_file, 
 			return (free(tmp));
 	}
 	free(tmp);
+}
+char 	*bactracking_stat(char *path, char *content_folder)
+{
+	char    *new_path;
+	char    *tmp;
+
+	new_path = ft_strjoin(path, "/");
+	if (new_path == NULL)
+		return (NULL);
+	tmp = ft_strjoin(new_path, content_folder);
+	if (tmp == NULL)
+	{
+		free(new_path);
+		return (NULL);
+	}
+	free(new_path);
+	return (tmp);
 }

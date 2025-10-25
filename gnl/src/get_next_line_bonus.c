@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:49:09 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/25 21:54:42 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/25 22:55:07 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,7 @@ char	*loop(t_shell *shell, int fd, char *res, char *stock, int first_loop)
 	int		nb_read;
 	char	*buffer;
 	
-	set_signal_kill(sigkillheredoc);
-	printf("HEREDOC STATUS %d \n", g_status);
+	set_signal_kill(sigintheredoc);
 	while (!ft_strchr(res, '\n') && g_status == 0)
 	{
 		buffer = malloc(BUFFER_SIZE + 1);
@@ -90,7 +89,6 @@ char	*loop(t_shell *shell, int fd, char *res, char *stock, int first_loop)
 			return (NULL);
 		nb_read = read(fd, buffer, BUFFER_SIZE);
 		shell->exit_code = g_status;
-		printf("HEREDOC EXIT %d \n", shell->exit_code);
 		if (nb_read <= 0)
 		{
 			free(buffer);

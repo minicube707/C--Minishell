@@ -6,29 +6,11 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 10:55:19 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/25 01:20:26 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/26 00:37:08 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char 	*bactracking_stat(char *path, char *content_folder)
-{
-	char    *new_path;
-	char    *tmp;
-
-	new_path = ft_strjoin(path, "/");
-	if (new_path == NULL)
-		return (NULL);
-	tmp = ft_strjoin(new_path, content_folder);
-	if (tmp == NULL)
-	{
-		free(new_path);
-		return (NULL);
-	}
-	free(new_path);
-	return (tmp);
-}
 
 static int	backtracking_init_utils(char *wilcard, char **new_wilcard, char **expand)
 {
@@ -120,19 +102,18 @@ void	backtracking(char *path, char *wilcard, char *path_file, char ***tab_file)
 char    **wilcard(t_shell *shell, char *string)
 {
     char    *path;
-	char   *expand;
-	char	*tmp1;
-	char	*tmp2;
-	char	*tmp3;
-	char	*tmp4;
+	char   	*expand;
 	char    **tab_file;
-	char	buff[1024];
 	
 	tab_file =  NULL;
-	tmp1 = ft_strchr(string, '*');
-	if (tmp1 == NULL)
+	if (wildcard_init(shell, string, &path, &expand))
+		return (NULL);
+    backtracking(path, expand, "", &tab_file);
+	free(expand);
+	if (tab_file == NULL)
 	{
 		tab_file = ft_realloc_flo(tab_file, string, 0);
+		free(path);
 		if (tab_file == NULL)
 		{
 			print_error(shell, "Error malloc");
@@ -140,42 +121,8 @@ char    **wilcard(t_shell *shell, char *string)
 		}
 		return (tab_file);
 	}
-	tmp2 = ft_substr(string, 0 , ft_strlen(string) - ft_strlen(tmp1)); 
-	tmp3 = ft_strrchr(tmp2, '/');
-	tmp4 = ft_substr(tmp2, 0 , ft_strlen(tmp2) - ft_strlen(tmp3) +1 ); // PATH
-	free(tmp2);
-	expand = ft_substr(string, ft_strlen(tmp4) , ft_strlen(string) - ft_strlen(tmp4)); // Expand
-	printf("TMP3 %s \n", tmp3);
-	printf("TMP4 %s \n", tmp4);
-	printf("TMP5 %s \n", expand);
-		
-	if (*tmp4 != '/')
-	{
-		if (getcwd(buff, 1024) == NULL)
-		{
-			print_error(shell, "Cannot get current working directory path");
-			return (NULL);
-		}
-		tmp2 = ft_strjoin("/", tmp4);
-		path = ft_strjoin(buff, tmp2);
-		free(tmp4);
-	}
-	else
-		path = tmp4;
-		
-    printf("\nPATH %s \n", path);
-    printf("EXPAND %s \n", expand);
-	
-    backtracking(path, expand, "", &tab_file);
-	if (tab_file == NULL)
-	{
-		tab_file = ft_realloc_flo(tab_file, string, 0);
-		if (tab_file == NULL)
-		{
-			print_error(shell, "Error malloc");
-			return (NULL);
-		}
-	}
-	//if path == / add path
+	if (*path == '/')
+		wildcard_add_path(shell, tab_file, path);
+	free(path);
     return (tab_file);
 }

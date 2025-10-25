@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/25 21:55:46 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/25 22:54:19 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		g_status = 0;
 
-void	sigkillheredoc(int signal)
+void	sigintheredoc(int signal)
 {
 	(void)signal;;
 	g_status = 130;

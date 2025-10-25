@@ -59,6 +59,7 @@ FILE_NAMES =	built-in \
 		unset \
 		utils \
 		wirldcard \
+		wirldcard_init \
 		wirldcard_check_expand \
 		wirldcard_utils \
 

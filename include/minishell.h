@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/25 21:42:51 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/26 00:29:02 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,8 @@ int						check_expand(char *string, char *wilcard);
 char					**ft_realloc_flo(char **tab, char *string, int before);
 char 					*bactracking_stat(char *path, char *content_folder);
 char					**ft_realloc_flo(char **tab, char *string, int before);
+int 					wildcard_init(t_shell *shell, char *string, char **path, char **expand);
+void 					wildcard_add_path(t_shell *shell, char **tab_file, char *path);
 
 /*===================*/
 /*======BUILTIN======*/
@@ -296,6 +298,6 @@ char					*ft_strncat(char *dest, char *src, unsigned int nb);
 void					set_signal_kill(void (*handler)(int));
 void					set_signal_action(void (*handler)(int));
 void					sighandler(int signal);
-void					sigkillheredoc(int signal);
+void					sigintheredoc(int signal);
 
 #endif
