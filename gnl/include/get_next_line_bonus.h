@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:18:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/09/10 13:38:02 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/25 21:10:59 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@
 #  define BUFFER_SIZE 10
 # endif
 
-char	*get_next_line(int fd);
+typedef struct s_shell t_shell;
+
+char	*get_next_line(t_shell *shell, int fd);
 char	*ft_strncpy(char *dest, const char *src, unsigned int n);
 
 #endif

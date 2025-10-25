@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/23 19:54:33 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/25 21:59:27 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,12 @@ void	execution(t_shell *shell, int shell_channel[2])
 	int	exit_code;
 	
 	exit_code = 0;
+	g_status = 0;
 	execute_here_doc(shell, shell->head);
+	if (shell->exit_code == 130)
+		free_shell(shell, shell->exit_code);
+	set_signal_action(sighandler);
+	shell->exit_code = g_status;
 	
 	printf("SHELL %p \n", shell);
 	

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/24 18:39:51 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/25 21:42:51 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-#include <dirent.h>
+# include <dirent.h>
 
 /*===================*/
 /*=======GLOBAL======*/
@@ -97,8 +97,6 @@ typedef struct s_shell
 	t_list				*head;
 	struct s_shell		*parent_shell;
 	int					is_subshell;
-	int					fd;
-	char				*input;
 	int					exit_code;
 }						t_shell;
 
@@ -294,7 +292,10 @@ int						strlenc(char *str, const char c);
 void					*ft_realloc(void *ptr, size_t size, size_t oldsize);
 char					*ft_strncat(char *dest, char *src, unsigned int nb);
 
+/*Signal*/
+void					set_signal_kill(void (*handler)(int));
 void					set_signal_action(void (*handler)(int));
 void					sighandler(int signal);
-void    				sig_free_shell(int signal);
+void					sigkillheredoc(int signal);
+
 #endif

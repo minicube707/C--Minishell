@@ -6,13 +6,20 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/23 20:24:17 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/25 21:55:46 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int		g_status = 0;
+
+void	sigkillheredoc(int signal)
+{
+	(void)signal;;
+	g_status = 130;
+	return ;
+}
 
 void	sighandler(int signal)
 {
@@ -23,12 +30,6 @@ void	sighandler(int signal)
 	rl_redisplay();
 	g_status = 130;
 	return ;
-}
-
-void	sig_free_shell(int signal)
-{
-	(void)signal;
-	free_shell(NULL, 130);
 }
 
 void	handlexec(int signal)
@@ -45,6 +46,17 @@ void	set_signal_action(void (*handler)(int))
 	qt.sa_handler = handler;
 	sigemptyset(&qt.sa_mask);
 	qt.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &qt, NULL);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	set_signal_kill(void (*handler)(int))
+{
+	struct sigaction	qt;
+
+	qt.sa_handler = handler;
+	sigemptyset(&qt.sa_mask);
+	qt.sa_flags = 0;
 	sigaction(SIGINT, &qt, NULL);
 	signal(SIGQUIT, SIG_IGN);
 }
@@ -123,6 +135,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;	
 	set_signal_action(sighandler);
+	shell.exit_code = g_status;
 	init_shell(&shell, shell_channel, envp);
 	get_shell(&shell);
 	while (1)
@@ -145,7 +158,6 @@ int	main(int argc, char **argv, char **envp)
 				shell.exit_code = g_status;
 				execution(&shell, shell_channel);
 				write(1, "\n", 1);
-				set_signal_action(sighandler);
 			}
 			dlist_clear(shell.head);
 		}

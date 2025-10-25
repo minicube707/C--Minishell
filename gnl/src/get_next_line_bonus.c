@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:49:09 by fmotte            #+#    #+#             */
-/*   Updated: 2025/08/15 14:12:36 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/25 21:54:42 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
+#include "../../include/minishell.h"
 
 static void	truncation(char *stock, char *res, char *occ)
 {
@@ -75,17 +76,21 @@ char	*end_loop(char *res, char *buffer, char *stock, int *first_loop)
 	return (res);
 }
 
-char	*loop(int fd, char *res, char *stock, int first_loop)
+char	*loop(t_shell *shell, int fd, char *res, char *stock, int first_loop)
 {
 	int		nb_read;
 	char	*buffer;
-
-	while (!ft_strchr(res, '\n'))
+	
+	set_signal_kill(sigkillheredoc);
+	printf("HEREDOC STATUS %d \n", g_status);
+	while (!ft_strchr(res, '\n') && g_status == 0)
 	{
 		buffer = malloc(BUFFER_SIZE + 1);
 		if (buffer == NULL)
 			return (NULL);
 		nb_read = read(fd, buffer, BUFFER_SIZE);
+		shell->exit_code = g_status;
+		printf("HEREDOC EXIT %d \n", shell->exit_code);
 		if (nb_read <= 0)
 		{
 			free(buffer);
@@ -102,7 +107,7 @@ char	*loop(int fd, char *res, char *stock, int first_loop)
 	return (res);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(t_shell *shell, int fd)
 {
 	int			first_loop;
 	static char	stock[1024][BUFFER_SIZE + 1];
@@ -120,6 +125,6 @@ char	*get_next_line(int fd)
 		reset_stock(stock[fd], &res);
 		first_loop = 1;
 	}
-	res = loop(fd, res, stock[fd], first_loop);
+	res = loop(shell, fd, res, stock[fd], first_loop);
 	return (res);
 }

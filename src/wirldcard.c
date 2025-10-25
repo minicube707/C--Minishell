@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wirldcard.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 10:55:19 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/24 19:44:26 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/25 01:20:26 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,16 +120,16 @@ void	backtracking(char *path, char *wilcard, char *path_file, char ***tab_file)
 char    **wilcard(t_shell *shell, char *string)
 {
     char    *path;
-	char   *tmp1;
-	char   *tmp2;
-	char   *tmp3;
 	char   *expand;
+	char	*tmp1;
+	char	*tmp2;
+	char	*tmp3;
+	char	*tmp4;
 	char    **tab_file;
 	char	buff[1024];
 	
 	tab_file =  NULL;
 	tmp1 = ft_strchr(string, '*');
-	tmp2 = ft_strchr(string, '/');
 	if (tmp1 == NULL)
 	{
 		tab_file = ft_realloc_flo(tab_file, string, 0);
@@ -140,25 +140,28 @@ char    **wilcard(t_shell *shell, char *string)
 		}
 		return (tab_file);
 	}
-	else	
+	tmp2 = ft_substr(string, 0 , ft_strlen(string) - ft_strlen(tmp1)); 
+	tmp3 = ft_strrchr(tmp2, '/');
+	tmp4 = ft_substr(tmp2, 0 , ft_strlen(tmp2) - ft_strlen(tmp3) +1 ); // PATH
+	free(tmp2);
+	expand = ft_substr(string, ft_strlen(tmp4) , ft_strlen(string) - ft_strlen(tmp4)); // Expand
+	printf("TMP3 %s \n", tmp3);
+	printf("TMP4 %s \n", tmp4);
+	printf("TMP5 %s \n", expand);
+		
+	if (*tmp4 != '/')
 	{
-		tmp3 = ft_substr(string, 0, ft_strlen(string) - ft_strlen(tmp1) -1);
-		path = ft_strrchr(tmp3, '/');
-		expand = ft_substr(string, 0, ft_strlen(string) - ft_strlen(path) -1);
-		printf("PATH %s \n", path);
-		printf("TMP3 %s \n", tmp3);
-    	printf("EXPAND %s \n", expand);
-		if (ft_strchr(path, '/') == NULL)
+		if (getcwd(buff, 1024) == NULL)
 		{
-			if (getcwd(buff, 1024) == NULL)
-			{
-				print_error(shell, "Cannot get current working directory path");
-				return (NULL);
-			}
-			path = ft_strdup(buff);
-			expand = string;
+			print_error(shell, "Cannot get current working directory path");
+			return (NULL);
 		}
+		tmp2 = ft_strjoin("/", tmp4);
+		path = ft_strjoin(buff, tmp2);
+		free(tmp4);
 	}
+	else
+		path = tmp4;
 		
     printf("\nPATH %s \n", path);
     printf("EXPAND %s \n", expand);
@@ -173,6 +176,6 @@ char    **wilcard(t_shell *shell, char *string)
 			return (NULL);
 		}
 	}
-	// add / if path == /
+	//if path == / add path
     return (tab_file);
 }

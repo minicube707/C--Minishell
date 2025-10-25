@@ -28,7 +28,7 @@ OBJ_FILES = $(FILE_NAMES:%=$(OBJ_PATH)/%.o)
 DEP_FILES = $(OBJ_FILES:.o=.d)
 HEA_FILES = $(HEA_PATH)/get_next_line_bonus.h
 
-INCLUDE = -I $(HEA_PATH) -I ../libft/include
+INCLUDE = -I $(HEA_PATH) -I ../libft/include -I ../include/
 
 NAME = libgnl.a
 NAME_FOLDER := $(shell basename $(CURDIR))
