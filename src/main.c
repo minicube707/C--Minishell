@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/25 22:54:19 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/26 19:09:25 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int		g_status = 0;
 
 void	sigintheredoc(int signal)
 {
-	(void)signal;;
+	(void)signal;
+	;
 	g_status = 130;
 	return ;
 }
@@ -104,8 +105,7 @@ void	print_list(t_list *head)
 		//		printf("  mypipe[0]: %d\n", head->mypipe[0]);
 		//		printf("  mypipe[1]: %d\n", head->mypipe[1]);
 		printf("  command  : %s\n", head->command ? head->command : "(null)");
-
-		//printf("ADRESS OPT %p \n", head->option);
+		// printf("ADRESS OPT %p \n", head->option);
 		if (head->option)
 		{
 			printf("  options  :\n");
@@ -116,11 +116,10 @@ void	print_list(t_list *head)
 		{
 			printf("  options  : (null)\n");
 		}
-		//printf("ADRESS TAB %p \n", head->tab_file);
+		// printf("ADRESS TAB %p \n", head->tab_file);
 		print_file_info(head->tab_file);
-//				print_channel(head->in_out);
-				printf("  subshell : %s\n",
-					head->subshell ? head->subshell : "(null)");
+		//				print_channel(head->in_out);
+		printf("  subshell : %s\n", head->subshell ? head->subshell : "(null)");
 		head = head->next;
 		index++;
 	}
@@ -133,7 +132,7 @@ int	main(int argc, char **argv, char **envp)
 	char	*line;
 
 	(void)argc;
-	(void)argv;	
+	(void)argv;
 	set_signal_action(sighandler);
 	shell.exit_code = g_status;
 	init_shell(&shell, shell_channel, envp);
@@ -155,7 +154,8 @@ int	main(int argc, char **argv, char **envp)
 			if (shell.head)
 			{
 				set_signal_action(handlexec);
-				shell.exit_code = g_status;
+				if (g_status != 0)
+					shell.exit_code = g_status;
 				execution(&shell, shell_channel);
 				write(1, "\n", 1);
 			}

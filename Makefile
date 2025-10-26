@@ -45,6 +45,7 @@ FILE_NAMES =	built-in \
 		syntax_bis \
 		main \
 		manage_error \
+		manage_error_utils \
 		norme_env \
 		parser \
 		parser_utils \

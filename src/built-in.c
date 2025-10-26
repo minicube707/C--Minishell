@@ -62,8 +62,8 @@ int	ft_echo_utils(char **tab, int *add_back_slash)
 
 void	ft_echo(t_shell *shell)
 {
-	int		add_back_slash;
-	int		i;
+	int	add_back_slash;
+	int	i;
 
 	expand_path_all(shell, "");
 	i = ft_echo_utils(shell->head->option, &add_back_slash);

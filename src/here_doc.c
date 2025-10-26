@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 17:22:05 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/25 21:23:03 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/26 19:20:49 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static int	write_content(t_shell *shell, int fd, char *input)
 	if (write(fd, input, ft_strlen(input)) == -1)
 	{
 		free(input);
-
 		print_error(shell, "failure writing in here_doc");
 		close(fd);
 		return (1);
@@ -43,8 +42,6 @@ static int	here_doc_loop(t_shell *shell, int fd, char *limiter, int *true)
 	int		condition2;
 
 	if (write_here_doc(shell, fd))
-
-
 		return (1);
 	input = get_next_line(shell, STDIN_FILENO);
 	if (input == NULL)
@@ -70,6 +67,7 @@ int	here_doc(t_shell *shell, int *file_fd, char *limiter)
 
 	name_file = ".here_doc";
 	true = 1;
+	shell->exit_code = 0;
 	fd = open(name_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
 	{
@@ -80,7 +78,6 @@ int	here_doc(t_shell *shell, int *file_fd, char *limiter)
 		here_doc_loop(shell, fd, limiter, &true);
 	close(fd);
 	fd = open(name_file, 0644);
-
 	if (unlink(name_file))
 	{
 		print_error(shell, "failure unlink here_doc");

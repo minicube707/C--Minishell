@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 19:58:14 by florent           #+#    #+#             */
-/*   Updated: 2025/10/21 10:49:07 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/26 20:01:09 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	*remove_quote2(char *string, char *tmp2, char *after)
 	return (string);
 }
 
-char	*remove_quote(char *string)
+char	*remove_quote(t_shell *shell, char *string)
 {
 	char	*after;
 	char	*tmp1;
@@ -68,10 +68,16 @@ char	*remove_quote(char *string)
 		after = NULL;
 		tmp2 = remove_quote1(string, tmp1, &after);
 		if (tmp2 == NULL)
+		{
+			print_error(shell, "Error malloc");
 			return (NULL);
+		}
 		string = remove_quote2(string, tmp2, after);
 		if (string == NULL)
+		{
+			print_error(shell, "Error malloc");
 			return (NULL);
+		}
 		tmp1 = ft_strchr(string, '\'');
 	}
 	return (string);

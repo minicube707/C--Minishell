@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:49:09 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/25 22:55:07 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/26 19:16:22 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ char	*loop(t_shell *shell, int fd, char *res, char *stock, int first_loop)
 {
 	int		nb_read;
 	char	*buffer;
-	
+
 	set_signal_kill(sigintheredoc);
-	while (!ft_strchr(res, '\n') && g_status == 0)
+	while (!ft_strchr(res, '\n') && shell->exit_code == 0)
 	{
 		buffer = malloc(BUFFER_SIZE + 1);
 		if (buffer == NULL)

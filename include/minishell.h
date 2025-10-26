@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/26 00:29:02 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/26 19:33:20 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "get_next_line_bonus.h"
 # include "libft.h"
+# include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
@@ -26,7 +27,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <dirent.h>
 
 /*===================*/
 /*=======GLOBAL======*/
@@ -100,15 +100,16 @@ typedef struct s_shell
 	int					exit_code;
 }						t_shell;
 
-typedef struct	s_escape_utils
+typedef struct s_escape_utils
 {
-	size_t	i;
-	size_t	len;
-	size_t	buff;
-	char	*arg;
+	size_t				i;
+	size_t				len;
+	size_t				buff;
+	char				*arg;
 }						t_escape_utils;
 
-void					init_shell(t_shell *shell, int *shell_channel, char **envp);
+void					init_shell(t_shell *shell, int *shell_channel,
+							char **envp);
 t_shell					*get_shell(t_shell *shell);
 
 /*===================*/
@@ -186,32 +187,40 @@ void					execution(t_shell *shell, int shell_channel[2]);
 
 /*Expand dollar*/
 char					*expand_dollard(t_shell *shell, char *string);
-void 					expand_path_all(t_shell *shell, char *change);
+void					expand_path_all(t_shell *shell, char *change);
 
 /*Remove quote*/
-char					*remove_quote(char *string);
+char					*remove_quote(t_shell *shell, char *string);
 
 /*Wildcard*/
-char    				**wilcard(t_shell *shell, char *string);
-void					backtracking(char *path, char *wilcard, char *path_file, char ***tab_file);
-void					backtracking_loop(char ***tab_file, char *content_folder, char *path_file, char *path, char *new_wilcard);
+char					**wilcard(t_shell *shell, char *string);
+void					backtracking(char *path, char *wilcard, char *path_file,
+							char ***tab_file);
+void					backtracking_loop(char ***tab_file,
+							char *content_folder, char *path_file, char *path,
+							char *new_wilcard);
 int						check_expand(char *string, char *wilcard);
 char					**ft_realloc_flo(char **tab, char *string, int before);
-char 					*bactracking_stat(char *path, char *content_folder);
+char					*bactracking_stat(char *path, char *content_folder);
 char					**ft_realloc_flo(char **tab, char *string, int before);
-int 					wildcard_init(t_shell *shell, char *string, char **path, char **expand);
-void 					wildcard_add_path(t_shell *shell, char **tab_file, char *path);
+int						wildcard_init(t_shell *shell, char *string, char **path,
+							char **expand);
+void					wildcard_add_path(t_shell *shell, char **tab_file,
+							char *path);
 
 /*===================*/
 /*======BUILTIN======*/
 /*===================*/
 
+int						ft_cd_change_env_utils(t_shell *shell, t_list_env *curr,
+							char **tmp);
 int						ft_is_built_in(char *command);
 void					ft_echo(t_shell *shell);
 void					ft_pwd(t_shell *shell);
 int						ft_export(t_shell *shell, char **arg);
+char					**get_name_value(char *arg);
 int						ft_unset(t_shell *shell, char **arg);
-void					ft_env(char **environment);
+void					ft_env(t_shell *shell, char **environment);
 int						size_t_list_env(t_list_env *env);
 t_list_env				**set_export_list(t_list_env *env, int size);
 int						ft_strcmp(const char *s1, const char *s2);

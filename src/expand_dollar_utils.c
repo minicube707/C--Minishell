@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollar_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 18:04:55 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/24 15:04:41 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/26 19:51:18 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ char	*expand_path(t_shell *shell, char *pwd, char *change)
 		}
 		string = search_dollars(pwd);
 	}
-	new_string = remove_quote(pwd);
+	new_string = remove_quote(shell, pwd);
 	if (new_string == NULL)
 	{
 		print_error(shell, "Error malloc");

@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:18:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/25 21:10:59 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/26 15:39:55 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #  define BUFFER_SIZE 10
 # endif
 
-typedef struct s_shell t_shell;
+typedef struct s_shell	t_shell;
 
 char	*get_next_line(t_shell *shell, int fd);
 char	*ft_strncpy(char *dest, const char *src, unsigned int n);

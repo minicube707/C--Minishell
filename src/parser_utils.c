@@ -76,8 +76,8 @@ void	option_or_subs(t_list *curr, int *o, t_token *token)
 {
 	if (*token->content == '(')
 	{
-		curr->subshell = ft_substr(token->content, 1,
-				ft_strlen(token->content) - 2);
+		curr->subshell = ft_substr(token->content, 1, ft_strlen(token->content)
+				- 2);
 		free(token->content);
 	}
 	else

@@ -29,18 +29,18 @@ void	tab_char_clear(char **tab)
 
 void	sort_tab(char **tab)
 {
-	int 	i;
+	int		i;
 	int		is_sort;
 	char	*tmp;
-	
-	if (tab ==  NULL || tab[0] ==  NULL)
-		return;
+
+	if (tab == NULL || tab[0] == NULL)
+		return ;
 	is_sort = 0;
 	while (is_sort == 0)
 	{
 		i = 0;
 		is_sort = 1;
-		while (tab[i+1] != NULL)
+		while (tab[i + 1] != NULL)
 		{
 			if (ft_strcmp(tab[i], tab[i + 1]) > 0)
 			{

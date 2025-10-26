@@ -3,22 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:23:21 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/15 18:41:59 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/26 20:28:02 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_env(char **environment)
+void	ft_env(t_shell *shell, char **environment)
 {
 	int	i;
 
-	//Check argument
-	//IF env env .... execute
-	
+	i = 1;
+	while (shell->head->option[i] != NULL && ft_strncmp(shell->head->option[i],
+			"env", ft_strlen(shell->head->option[i])) == 0)
+		i++;
+	if (ft_strncmp(shell->head->option[i], "env",
+			ft_strlen(shell->head->option[i]) != 0))
+	{
+		print_error_file(shell, "env", shell->head->option[i]);
+		return ;
+	}
 	i = 0;
 	while (environment[i] != NULL)
 	{

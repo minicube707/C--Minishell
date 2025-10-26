@@ -6,13 +6,13 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 13:07:45 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/26 00:26:32 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/26 18:21:06 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char 	*backtracking_add_path(char *content_folder, char *path_file)
+static char	*backtracking_add_path(char *content_folder, char *path_file)
 {
 	char	*new_path_file;
 	char	*new_new_path_file;
@@ -36,31 +36,34 @@ static char 	*backtracking_add_path(char *content_folder, char *path_file)
 	return (new_new_path_file);
 }
 
-static int		backtracking_register(char ***tab_file, char *content_folder, char *path_file)
+static int	backtracking_register(char ***tab_file, char *content_folder,
+		char *path_file)
 {
 	char	*new_new_path_file;
 
 	new_new_path_file = backtracking_add_path(content_folder, path_file);
 	if (new_new_path_file == NULL)
 		return (1);
-	*tab_file =  ft_realloc_flo(*tab_file, new_new_path_file, 0);
+	*tab_file = ft_realloc_flo(*tab_file, new_new_path_file, 0);
 	free(new_new_path_file);
 	return (0);
 }
 
-void	backtracking_loop(char ***tab_file, char *content_folder, char *path_file, char *path, char *new_wilcard)
+void	backtracking_loop(char ***tab_file, char *content_folder,
+		char *path_file, char *path, char *new_wilcard)
 {
 	struct stat	buff;
-	char    *tmp;
-	char	*new_new_path_file;
+	char		*tmp;
+	char		*new_new_path_file;
 
 	tmp = bactracking_stat(path, content_folder);
 	if (tmp == NULL)
-		return;
+		return ;
 	stat(tmp, &buff);
 	if (stat(tmp, &buff) != 0)
 		return (free(tmp));
-	if (S_ISDIR(buff.st_mode) && new_wilcard != NULL && ft_strncmp(content_folder, ".", 1) != 0)
+	if (S_ISDIR(buff.st_mode) && new_wilcard != NULL
+		&& ft_strncmp(content_folder, ".", 1) != 0)
 	{
 		new_new_path_file = backtracking_add_path(content_folder, path_file);
 		if (new_new_path_file == NULL)
@@ -69,16 +72,17 @@ void	backtracking_loop(char ***tab_file, char *content_folder, char *path_file, 
 		free(new_new_path_file);
 	}
 	else if (new_wilcard == NULL && ft_strncmp(content_folder, ".", 1) != 0)
-	{	
-		if(backtracking_register(tab_file, content_folder, path_file))
+	{
+		if (backtracking_register(tab_file, content_folder, path_file))
 			return (free(tmp));
 	}
 	free(tmp);
 }
-char 	*bactracking_stat(char *path, char *content_folder)
+
+char	*bactracking_stat(char *path, char *content_folder)
 {
-	char    *new_path;
-	char    *tmp;
+	char	*new_path;
+	char	*tmp;
 
 	new_path = ft_strjoin(path, "/");
 	if (new_path == NULL)
