@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 10:55:19 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/26 20:30:08 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 00:30:05 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,10 @@ static char	**backtracking_init(char *path, char *wilcard, char **new_wilcard,
 	{
 		tab_folder = ft_realloc_flo(tab_folder, entry->d_name, 0);
 		if (tab_folder == NULL)
-		{
-			closedir(dir);
-			return (NULL);
-		}
-		entry = readdir(dir);
+			entry = NULL;
+		else
+			entry = readdir(dir);
 	}
-	sort_tab(tab_folder);
 	closedir(dir);
 	return (tab_folder);
 }
@@ -81,27 +78,26 @@ static void	backtracking_end(char *expand, char **tab_folder, char ***tab_file,
 void	backtracking(char *path, char *wilcard, char *path_file,
 		char ***tab_file)
 {
-	char	*new_wilcard;
+	t_struc	useless;
 	char	*expand;
 	char	**tab_folder;
 	int		i;
-	int		b;
 
-	new_wilcard = NULL;
+	useless.string1 = NULL;
+	useless.string2 = path;
 	expand = NULL;
-	tab_folder = backtracking_init(path, wilcard, &new_wilcard, &expand);
+	tab_folder = backtracking_init(path, wilcard, &(useless.string1), &expand);
 	if (tab_folder == NULL)
 	{
 		backtracking_end(expand, tab_folder, tab_file, path_file);
 		return ;
 	}
+	sort_tab(tab_folder);
 	i = 0;
 	while (tab_folder[i] != NULL)
 	{
-		b = check_expand(tab_folder[i], expand);
-		if (b)
-			backtracking_loop(tab_file, tab_folder[i], path_file, path,
-				new_wilcard);
+		if (check_expand(tab_folder[i], expand))
+			backtracking_loop(tab_file, tab_folder[i], path_file, useless);
 		i++;
 	}
 	backtracking_end(expand, tab_folder, tab_file, path_file);
@@ -125,17 +121,7 @@ char	**wilcard(t_shell *shell, char *string)
 	if (expand != NULL)
 		free(expand);
 	if (tab_file == NULL)
-	{
-		tab_file = ft_realloc_flo(tab_file, string, 0);
-		if (path == NULL)
-			free(path);
-		if (tab_file == NULL)
-		{
-			print_error(shell, "Error malloc");
-			return (NULL);
-		}
-		return (tab_file);
-	}
+		return (wildcard_end(shell, string, path));
 	if (*string == '/')
 		wildcard_add_path(shell, tab_file, path);
 	free(path);

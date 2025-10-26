@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/26 20:33:25 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/26 22:27:34 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 	pid_t	pid;
 
 	if ((shell->head->next != NULL && shell->head->next->pre_redir == PIPE)
-		|| shell->is_subshell)
+		|| shell->parent_shell != NULL)
 	{
 		pid = fork();
 		if (pid == 0)
@@ -104,7 +104,7 @@ int	execute_built_in(t_shell *shell)
 	else if (pid != -1 && !waitpid(pid, &status, WNOHANG))
 		shell->exit_code = 0;
 	if (shell->head->next == NULL || shell->head->next->pre_redir == AND
-		|| shell->head->next->pre_redir == OR || shell->is_subshell)
+		|| shell->head->next->pre_redir == OR || shell->parent_shell != NULL)
 		waitpid(pid, NULL, 0);
 	return (0);
 }

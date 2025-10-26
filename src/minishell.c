@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/26 19:09:25 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/26 23:56:47 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,54 +14,7 @@
 
 int		g_status = 0;
 
-void	sigintheredoc(int signal)
-{
-	(void)signal;
-	;
-	g_status = 130;
-	return ;
-}
-
-void	sighandler(int signal)
-{
-	(void)signal;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	g_status = 130;
-	return ;
-}
-
-void	handlexec(int signal)
-{
-	(void)signal;
-	write(1, "\n", 1);
-	return ;
-}
-
-void	set_signal_action(void (*handler)(int))
-{
-	struct sigaction	qt;
-
-	qt.sa_handler = handler;
-	sigemptyset(&qt.sa_mask);
-	qt.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &qt, NULL);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	set_signal_kill(void (*handler)(int))
-{
-	struct sigaction	qt;
-
-	qt.sa_handler = handler;
-	sigemptyset(&qt.sa_mask);
-	qt.sa_flags = 0;
-	sigaction(SIGINT, &qt, NULL);
-	signal(SIGQUIT, SIG_IGN);
-}
-
+/*
 void	print_file_info(t_file_info **tab_file)
 {
 	int	i;
@@ -79,19 +32,7 @@ void	print_file_info(t_file_info **tab_file)
 		i++;
 	}
 }
-/*
-void	print_channel(t_channel *ch)
-{
-	if (!ch)
-	{
-		printf("    [Channel] (null)\n");
-		return ;
-	}
-	printf("    [Channel]\n");
-	printf("      in : %d\n", ch->in);
-	printf("      out: %d\n", ch->out);
-}
-*/
+
 void	print_list(t_list *head)
 {
 	int	index;
@@ -123,45 +64,55 @@ void	print_list(t_list *head)
 		head = head->next;
 		index++;
 	}
+}*/
+
+static void	minishell_execution(t_shell *shell, int shell_channel[2])
+{
+	g_status = 0;
+	set_signal_action(handlexec);
+	if (g_status != 0)
+		shell->exit_code = g_status;
+	execution(shell, shell_channel);
+	write(1, "\n", 1);
+}
+
+static int	minishell_loop(t_shell *shell, int shell_channel[2])
+{
+	char	*line;
+
+	line = readline("\033[1;94mMinishell >\033[0m ");
+	if (!line)
+		return (0);
+	if (*line)
+	{
+		add_history(line);
+		shell->head = parsing(line);
+		free(line);
+		if (!shell->head)
+			shell->exit_code = 2;
+		if (shell->head)
+			minishell_execution(shell, shell_channel);
+		dlist_clear(shell->head);
+	}
+	return (1);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
 	int		shell_channel[2];
-	char	*line;
+	int		res;
 
 	(void)argc;
 	(void)argv;
 	set_signal_action(sighandler);
-	shell.exit_code = g_status;
-	init_shell(&shell, shell_channel, envp);
+	shell_channel[0] = STDIN_FILENO;
+	shell_channel[1] = STDOUT_FILENO;
+	init_shell(&shell, envp, NULL, g_status);
+	res = 1;
 	get_shell(&shell);
-	while (1)
-	{
-		line = readline("\033[1;94mMinishell >\033[0m ");
-		printf("READ %s \n", line);
-		if (!line)
-			break ;
-		if (*line)
-		{
-			add_history(line);
-			shell.head = parsing(line);
-			if (!shell.head)
-				g_status = 2;
-			free(line);
-			print_list(shell.head);
-			if (shell.head)
-			{
-				set_signal_action(handlexec);
-				if (g_status != 0)
-					shell.exit_code = g_status;
-				execution(&shell, shell_channel);
-				write(1, "\n", 1);
-			}
-			dlist_clear(shell.head);
-		}
-	}
+	while (res)
+		res = minishell_loop(&shell, shell_channel);
 	free_env(shell.env);
 	free_double_array(shell.environment);
 	return (shell.exit_code);

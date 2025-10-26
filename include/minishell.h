@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/26 19:33:20 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 00:16:41 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ typedef struct s_shell
 	t_list_env			*env;
 	t_list				*head;
 	struct s_shell		*parent_shell;
-	int					is_subshell;
 	int					exit_code;
 }						t_shell;
 
@@ -108,9 +107,11 @@ typedef struct s_escape_utils
 	char				*arg;
 }						t_escape_utils;
 
-void					init_shell(t_shell *shell, int *shell_channel,
-							char **envp);
-t_shell					*get_shell(t_shell *shell);
+typedef struct s_struc
+{
+	char				*string1;
+	char				*string2;
+}						t_struc;
 
 /*===================*/
 /*=====TAB_CHAR======*/
@@ -134,8 +135,13 @@ t_list					*dlist_get_top(t_list *head);
 /*=======COMMUN======*/
 /*===================*/
 
-/*Free Shell*/
+/*===================*/
+/*=======SHELL=======*/
+/*===================*/
 void					free_shell(t_shell *shell, int exit_code);
+void					init_shell(t_shell *shell, char **envp,
+							t_shell *parent_shell, int exit_code);
+t_shell					*get_shell(t_shell *shell);
 
 /*Manage Error*/
 int						print_error(t_shell *shell, char *string);
@@ -197,8 +203,8 @@ char					**wilcard(t_shell *shell, char *string);
 void					backtracking(char *path, char *wilcard, char *path_file,
 							char ***tab_file);
 void					backtracking_loop(char ***tab_file,
-							char *content_folder, char *path_file, char *path,
-							char *new_wilcard);
+							char *content_folder, char *path_file,
+							t_struc painfull);
 int						check_expand(char *string, char *wilcard);
 char					**ft_realloc_flo(char **tab, char *string, int before);
 char					*bactracking_stat(char *path, char *content_folder);
@@ -206,6 +212,8 @@ char					**ft_realloc_flo(char **tab, char *string, int before);
 int						wildcard_init(t_shell *shell, char *string, char **path,
 							char **expand);
 void					wildcard_add_path(t_shell *shell, char **tab_file,
+							char *path);
+char					**wildcard_end(t_shell *shell, char *string,
 							char *path);
 
 /*===================*/
@@ -308,5 +316,6 @@ void					set_signal_kill(void (*handler)(int));
 void					set_signal_action(void (*handler)(int));
 void					sighandler(int signal);
 void					sigintheredoc(int signal);
+void					handlexec(int signal);
 
 #endif

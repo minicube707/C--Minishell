@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/21 10:50:20 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/27 00:44:51 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static void	manage_pipe(t_shell *shell)
 		close(shell->head->in_out[1]);
 	}
 	execute_close_all_fd(shell);
+	expand_path_all(shell, "");
 	execute_programm(shell);
 }
 

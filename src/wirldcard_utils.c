@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 13:07:45 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/26 18:21:06 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 00:21:13 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,28 +50,28 @@ static int	backtracking_register(char ***tab_file, char *content_folder,
 }
 
 void	backtracking_loop(char ***tab_file, char *content_folder,
-		char *path_file, char *path, char *new_wilcard)
+		char *path_file, t_struc death)
 {
 	struct stat	buff;
 	char		*tmp;
 	char		*new_new_path_file;
 
-	tmp = bactracking_stat(path, content_folder);
+	tmp = bactracking_stat(death.string2, content_folder);
 	if (tmp == NULL)
 		return ;
 	stat(tmp, &buff);
 	if (stat(tmp, &buff) != 0)
 		return (free(tmp));
-	if (S_ISDIR(buff.st_mode) && new_wilcard != NULL
+	if (S_ISDIR(buff.st_mode) && death.string1 != NULL
 		&& ft_strncmp(content_folder, ".", 1) != 0)
 	{
 		new_new_path_file = backtracking_add_path(content_folder, path_file);
 		if (new_new_path_file == NULL)
 			return (free(tmp));
-		backtracking(tmp, new_wilcard, new_new_path_file, tab_file);
+		backtracking(tmp, death.string1, new_new_path_file, tab_file);
 		free(new_new_path_file);
 	}
-	else if (new_wilcard == NULL && ft_strncmp(content_folder, ".", 1) != 0)
+	else if (death.string1 == NULL && ft_strncmp(content_folder, ".", 1) != 0)
 	{
 		if (backtracking_register(tab_file, content_folder, path_file))
 			return (free(tmp));
@@ -95,4 +95,19 @@ char	*bactracking_stat(char *path, char *content_folder)
 	}
 	free(new_path);
 	return (tmp);
+}
+
+char	**wildcard_end(t_shell *shell, char *string, char *path)
+{
+	char	**tab_file;
+
+	tab_file = NULL;
+	tab_file = ft_realloc_flo(tab_file, string, 0);
+	free(path);
+	if (tab_file == NULL)
+	{
+		print_error(shell, "Error malloc");
+		return (NULL);
+	}
+	return (tab_file);
 }

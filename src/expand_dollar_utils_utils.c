@@ -6,11 +6,31 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 15:03:30 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/26 20:17:00 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 00:51:20 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	**copy_tab_option(t_shell *shell, char **tab, char **new_tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i] != NULL)
+	{
+		new_tab = ft_realloc_flo(new_tab, tab[i], 0);
+		if (new_tab == NULL)
+		{
+			free(shell->head->option);
+			shell->head->option = new_tab;
+			return (NULL);
+		}
+		i++;
+	}
+	tab_char_clear(tab);
+	return (new_tab);
+}
 
 static int	expand_path_all_utils(t_shell *shell, char *change)
 {
@@ -34,10 +54,16 @@ static int	expand_path_all_utils(t_shell *shell, char *change)
 	return (0);
 }
 
+static void	expand_path_all_end(t_shell *shell, char **new_tab)
+{
+	free(shell->head->option);
+	shell->head->option = new_tab;
+	shell->head->command = new_tab[0];
+}
+
 void	expand_path_all(t_shell *shell, char *change)
 {
 	int		i;
-	int		j;
 	char	**tab;
 	char	**new_tab;
 
@@ -55,21 +81,10 @@ void	expand_path_all(t_shell *shell, char *change)
 			shell->head->option = new_tab;
 			return ;
 		}
-		j = 0;
-		while (tab[j] != NULL)
-		{
-			new_tab = ft_realloc_flo(new_tab, tab[j], 0);
-			if (new_tab == NULL)
-			{
-				free(shell->head->option);
-				shell->head->option = new_tab;
-				return ;
-			}
-			j++;
-		}
-		tab_char_clear(tab);
+		new_tab = copy_tab_option(shell, tab, new_tab);
+		if (new_tab == NULL)
+			return ;
 		i++;
 	}
-	free(shell->head->option);
-	shell->head->option = new_tab;
+	expand_path_all_end(shell, new_tab);
 }
