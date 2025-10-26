@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/23 20:24:17 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/26 23:56:47 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,7 @@
 
 int		g_status = 0;
 
-void	sighandler(int signal)
-{
-	(void)signal;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	g_status = 130;
-	return ;
-}
-
-void	sig_free_shell(int signal)
-{
-	(void)signal;
-	free_shell(NULL, 130);
-}
-
-void	handlexec(int signal)
-{
-	(void)signal;
-	write(1, "\n", 1);
-	return ;
-}
-
-void	set_signal_action(void (*handler)(int))
-{
-	struct sigaction	qt;
-
-	qt.sa_handler = handler;
-	sigemptyset(&qt.sa_mask);
-	qt.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &qt, NULL);
-	signal(SIGQUIT, SIG_IGN);
-}
-
+/*
 void	print_file_info(t_file_info **tab_file)
 {
 	int	i;
@@ -66,19 +32,7 @@ void	print_file_info(t_file_info **tab_file)
 		i++;
 	}
 }
-/*
-void	print_channel(t_channel *ch)
-{
-	if (!ch)
-	{
-		printf("    [Channel] (null)\n");
-		return ;
-	}
-	printf("    [Channel]\n");
-	printf("      in : %d\n", ch->in);
-	printf("      out: %d\n", ch->out);
-}
-*/
+
 void	print_list(t_list *head)
 {
 	int	index;
@@ -92,8 +46,7 @@ void	print_list(t_list *head)
 		//		printf("  mypipe[0]: %d\n", head->mypipe[0]);
 		//		printf("  mypipe[1]: %d\n", head->mypipe[1]);
 		printf("  command  : %s\n", head->command ? head->command : "(null)");
-
-		//printf("ADRESS OPT %p \n", head->option);
+		// printf("ADRESS OPT %p \n", head->option);
 		if (head->option)
 		{
 			printf("  options  :\n");
@@ -104,52 +57,62 @@ void	print_list(t_list *head)
 		{
 			printf("  options  : (null)\n");
 		}
-		//printf("ADRESS TAB %p \n", head->tab_file);
+		// printf("ADRESS TAB %p \n", head->tab_file);
 		print_file_info(head->tab_file);
-//				print_channel(head->in_out);
-				printf("  subshell : %s\n",
-					head->subshell ? head->subshell : "(null)");
+		//				print_channel(head->in_out);
+		printf("  subshell : %s\n", head->subshell ? head->subshell : "(null)");
 		head = head->next;
 		index++;
 	}
+}*/
+
+static void	minishell_execution(t_shell *shell, int shell_channel[2])
+{
+	g_status = 0;
+	set_signal_action(handlexec);
+	if (g_status != 0)
+		shell->exit_code = g_status;
+	execution(shell, shell_channel);
+	write(1, "\n", 1);
+}
+
+static int	minishell_loop(t_shell *shell, int shell_channel[2])
+{
+	char	*line;
+
+	line = readline("\033[1;94mMinishell >\033[0m ");
+	if (!line)
+		return (0);
+	if (*line)
+	{
+		add_history(line);
+		shell->head = parsing(line);
+		free(line);
+		if (!shell->head)
+			shell->exit_code = 2;
+		if (shell->head)
+			minishell_execution(shell, shell_channel);
+		dlist_clear(shell->head);
+	}
+	return (1);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
 	int		shell_channel[2];
-	char	*line;
+	int		res;
 
 	(void)argc;
-	(void)argv;	
+	(void)argv;
 	set_signal_action(sighandler);
-	init_shell(&shell, shell_channel, envp);
+	shell_channel[0] = STDIN_FILENO;
+	shell_channel[1] = STDOUT_FILENO;
+	init_shell(&shell, envp, NULL, g_status);
+	res = 1;
 	get_shell(&shell);
-	while (1)
-	{
-		line = readline("\033[1;94mMinishell >\033[0m ");
-		printf("READ %s \n", line);
-		if (!line)
-			break ;
-		if (*line)
-		{
-			add_history(line);
-			shell.head = parsing(line);
-			if (!shell.head)
-				g_status = 2;
-			free(line);
-			print_list(shell.head);
-			if (shell.head)
-			{
-				set_signal_action(handlexec);
-				shell.exit_code = g_status;
-				execution(&shell, shell_channel);
-				write(1, "\n", 1);
-				set_signal_action(sighandler);
-			}
-			dlist_clear(shell.head);
-		}
-	}
+	while (res)
+		res = minishell_loop(&shell, shell_channel);
 	free_env(shell.env);
 	free_double_array(shell.environment);
 	return (shell.exit_code);

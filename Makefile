@@ -12,49 +12,59 @@ CC = cc -Wall -Wextra -Werror -MMD -MP -g
 # =======================================
 #              FILE
 # =======================================
-FILE_NAMES =	init \
+FILE_NAMES = 	built-in \
 				double_list \
 				double_list_utils \
-				built-in \
+				dup_arg \
+				env \
+				env_utils \
 				execute_add_path \
 				execute_built_in \
 				execute_close_file \
-                execute_command \
-                execute_here_doc \
-                execute_open_file \
-                execution \
+				execute_command \
+				execute_here_doc \
+				execute_open_file \
+				execution \
 				expand_dollar \
 				expand_dollar_utils \
+				expand_dollar_utils_utils \
+				export \
+				export_utils \
 				free_shell \
+				free_utils \
 				ft_cd \
 				ft_cd_utils \
 				ft_env \
 				ft_exit \
-                here_doc \
-                main \
-                manage_error \
-				norme_env \
-				tab_char \
-				tab_info \
-				env \
-				env_utils \
-				parser \
-				parser_utils \
-				token_utils \
+				ft_realloc \
+				here_doc \
+				init \
 				lexer \
+				lexer_utils \
 				lexer_bis \
 				syntax_bis \
-				lexer_utils \
-				dup_arg \
-				free_utils \
-				export \
-				export_utils \
+				manage_error \
+				manage_error_utils \
+				minishell \
+				norme_env \
+				parser \
+				parser_utils \
+				redir_utils \
 				remove_quote \
-				unset \
-				utils \
+				signal \
 				syntax \
 				syntax_err \
-				syntax_utils
+				syntax_utils \
+				tab_char \
+				tab_info \
+				token_utils \
+				unset \
+				utils \
+				wirldcard \
+				wirldcard_init \
+				wirldcard_check_expand \
+				wirldcard_utils \
+
 
 # =======================================
 #              VARIABLE

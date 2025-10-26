@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 17:30:41 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/24 13:19:30 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/24 19:04:48 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,18 @@ void	tab_char_clear(char **tab)
 
 void	sort_tab(char **tab)
 {
-	int 	i;
+	int		i;
 	int		is_sort;
 	char	*tmp;
-	
-	if (tab ==  NULL || tab[0] ==  NULL)
-		return;
+
+	if (tab == NULL || tab[0] == NULL)
+		return ;
 	is_sort = 0;
 	while (is_sort == 0)
 	{
 		i = 0;
 		is_sort = 1;
-		while (tab[i+1] != NULL)
+		while (tab[i + 1] != NULL)
 		{
 			if (ft_strcmp(tab[i], tab[i + 1]) > 0)
 			{

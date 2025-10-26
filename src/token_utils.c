@@ -16,8 +16,8 @@ t_token	*end_list(t_token *lst)
 {
 	if (!lst)
 		return (NULL);
-	while (lst -> next)
-		lst = lst -> next;
+	while (lst->next)
+		lst = lst->next;
 	return (lst);
 }
 

@@ -29,7 +29,7 @@ int	ft_string_isalpha(char *string)
 }
 
 void	ft_exit(t_shell *shell, char **tab_option)
-{	
+{
 	write(1, "exit\n", 5);
 	if (tab_option[1] == NULL)
 		free_shell(shell, shell->exit_code);

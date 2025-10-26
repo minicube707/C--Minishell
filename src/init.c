@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 16:45:32 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/24 15:50:47 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/26 22:31:22 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,13 @@ t_shell	*get_shell(t_shell *shell)
 	return (ptr);
 }
 
-void	init_shell(t_shell *shell, int *shell_channel, char **envp)
+void	init_shell(t_shell *shell, char **envp, t_shell *parent_shell,
+		int exit_code)
 {
-	shell_channel[0] = STDIN_FILENO;
-	shell_channel[1] = STDOUT_FILENO;
 	shell->env = set_env(envp);
 	shell->head = NULL;
 	shell->environment = NULL;
 	shell->environment = make_env(shell, shell->env);
-	shell->is_subshell = 0;
-	shell->parent_shell = NULL;
-	shell->input = NULL;
-	shell->fd = -1;
+	shell->parent_shell = parent_shell;
+	shell->exit_code = exit_code;
 }
