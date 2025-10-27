@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 17:05:40 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/26 18:20:11 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 13:41:52 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	ft_cd_change_env(t_shell *shell)
 	while (curr != NULL && ft_strncmp(curr->name, "PWD",
 			ft_strlen(curr->name)) != 0)
 		curr = curr->next;
-	ft_cd_change_env_utils(shell, curr, &tmp);
+	if (ft_cd_change_env_utils(shell, curr, &tmp))
+		return ;
 	curr = shell->env;
 	while (curr != NULL && ft_strncmp(curr->name, "OLDPWD",
 			ft_strlen(curr->name)) != 0)
@@ -66,10 +67,7 @@ void	cd_minus(t_shell *shell, char **tab_option)
 	if (ft_strncmp("$OLDPWD", pwd, 7) == 0)
 		print_error_env_not_set(shell, "cd", "OLDPWD");
 	else
-	{
 		chdir2(shell, pwd);
-		printf("%s\n", pwd);
-	}
 	free(pwd);
 	ft_cd_change_env(shell);
 }
@@ -88,7 +86,6 @@ void	ft_cd_utils(t_shell *shell, char *pwd)
 		return ((void)print_error_env_not_set(shell, "cd", "HOME"));
 	}
 	expand_path_all(shell, change);
-	printf("CD %s \n", pwd);
 	chdir2(shell, pwd);
 	free(change);
 	free(pwd);
