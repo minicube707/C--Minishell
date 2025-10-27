@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 01:59:54 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/27 15:20:21 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,7 +275,7 @@ int						escape_in_no_quote(char *str);
 int						escape_char_len(char *str);
 void					append_escaped_char(char **arg, char *str, size_t *buff,
 							size_t s);
-
+char					*duparg(char *str, int *j);
 char					*strcdup(char *str, char c);
 char					*dup_shell_return(int op, int cl, char *str, int i);
 char					*dup_subshell(char *str);
@@ -283,6 +283,8 @@ char					*dup_subshell(char *str);
 void					append_chars(char *str, t_escape_utils *var);
 char					*dup_unquote(char *str, int *j);
 void					add_escape_char(char *str, int *j, t_escape_utils *var);
+char					*free_get_arg(char *res, char *prev, char *new);
+char					*get_arg(char *str, int *i);
 
 /*Token Utils*/
 t_token					*end_list(t_token *lst);

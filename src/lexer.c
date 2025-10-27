@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/27 14:57:04 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/27 15:18:32 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,39 +87,6 @@ char	*duparg(char *str, int *j)
 	while (str[i] && is_op(&str[i]) == -1 && str[i] != ' ')
 		i++;
 	return (dup_unquote(str, j));
-}
-
-char	*free_get_arg(char *res, char *prev, char *new)
-{
-	free(res);
-	free(prev);
-	free(new);
-	return (NULL);
-}
-
-char	*get_arg(char *str, int *i)
-{
-	char	*res;
-	char	*prev;
-	char	*new;
-
-	res = ft_strdup("");
-	prev = NULL;
-	new = NULL;
-	while (str[*i] && str[*i] != ' ')
-	{
-		new = duparg(&str[*i], i);
-		if (!new)
-			return (free_get_arg(res, prev, new));
-		*i += ft_strlen(new);
-		prev = res;
-		res = ft_strjoin(prev, new);
-		if (!res)
-			return (free_get_arg(res, prev, new));
-		free(prev);
-		free(new);
-	}
-	return (res);
 }
 
 static int	set_token(t_token **result, char *str, int *i)

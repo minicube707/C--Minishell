@@ -6,9 +6,11 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 15:01:39 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/27 15:06:26 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/27 15:17:52 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 char	*free_get_arg(char *res, char *prev, char *new)
 {
