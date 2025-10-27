@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 17:22:05 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 15:02:07 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/27 16:59:35 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,31 @@ static int	write_here_doc(t_shell *shell, int fd)
 	return (0);
 }
 
-static int	here_doc_loop(t_shell *shell, int fd, char *limiter, int *true)
+static int	here_doc_loop(t_shell *shell, int fd, char *limiter)
 {
 	char	*input;
 	int		condition1;
 	int		condition2;
-
+	
 	if (write_here_doc(shell, fd))
 		return (1);
 	input = get_next_line(shell, STDIN_FILENO);
 	if (input == NULL)
-		return (1);
+		return (0);
 	condition1 = ft_strncmp(input, limiter, ft_strlen(input) - 1) == 0;
 	condition2 = ft_strlen(input) - 1 == ft_strlen(limiter);
 	if ((condition1 && condition2) || shell->exit_code != 0)
-		*true = 0;
+	{
+		free(input);
+		return (0);
+	}
 	else
 	{
 		if (write_content(shell, fd, input))
-			return (1);
+			return (0);
 	}
 	free(input);
-	return (0);
+	return (1);
 }
 
 int	here_doc(t_shell *shell, int *file_fd, char *limiter)
@@ -76,7 +79,7 @@ int	here_doc(t_shell *shell, int *file_fd, char *limiter)
 		return (1);
 	}
 	while (true)
-		here_doc_loop(shell, fd, limiter, &true);
+		true = here_doc_loop(shell, fd, limiter);
 	close(fd);
 	fd = open(name_file, 0644);
 	if (unlink(name_file))

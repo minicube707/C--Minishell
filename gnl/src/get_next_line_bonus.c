@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:49:09 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 02:16:24 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 17:46:14 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	*loop(t_shell *shell, int fd, t_struc var, int first_loop)
 	char	*buffer;
 
 	set_signal_kill(sigintheredoc);
-	while (!ft_strchr(var.string1, '\n') && shell->exit_code == 0)
+	while (!ft_strchr(var.string1, '\n') && shell->exit_code == 0 && var.string1 != NULL)
 	{
 		buffer = malloc(BUFFER_SIZE + 1);
 		if (buffer == NULL)
@@ -129,3 +129,4 @@ char	*get_next_line(t_shell *shell, int fd)
 	res = loop(shell, fd, easter_egg, first_loop);
 	return (res);
 }
+./minishell 
