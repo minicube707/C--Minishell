@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 15:20:21 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/27 21:29:58 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,7 +294,7 @@ int						add_back(t_token **head, char *content, int op);
 /*Syntax*/
 int						is_redirection(int op);
 int						is_operator(int op);
-char					*unclosed_quote(void);
+char					*unclosed_quote(char *arg);
 int						check_redirection(char *str);
 t_token					*checker(t_token *token);
 int						error_token(int op);
@@ -315,6 +315,7 @@ int						strlenc(char *str, const char c);
 int						strlenc(char *str, const char c);
 void					*ft_realloc(void *ptr, size_t size, size_t oldsize);
 char					*ft_strncat(char *dest, char *src, unsigned int nb);
+int						ft_isspace(char c);
 
 /*Signal*/
 void					set_signal_kill(void (*handler)(int));
