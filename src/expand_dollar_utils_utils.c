@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 15:03:30 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 00:51:20 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 15:11:58 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	expand_path_all_utils(t_shell *shell, char *change)
 	int		i;
 	char	*string;
 
-	i = 1;
+	i = 0;
 	while (shell->head->option[i] != NULL)
 	{
 		string = expand_path(shell, shell->head->option[i], change);
