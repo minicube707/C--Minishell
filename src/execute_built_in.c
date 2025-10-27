@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/23 23:41:29 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/26 22:27:34 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void	execute_correct_built_in(t_shell *shell)
 {
 	char	*cp_command;
-	
+
 	cp_command = shell->head->command;
 	if (ft_strncmp(cp_command, "echo", ft_strlen(cp_command)) == 0)
-		ft_echo(shell, shell->head->option);
+		ft_echo(shell);
 	else if (ft_strncmp(cp_command, "pwd", ft_strlen(cp_command)) == 0)
 		ft_pwd(shell);
 	else if (ft_strncmp(cp_command, "export", ft_strlen(cp_command)) == 0)
@@ -26,7 +26,7 @@ void	execute_correct_built_in(t_shell *shell)
 	else if (ft_strncmp(cp_command, "unset", ft_strlen(cp_command)) == 0)
 		ft_unset(shell, shell->head->option);
 	else if (ft_strncmp(cp_command, "env", ft_strlen(cp_command)) == 0)
-		ft_env(shell->environment);
+		ft_env(shell, shell->environment);
 	else if (ft_strncmp(cp_command, "exit", ft_strlen(cp_command)) == 0)
 		ft_exit(shell, shell->head->option);
 	else if (ft_strncmp(cp_command, "cd", ft_strlen(cp_command)) == 0)
@@ -71,9 +71,9 @@ static void	manage_pipe(t_shell *shell)
 static void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 {
 	pid_t	pid;
-	
+
 	if ((shell->head->next != NULL && shell->head->next->pre_redir == PIPE)
-		|| shell->is_subshell)
+		|| shell->parent_shell != NULL)
 	{
 		pid = fork();
 		if (pid == 0)
@@ -104,7 +104,7 @@ int	execute_built_in(t_shell *shell)
 	else if (pid != -1 && !waitpid(pid, &status, WNOHANG))
 		shell->exit_code = 0;
 	if (shell->head->next == NULL || shell->head->next->pre_redir == AND
-		|| shell->head->next->pre_redir == OR || shell->is_subshell)
+		|| shell->head->next->pre_redir == OR || shell->parent_shell != NULL)
 		waitpid(pid, NULL, 0);
 	return (0);
 }

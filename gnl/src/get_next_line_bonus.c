@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:49:09 by fmotte            #+#    #+#             */
-/*   Updated: 2025/08/15 14:12:36 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/27 00:28:12 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/minishell.h"
 #include "get_next_line_bonus.h"
 
 static void	truncation(char *stock, char *res, char *occ)
@@ -75,38 +76,41 @@ char	*end_loop(char *res, char *buffer, char *stock, int *first_loop)
 	return (res);
 }
 
-char	*loop(int fd, char *res, char *stock, int first_loop)
+char	*loop(t_shell *shell, int fd, t_struc var, int first_loop)
 {
 	int		nb_read;
 	char	*buffer;
 
-	while (!ft_strchr(res, '\n'))
+	set_signal_kill(sigintheredoc);
+	while (!ft_strchr(var.string1, '\n') && shell->exit_code == 0)
 	{
 		buffer = malloc(BUFFER_SIZE + 1);
 		if (buffer == NULL)
 			return (NULL);
 		nb_read = read(fd, buffer, BUFFER_SIZE);
+		shell->exit_code = g_status;
 		if (nb_read <= 0)
 		{
 			free(buffer);
 			if (nb_read == 0 && first_loop == 1)
-				return (res);
-			free(res);
+				return (var.string1);
+			free(var.string1);
 			return (NULL);
 		}
 		buffer[nb_read] = '\0';
-		res = end_loop(res, buffer, stock, &first_loop);
-		if (res == NULL)
+		var.string1 = end_loop(var.string1, buffer, var.string1, &first_loop);
+		if (var.string1 == NULL)
 			return (NULL);
 	}
-	return (res);
+	return (var.string1);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(t_shell *shell, int fd)
 {
 	int			first_loop;
 	static char	stock[1024][BUFFER_SIZE + 1];
 	char		*res;
+	t_struc		easter_egg;
 
 	if (fd < 0)
 		return (NULL);
@@ -120,6 +124,8 @@ char	*get_next_line(int fd)
 		reset_stock(stock[fd], &res);
 		first_loop = 1;
 	}
-	res = loop(fd, res, stock[fd], first_loop);
+	easter_egg.string1 = res;
+	easter_egg.string2 = stock[fd];
+	res = loop(shell, fd, easter_egg, first_loop);
 	return (res);
 }

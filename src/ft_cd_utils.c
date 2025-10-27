@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:24:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/21 10:28:21 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/26 18:19:52 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ char	*cd_expand_home_utils(t_shell *shell, char *target, int *i)
 char	*cd_expand_home(t_shell *shell, char **tab_option, int *i)
 {
 	char	*pwd;
-	char	*target;	
-	
+	char	*target;
+
 	if (tab_option[1][0] == '$')
 		target = ft_strdup(tab_option[1]);
 	else
@@ -70,4 +70,27 @@ char	*cd_expand_home(t_shell *shell, char **tab_option, int *i)
 	else
 		pwd = expand_path(shell, target, "");
 	return (pwd);
+}
+
+int	ft_cd_change_env_utils(t_shell *shell, t_list_env *curr, char **tmp)
+{
+	char		buff[1024];
+	char		*pwd;
+
+	if (curr != NULL)
+	{
+		if (getcwd(buff, 1024) == NULL)
+		{
+			print_error(shell, "Cannot get current working directory path");
+			return (1);
+		}
+		*tmp = curr->content;
+		pwd = ft_strdup(buff);
+		if (pwd == NULL)
+			return (1);
+		curr->content = pwd;
+	}
+	else
+		*tmp = NULL;
+	return (0);
 }

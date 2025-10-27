@@ -6,11 +6,35 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 17:05:40 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/23 22:12:28 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/26 18:20:11 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_cd_change_env(t_shell *shell)
+{
+	t_list_env	*curr;
+	char		*tmp;
+
+	curr = shell->env;
+	while (curr != NULL && ft_strncmp(curr->name, "PWD",
+			ft_strlen(curr->name)) != 0)
+		curr = curr->next;
+	ft_cd_change_env_utils(shell, curr, &tmp);
+	curr = shell->env;
+	while (curr != NULL && ft_strncmp(curr->name, "OLDPWD",
+			ft_strlen(curr->name)) != 0)
+		curr = curr->next;
+	if (curr != NULL)
+	{
+		free(curr->content);
+		curr->content = tmp;
+	}
+	else
+		free(tmp);
+	shell->environment = make_env(shell, shell->env);
+}
 
 void	cd_only(t_shell *shell)
 {
@@ -24,6 +48,7 @@ void	cd_only(t_shell *shell)
 	else
 		chdir2(shell, pwd);
 	free(pwd);
+	ft_cd_change_env(shell);
 }
 
 void	cd_minus(t_shell *shell, char **tab_option)
@@ -46,6 +71,7 @@ void	cd_minus(t_shell *shell, char **tab_option)
 		printf("%s\n", pwd);
 	}
 	free(pwd);
+	ft_cd_change_env(shell);
 }
 
 void	ft_cd_utils(t_shell *shell, char *pwd)
@@ -61,19 +87,19 @@ void	ft_cd_utils(t_shell *shell, char *pwd)
 		free(pwd);
 		return ((void)print_error_env_not_set(shell, "cd", "HOME"));
 	}
-	pwd = expand_path(shell, pwd, change);
+	expand_path_all(shell, change);
 	printf("CD %s \n", pwd);
 	chdir2(shell, pwd);
-	free(pwd);
 	free(change);
-	// Export PWD et OLDPWD
+	free(pwd);
+	ft_cd_change_env(shell);
 }
 
 void	ft_cd(t_shell *shell, char **tab_option)
 {
 	char	*pwd;
 	int		i;
-	
+
 	shell->exit_code = 0;
 	if (tab_option[1] != NULL && tab_option[2] != NULL)
 		return ((void)print_error_to_much(shell, "cd"));
