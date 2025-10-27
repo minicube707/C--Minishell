@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/27 15:02:31 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/27 15:36:53 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,10 @@ void	execution(t_shell *shell, int shell_channel[2])
 	t_list	*last_head;
 	int		prev_redir;
 
-	printf("G STATUS1 %d \n", g_status);
 	execution_heredoc(shell);
-	printf("G STATUS2 %d \n", g_status);
 	while (shell->head != NULL)
 	{
 		set_signal_action(sighandler);
-		printf("G STATUS3 %d \n", g_status);
 		if (g_status != 0)
 			shell->exit_code = g_status;
 		if (pipe(shell->head->mypipe))
