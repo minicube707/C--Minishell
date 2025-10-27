@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:49:09 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 00:28:12 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 02:16:24 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	*loop(t_shell *shell, int fd, t_struc var, int first_loop)
 			return (NULL);
 		}
 		buffer[nb_read] = '\0';
-		var.string1 = end_loop(var.string1, buffer, var.string1, &first_loop);
+		var.string1 = end_loop(var.string1, buffer, var.string2, &first_loop);
 		if (var.string1 == NULL)
 			return (NULL);
 	}

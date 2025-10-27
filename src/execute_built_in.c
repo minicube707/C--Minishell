@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_built_in.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/26 22:27:34 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 10:07:05 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ void	execute_correct_built_in(t_shell *shell)
 	else if (ft_strncmp(cp_command, "pwd", ft_strlen(cp_command)) == 0)
 		ft_pwd(shell);
 	else if (ft_strncmp(cp_command, "export", ft_strlen(cp_command)) == 0)
+	{
+		expand_path_all(shell, "");
 		ft_export(shell, shell->head->option);
+	}
 	else if (ft_strncmp(cp_command, "unset", ft_strlen(cp_command)) == 0)
 		ft_unset(shell, shell->head->option);
 	else if (ft_strncmp(cp_command, "env", ft_strlen(cp_command)) == 0)
