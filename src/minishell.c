@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/27 14:57:48 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/27 16:05:57 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,6 @@ void	print_list(t_list *head)
 	}
 }
 
-static void	minishell_execution(t_shell *shell, int shell_channel[2])
-{
-	g_status = 0;
-	if (g_status != 0)
-		shell->exit_code = g_status;
-	execution(shell, shell_channel);
-}
-
 static int	minishell_loop(t_shell *shell, int shell_channel[2])
 {
 	char	*line;
@@ -81,8 +73,8 @@ static int	minishell_loop(t_shell *shell, int shell_channel[2])
 	g_status = 0;
 	set_signal_action(sighandler);
 	line = readline("\033[1;94mMinishell >\033[0m ");
-	shell->exit_code = g_status;
-	printf("G STATUS0 %d \n", g_status);
+	if (g_status != 0)
+		shell->exit_code = g_status;
 	if (!line)
 		return (0);
 	if (*line)
@@ -94,7 +86,7 @@ static int	minishell_loop(t_shell *shell, int shell_channel[2])
 		if (!shell->head)
 			shell->exit_code = 2;
 		if (shell->head)
-			minishell_execution(shell, shell_channel);
+			execution(shell, shell_channel);
 		dlist_clear(shell->head);
 	}
 	return (1);
