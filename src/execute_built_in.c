@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 10:07:05 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/27 13:33:03 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,14 @@ static void	manage_pipe(t_shell *shell)
 	int	exit_code;
 
 	exit_code = 0;
-	printf("BUILT FORK\n");
-	if (shell->head->in_out[0] != 0)
+	if (shell->head->in_out[0] != STDIN_FILENO)
 	{
 		exit_code = dup2(shell->head->in_out[0], STDIN_FILENO);
 		if (exit_code < 0)
 			free_shell(shell, EXIT_FAILURE);
 		close(shell->head->in_out[0]);
 	}
-	if (shell->head->in_out[1] != 1)
+	if (shell->head->in_out[1] != STDOUT_FILENO)
 	{
 		exit_code = dup2(shell->head->in_out[1], STDOUT_FILENO);
 		if (exit_code < 0)
@@ -68,6 +67,7 @@ static void	manage_pipe(t_shell *shell)
 		close(shell->head->in_out[1]);
 	}
 	execute_close_all_fd(shell);
+	shell->head->in_out[1] = STDOUT_FILENO;
 	execute_programm(shell);
 }
 
@@ -95,7 +95,6 @@ int	execute_built_in(t_shell *shell)
 	int		status;
 	pid_t	pid;
 
-	printf("\nBUILT IN %s \n", shell->head->command);
 	manage_fork(shell, &pid);
 	if (pid != -1 && waitpid(pid, &status, WNOHANG))
 	{

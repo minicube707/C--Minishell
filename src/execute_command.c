@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 00:44:51 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 10:19:36 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static void	manage_pipe(t_shell *shell)
 	int	exit_code;
 
 	exit_code = 0;
-	printf("CMD FORK\n");
 	if (shell->head->in_out[0] != 0)
 	{
 		exit_code = dup2(shell->head->in_out[0], STDIN_FILENO);
@@ -68,9 +67,7 @@ int	execute_command(t_shell *shell)
 	int		status;
 	pid_t	pid;
 
-	printf("\nCOMMAND %s \n", shell->head->command);
 	manage_fork(shell, &pid);
-	printf("G STATUS %d \n", shell->exit_code);
 	if (shell->head->next == NULL || shell->head->next->pre_redir == AND
 		|| shell->head->next->pre_redir == OR)
 	{
@@ -84,6 +81,5 @@ int	execute_command(t_shell *shell)
 		else
 			shell->exit_code = 0;
 	}
-	printf("G STATUS %d \n", shell->exit_code);
 	return (0);
 }

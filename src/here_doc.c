@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 17:22:05 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/26 19:20:49 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 15:02:07 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	here_doc(t_shell *shell, int *file_fd, char *limiter)
 
 	name_file = ".here_doc";
 	true = 1;
+	g_status = 0;
 	shell->exit_code = 0;
 	fd = open(name_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
