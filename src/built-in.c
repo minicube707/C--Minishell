@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built-in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:27:57 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 14:03:13 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/27 23:02:46 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ void	ft_echo(t_shell *shell)
 	i = ft_echo_utils(shell->head->option, &add_back_slash);
 	while (shell->head->option[i] != NULL)
 	{
-		write(shell->head->in_out[1], shell->head->option[i], ft_strlen(shell->head->option[i]));
+		write(shell->head->in_out[1], shell->head->option[i],
+			ft_strlen(shell->head->option[i]));
 		write(shell->head->in_out[1], " ", 1);
 		i++;
 	}

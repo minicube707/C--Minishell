@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 17:22:05 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 16:59:35 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/27 23:22:41 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	write_content(t_shell *shell, int fd, char *input)
-{
-	if (write(fd, input, ft_strlen(input)) == -1)
-	{
-		free(input);
-		print_error(shell, "failure writing in here_doc");
-		close(fd);
-		return (1);
-	}
-	return (0);
-}
 
 static int	write_here_doc(t_shell *shell, int fd)
 {
@@ -37,29 +25,50 @@ static int	write_here_doc(t_shell *shell, int fd)
 
 static int	here_doc_loop(t_shell *shell, int fd, char *limiter)
 {
-	char	*input;
-	int		condition1;
-	int		condition2;
-	
+	char		*input;
+	t_two_int	two_int;
+
+	two_int.int1 = STDIN_FILENO;
 	if (write_here_doc(shell, fd))
 		return (1);
-	input = get_next_line(shell, STDIN_FILENO);
-	if (input == NULL)
+	input = get_next_line(shell, &two_int);
+	if (input == NULL && two_int.int2 == -1 && errno == EINTR)
 		return (0);
-	condition1 = ft_strncmp(input, limiter, ft_strlen(input) - 1) == 0;
-	condition2 = ft_strlen(input) - 1 == ft_strlen(limiter);
-	if ((condition1 && condition2) || shell->exit_code != 0)
+	if (input == NULL && two_int.int2 == -1)
 	{
-		free(input);
+		print_error(shell, "Error read");
 		return (0);
 	}
-	else
+	if (input == NULL && two_int.int2 == 0)
 	{
-		if (write_content(shell, fd, input))
+		write(1, "\nminishell: warning: here-document at line delimited"
+			"by end-of-file (wanted `", 77);
+		write(1, limiter, ft_strlen(limiter));
+		write(1, "')\n", 3);
+		return (0);
+	}
+	return (here_doc_loop_end(shell, fd, input, limiter));
+}
+
+int	here_doc_unlink(t_shell *shell, char *name_file)
+{
+	int		fd;
+	int		new_fd[2];
+
+	fd = open(name_file, 0644);
+	if (unlink(name_file))
+	{
+		print_error(shell, "failure unlink here_doc");
+		close(fd);
+		if (pipe(new_fd))
+		{
+			print_error(shell, "failure creation of pipe");
 			return (0);
+		}
+		close (new_fd[1]);
+		return (new_fd[0]);
 	}
-	free(input);
-	return (1);
+	return (fd);
 }
 
 int	here_doc(t_shell *shell, int *file_fd, char *limiter)
@@ -81,13 +90,9 @@ int	here_doc(t_shell *shell, int *file_fd, char *limiter)
 	while (true)
 		true = here_doc_loop(shell, fd, limiter);
 	close(fd);
-	fd = open(name_file, 0644);
-	if (unlink(name_file))
-	{
-		print_error(shell, "failure unlink here_doc");
-		close(fd);
+	fd = here_doc_unlink(shell, name_file);
+	if (fd == 0)
 		return (1);
-	}
 	*file_fd = fd;
 	return (0);
 }

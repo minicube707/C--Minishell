@@ -38,6 +38,7 @@ FILE_NAMES = 	built-in \
 				ft_exit \
 				ft_realloc \
 				here_doc \
+				here_doc_utils \
 				init \
 				lexer \
 				lexer_utils \
@@ -149,15 +150,13 @@ run: $(NAME)
 	./$(NAME)
 
 test: $(NAME)
-	valgrind \
+	@echo "$(CYAN)[Valgrind]$(RESET) Lancement des tests..."
+	@valgrind \
 	--suppressions=$$(pwd)/dev_tools/.ignore_rl_leaks.supp \
-	--leak-check=full \
-	--show-leak-kinds=all \
-	--track-origins=yes \
-	--trace-children=yes \
-	--track-fds=yes \
-	--leak-check=full -s \
-	./$(NAME)
+	--leak-check=full --show-leak-kinds=all \
+	--track-origins=yes --trace-children=yes \
+	--track-fds=yes -s ./$(NAME); \
+	echo "\n$(YELLOW)Code de retour : $$?$(RESET)"
 
 
 # Inclusion automatique des fichiers .d s’ils existent
