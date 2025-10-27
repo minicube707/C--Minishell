@@ -30,6 +30,7 @@ FILE_NAMES = 	built-in \
 				expand_dollar_utils_utils \
 				export \
 				export_utils \
+				sort_util \
 				free_shell \
 				free_utils \
 				ft_cd \
@@ -41,9 +42,7 @@ FILE_NAMES = 	built-in \
 				init \
 				lexer \
 				lexer_bis \
-				syntax_bis \
 				lexer_utils \
-				lexer_bis \
 				syntax_bis \
 				manage_error \
 				manage_error_utils \

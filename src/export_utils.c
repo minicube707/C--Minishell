@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 14:58:34 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/29 22:25:15 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/27 01:14:55 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,26 @@ t_list_env	**set_export_list(t_list_env *env, int size)
 		curr = curr->next;
 	}
 	return (list);
+}
+
+int	name_is_valid(char *arg)
+{
+	if (!ft_isalpha(*arg) && *arg != '_')
+		return (0);
+	arg++;
+	while (*arg)
+	{
+		if (!ft_isalnum(*arg) && *arg != '_')
+			return (0);
+		arg++;
+	}
+	return (1);
+}
+
+int	error_id(char *arg)
+{
+	ft_putstr_fd("minishell: export '", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("' is not a valid identifier\n", 2);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 00:16:41 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 01:59:54 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,12 +226,15 @@ int						ft_is_built_in(char *command);
 void					ft_echo(t_shell *shell);
 void					ft_pwd(t_shell *shell);
 int						ft_export(t_shell *shell, char **arg);
+void					print_sort(t_list_env **arr, int size, int i);
 char					**get_name_value(char *arg);
 int						ft_unset(t_shell *shell, char **arg);
 void					ft_env(t_shell *shell, char **environment);
 int						size_t_list_env(t_list_env *env);
 t_list_env				**set_export_list(t_list_env *env, int size);
 int						ft_strcmp(const char *s1, const char *s2);
+int						name_is_valid(char *arg);
+int						error_id(char *arg);
 void					ft_exit(t_shell *shell, char **tab_option);
 void					ft_cd(t_shell *shell, char **tab_option);
 void					chdir2(t_shell *shell, char *pwd);
