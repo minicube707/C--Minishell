@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:23:21 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/26 20:28:02 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 16:22:47 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,12 @@ void	ft_env(t_shell *shell, char **environment)
 	i = 0;
 	while (environment[i] != NULL)
 	{
-		write(1, environment[i], ft_strlen(environment[i]));
-		write(1, "\n", 1);
+		if (*(ft_strchr(environment[i], '=') + 1) != '\0')
+		{
+			write(shell->head->in_out[1], environment[i],
+				ft_strlen(environment[i]));
+			write(shell->head->in_out[1], "\n", 1);
+		}
 		i++;
 	}
 }
