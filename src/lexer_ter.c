@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 15:01:39 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/27 15:17:52 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/28 17:25:48 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*get_arg(char *str, int *i)
 	res = ft_strdup("");
 	prev = NULL;
 	new = NULL;
-	while (str[*i] && str[*i] != ' ')
+	while (str[*i] && !ft_isspace(str[*i]) && !is_delimiter(&str[*i]))
 	{
 		new = duparg(&str[*i], i);
 		if (!new)

@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 21:29:58 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/28 17:23:12 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,7 @@ t_token					*lexer(char *str);
 
 /*Lexer Utils*/
 int						is_op(char *str);
+int						is_delimiter(char *c);
 size_t					op_len(int op);
 void					in_quote(char *str, int *i);
 int						escape_in_double_quote(char *str);
