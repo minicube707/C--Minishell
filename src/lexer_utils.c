@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:37:42 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/21 12:56:30 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/28 00:02:46 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	escape_in_double_quote(char *str)
 {
 	if (str[0] != '\\')
 		return (0);
-	if (str[1] == '\\' || str[1] == '"' || str[1] == '\'')
+	if (str[1] == '\\' || str[1] == '"' || str[1] == '`')
 		return (1);
 	return (0);
 }
@@ -34,7 +34,7 @@ int	escape_in_no_quote(char *str)
 		return (0);
 	if (str[1] == '\\' || str[1] == '"' || str[1] == '\'')
 		return (1);
-	if (str[1] == 'n' || str[1] == ' ' || str[1] == 't')
+	if (str[1] == 'n' || str[1] == ' ')
 		return (1);
 	if (str[1] == ';' || str[1] == '&' || str[1] == '|')
 		return (1);

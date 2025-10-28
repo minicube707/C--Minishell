@@ -6,33 +6,11 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:51:49 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/26 18:12:43 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 02:03:42 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	name_is_valid(char *arg)
-{
-	if (!ft_isalpha(*arg) && *arg != '_')
-		return (0);
-	arg++;
-	while (*arg)
-	{
-		if (!ft_isalnum(*arg) && *arg != '_')
-			return (0);
-		arg++;
-	}
-	return (1);
-}
-
-static int	error_id(char *arg)
-{
-	ft_putstr_fd("minishell: export '", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd("' is not a valid identifier\n", 2);
-	return (1);
-}
 
 static void	sort_list(t_list_env **arr, int size)
 {
@@ -56,14 +34,7 @@ static void	sort_list(t_list_env **arr, int size)
 		}
 		i++;
 	}
-	i = -1;
-	while (++i < size)
-	{
-		if (arr[i]->content)
-			printf("export %s=\"%s\"\n", arr[i]->name, arr[i]->content);
-		else
-			printf("export %s\n", arr[i]->name);
-	}
+	print_sort(arr, size, i);
 	free(arr);
 }
 
@@ -113,32 +84,18 @@ char	**get_name_value(char *arg)
 	return (result);
 }
 
-int	ft_export(t_shell *shell, char **arg)
+int	handle_arg(t_shell *shell, char **arg, t_list_env *curr, char **name_value)
 {
-	t_list_env	*curr;
-	int			size;
-	char		**name_value;
-
-	shell->exit_code = 0;
-	if (!arg[1])
-	{
-		size = size_t_list_env(shell->env);
-		sort_list(set_export_list(shell->env, size), size);
-		return (0);
-	}
-	arg++;
 	while (*arg)
 	{
 		curr = shell->env;
 		name_value = get_name_value(*arg);
-		printf("%s => %s\n", name_value[0], name_value[1]);
 		if (!name_is_valid(name_value[0]))
 			return (error_id(*arg));
 		while (curr)
 		{
 			if (!ft_strcmp(curr->name, name_value[0]))
 			{
-				printf("test\n");
 				curr = update_env_value(curr, name_value);
 				break ;
 			}
@@ -152,6 +109,29 @@ int	ft_export(t_shell *shell, char **arg)
 		}
 		arg++;
 	}
+	return (0);
+}
+
+int	ft_export(t_shell *shell, char **arg)
+{
+	int			size;
+	char		**name_value;
+	t_list_env	*curr;
+	int			err;
+
+	shell->exit_code = 0;
+	name_value = NULL;
+	curr = NULL;
+	if (!arg[1])
+	{
+		size = size_t_list_env(shell->env);
+		sort_list(set_export_list(shell->env, size), size);
+		return (0);
+	}
+	arg++;
+	err = handle_arg(shell, arg, curr, name_value);
+	if (err)
+		return (err);
 	shell->environment = make_env(shell, shell->env);
 	return (0);
 }

@@ -6,14 +6,15 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 16:03:42 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/24 16:03:44 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/27 21:28:10 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*unclosed_quote(void)
+char	*unclosed_quote(char *arg)
 {
+	free(arg);
 	ft_putstr_fd("minishell: unclose quotes are not supported\n", 2);
 	return (NULL);
 }

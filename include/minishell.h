@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 00:16:41 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 21:29:58 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,12 +226,15 @@ int						ft_is_built_in(char *command);
 void					ft_echo(t_shell *shell);
 void					ft_pwd(t_shell *shell);
 int						ft_export(t_shell *shell, char **arg);
+void					print_sort(t_list_env **arr, int size, int i);
 char					**get_name_value(char *arg);
 int						ft_unset(t_shell *shell, char **arg);
 void					ft_env(t_shell *shell, char **environment);
 int						size_t_list_env(t_list_env *env);
 t_list_env				**set_export_list(t_list_env *env, int size);
 int						ft_strcmp(const char *s1, const char *s2);
+int						name_is_valid(char *arg);
+int						error_id(char *arg);
 void					ft_exit(t_shell *shell, char **tab_option);
 void					ft_cd(t_shell *shell, char **tab_option);
 void					chdir2(t_shell *shell, char *pwd);
@@ -272,7 +275,7 @@ int						escape_in_no_quote(char *str);
 int						escape_char_len(char *str);
 void					append_escaped_char(char **arg, char *str, size_t *buff,
 							size_t s);
-
+char					*duparg(char *str, int *j);
 char					*strcdup(char *str, char c);
 char					*dup_shell_return(int op, int cl, char *str, int i);
 char					*dup_subshell(char *str);
@@ -280,6 +283,8 @@ char					*dup_subshell(char *str);
 void					append_chars(char *str, t_escape_utils *var);
 char					*dup_unquote(char *str, int *j);
 void					add_escape_char(char *str, int *j, t_escape_utils *var);
+char					*free_get_arg(char *res, char *prev, char *new);
+char					*get_arg(char *str, int *i);
 
 /*Token Utils*/
 t_token					*end_list(t_token *lst);
@@ -289,7 +294,7 @@ int						add_back(t_token **head, char *content, int op);
 /*Syntax*/
 int						is_redirection(int op);
 int						is_operator(int op);
-char					*unclosed_quote(void);
+char					*unclosed_quote(char *arg);
 int						check_redirection(char *str);
 t_token					*checker(t_token *token);
 int						error_token(int op);
@@ -310,6 +315,7 @@ int						strlenc(char *str, const char c);
 int						strlenc(char *str, const char c);
 void					*ft_realloc(void *ptr, size_t size, size_t oldsize);
 char					*ft_strncat(char *dest, char *src, unsigned int nb);
+int						ft_isspace(char c);
 
 /*Signal*/
 void					set_signal_kill(void (*handler)(int));

@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/24 16:24:21 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/28 00:41:33 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,12 @@ char	*dup_quote(char *str, int *j, int single)
 	t_escape_utils	var;
 
 	var.i = 1;
-	var.len = 0;
+	var.len = 1;
 	var.buff = 11;
 	var.arg = ft_calloc(sizeof(char), var.buff);
 	if (!var.arg)
 		free_shell(NULL, 1);
-	while (str[var.i] && str[var.i] != ' ' && str[var.i] != '"'
-		&& str[var.i] != '\'')
+	while (str[var.i] && str[var.i] != str[0])
 	{
 		if (escape_in_double_quote(&str[var.i]) && !single)
 			add_escape_char(str, j, &var);
@@ -60,6 +59,10 @@ char	*dup_quote(char *str, int *j, int single)
 			var.len++;
 		}
 	}
+	if (str[var.i] != str[0])
+		return (unclosed_quote(var.arg));
+	var.i++;
+	var.len++;
 	append_chars(str, &var);
 	return (var.arg);
 }
@@ -71,11 +74,12 @@ char	*duparg(char *str, int *j)
 
 	if (*str == '"')
 	{
-		*j += 2;
+		//*j += 2;
 		return (dup_quote(str, j, 0));
 	}
 	if (*str == '\'')
-		return (strcdup(str, '\''));
+		return (dup_quote(str, j, 1));
+	//	return (strcdup(str, '\''));
 	if (*str == '(')
 	{
 		arg = dup_subshell(str);
@@ -84,7 +88,7 @@ char	*duparg(char *str, int *j)
 		return (arg);
 	}
 	i = 0;
-	while (str[i] && is_op(&str[i]) == -1 && str[i] != ' ')
+	while (str[i] && is_op(&str[i]) == -1 && !ft_isspace(str[i]))
 		i++;
 	return (dup_unquote(str, j));
 }
@@ -94,6 +98,7 @@ static int	set_token(t_token **result, char *str, int *i)
 	char	*arg;
 	int		code;
 
+	arg = NULL;
 	code = is_op(&str[*i]);
 	if (code >= 0)
 	{
@@ -105,11 +110,10 @@ static int	set_token(t_token **result, char *str, int *i)
 	}
 	else
 	{
-		arg = duparg(&str[*i], i);
+		arg = get_arg(str, i);
 		if (!arg)
 			return (0);
 		add_back(result, arg, code);
-		*i += ft_strlen(arg);
 	}
 	return (1);
 }
@@ -123,7 +127,7 @@ t_token	*lexer(char *str)
 	result = NULL;
 	while (str[i])
 	{
-		if (str[i] == ' ')
+		if (ft_isspace(str[i]))
 			i++;
 		else
 		{
@@ -133,7 +137,6 @@ t_token	*lexer(char *str)
 				break ;
 			}
 		}
-		//printf("i = %d => %c\n", i, str[i]);
 	}
 	return (result);
 }
