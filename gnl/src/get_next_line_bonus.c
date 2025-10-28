@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:49:09 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 17:46:14 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/28 12:49:06 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,4 +129,3 @@ char	*get_next_line(t_shell *shell, int fd)
 	res = loop(shell, fd, easter_egg, first_loop);
 	return (res);
 }
-./minishell 
