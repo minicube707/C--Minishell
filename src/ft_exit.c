@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 17:44:44 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/23 22:10:40 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/28 17:10:47 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,14 @@ int	ft_string_isalpha(char *string)
 
 void	ft_exit(t_shell *shell, char **tab_option)
 {
-	write(1, "exit\n", 5);
+	int fd_tty;
+
+	fd_tty = open("/dev/tty", O_RDWR);
+	if (fd_tty != -1)
+	{
+		write(fd_tty, "exit\n", 5);
+		close (fd_tty);
+	}
 	if (tab_option[1] == NULL)
 		free_shell(shell, shell->exit_code);
 	if (ft_string_isalpha(tab_option[1]))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_ter.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 15:01:39 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/27 15:17:52 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/28 17:29:26 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ char	*get_arg(char *str, int *i)
 	char	*prev;
 	char	*new;
 
-	res = ft_strdup("");
+	res = ft_strdup(""); // a proteger (segfault a "res = ft_strjoin(prev, new);" plus bas meme fonction)
+	// res = NULL;
 	prev = NULL;
 	new = NULL;
 	while (str[*i] && str[*i] != ' ')

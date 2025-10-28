@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 09:49:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/21 16:23:43 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/28 17:33:21 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_list	*new_node(t_list *curr, t_list *prev, t_token *token)
 
 int	new_tab_file(t_list *curr, t_token **token, int f)
 {
-	curr->tab_file[f] = malloc(sizeof(t_file_info));
+	curr->tab_file[f] = malloc(sizeof(t_file_info)); // a proteger segafault sur la ligne suivante
 	curr->tab_file[f]->type = (*token)->op;
 	if ((*token)->next && (*token)->next->op == -1)
 	{
