@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/27 16:21:45 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/28 12:53:32 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,15 @@ void	print_list(t_list *head)
 	}
 }
 
-static void	minishell_execution(t_shell *shell, int shell_channel[2])
-{
-	g_status = 0;
-	set_signal_action(handlexec);
-	if (g_status != 0)
-		shell->exit_code = g_status;
-	execution(shell, shell_channel);
-	write(1, "\n", 1);
-}
-
 static int	minishell_loop(t_shell *shell, int shell_channel[2])
 {
 	char	*line;
 
+	g_status = 0;
+	set_signal_action(sighandler);
 	line = readline("\033[1;94mMinishell >\033[0m ");
+	if (g_status != 0)
+		shell->exit_code = g_status;
 	if (!line)
 		return (0);
 	if (*line)
@@ -92,7 +86,7 @@ static int	minishell_loop(t_shell *shell, int shell_channel[2])
 		if (!shell->head)
 			shell->exit_code = 2;
 		if (shell->head)
-			minishell_execution(shell, shell_channel);
+			execution(shell, shell_channel);
 		dlist_clear(shell->head);
 	}
 	return (1);
@@ -106,15 +100,18 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	set_signal_action(sighandler);
-	shell_channel[0] = STDIN_FILENO;
-	shell_channel[1] = STDOUT_FILENO;
-	init_shell(&shell, envp, NULL, g_status);
-	res = 1;
-	get_shell(&shell);
-	while (res)
-		res = minishell_loop(&shell, shell_channel);
-	free_env(shell.env);
-	free_double_array(shell.environment);
-	return (shell.exit_code);
+	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
+	{
+		shell_channel[0] = STDIN_FILENO;
+		shell_channel[1] = STDOUT_FILENO;
+		init_shell(&shell, envp, NULL, 0);
+		res = 1;
+		get_shell(&shell);
+		while (res)
+			res = minishell_loop(&shell, shell_channel);
+		free_env(shell.env);
+		free_double_array(shell.environment);
+		return (shell.exit_code);
+	}
+	return (0);
 }

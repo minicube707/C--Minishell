@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/26 23:47:38 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/27 15:36:53 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 
 static void	execution_heredoc(t_shell *shell)
 {
-	g_status = 0;
 	execute_here_doc(shell, shell->head);
-	if (shell->exit_code == 130)
-		free_shell(shell, shell->exit_code);
-	set_signal_action(sighandler);
 	if (g_status != 0)
 		shell->exit_code = g_status;
 }
@@ -27,7 +23,6 @@ static void	execution_subshell(t_shell *shell)
 {
 	t_shell	sub_shell;
 
-	printf("\nSUBSHELL\n");
 	init_shell(&sub_shell, shell->environment, shell, 0);
 	sub_shell.head = parsing(shell->head->subshell);
 	if (sub_shell.head)
@@ -38,7 +33,6 @@ static void	execution_subshell(t_shell *shell)
 	dlist_clear(sub_shell.head);
 	free_env(sub_shell.env);
 	free_double_array(sub_shell.environment);
-	printf("\nEND SUBSHELL\n");
 	get_shell(shell);
 }
 
@@ -84,9 +78,11 @@ void	execution(t_shell *shell, int shell_channel[2])
 	int		prev_redir;
 
 	execution_heredoc(shell);
-	printf("SHELL %p \n", shell);
 	while (shell->head != NULL)
 	{
+		set_signal_action(sighandler);
+		if (g_status != 0)
+			shell->exit_code = g_status;
 		if (pipe(shell->head->mypipe))
 			return ((void)print_error(shell, "failure creation of pipe"));
 		exit_code = execution_manage_redir(shell, shell_channel, &prev_redir);

@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:27:57 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/24 18:15:09 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/27 14:03:13 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,12 @@ void	ft_echo(t_shell *shell)
 	i = ft_echo_utils(shell->head->option, &add_back_slash);
 	while (shell->head->option[i] != NULL)
 	{
-		write(1, shell->head->option[i], ft_strlen(shell->head->option[i]));
-		write(1, " ", 1);
+		write(shell->head->in_out[1], shell->head->option[i], ft_strlen(shell->head->option[i]));
+		write(shell->head->in_out[1], " ", 1);
 		i++;
 	}
 	if (add_back_slash)
-		write(1, "\n", 1);
+		write(shell->head->in_out[1], "\n", 1);
 	shell->exit_code = 0;
 }
 
@@ -88,7 +88,7 @@ void	ft_pwd(t_shell *shell)
 		print_error(shell, "Cannot get current working directory path");
 		return ;
 	}
-	write(1, buff, ft_strlen(buff));
-	write(1, "\n", 1);
+	write(shell->head->in_out[1], buff, ft_strlen(buff));
+	write(shell->head->in_out[1], "\n", 1);
 	return ;
 }
