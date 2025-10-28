@@ -3,20 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/27 15:36:53 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/27 23:09:53 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	execution_heredoc(t_shell *shell)
+static void	execution_end(t_shell *shell)
 {
-	execute_here_doc(shell, shell->head);
-	if (g_status != 0)
-		shell->exit_code = g_status;
+	if (shell->head->previous != NULL)
+		close(shell->head->previous->mypipe[0]);
+	if (shell->head->next == NULL)
+		close(shell->head->mypipe[0]);
+	close(shell->head->mypipe[1]);
+	execute_close_fd(shell->head);
 }
 
 static void	execution_subshell(t_shell *shell)
@@ -30,6 +33,7 @@ static void	execution_subshell(t_shell *shell)
 		execution(&sub_shell, shell->head->in_out);
 		write(1, "\n", 1);
 	}
+	shell->exit_code = sub_shell.exit_code;
 	dlist_clear(sub_shell.head);
 	free_env(sub_shell.env);
 	free_double_array(sub_shell.environment);
@@ -77,7 +81,9 @@ void	execution(t_shell *shell, int shell_channel[2])
 	t_list	*last_head;
 	int		prev_redir;
 
-	execution_heredoc(shell);
+	execute_here_doc(shell, shell->head);
+	if (g_status != 0)
+		shell->exit_code = g_status;
 	while (shell->head != NULL)
 	{
 		set_signal_action(sighandler);
@@ -90,12 +96,7 @@ void	execution(t_shell *shell, int shell_channel[2])
 				|| (prev_redir == OR && shell->exit_code != 0)
 				|| prev_redir == PIPE || prev_redir == EMPTY))
 			execution_execute(shell);
-		if (shell->head->previous != NULL)
-			close(shell->head->previous->mypipe[0]);
-		if (shell->head->next == NULL)
-			close(shell->head->mypipe[0]);
-		close(shell->head->mypipe[1]);
-		execute_close_fd(shell->head);
+		execution_end(shell);
 		last_head = shell->head;
 		shell->head = shell->head->next;
 	}

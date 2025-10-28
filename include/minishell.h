@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 21:29:58 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/28 15:26:12 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,12 @@ typedef struct s_struc
 	char				*string2;
 }						t_struc;
 
+typedef struct s_two_int
+{
+	int					int1;
+	int					int2;
+}						t_two_int;
+
 /*===================*/
 /*=====TAB_CHAR======*/
 /*===================*/
@@ -168,6 +174,8 @@ void					print_list(t_list *head);
 
 /*Here_doc*/
 int						here_doc(t_shell *shell, int *file_fd, char *limiter);
+int						here_doc_loop_end(t_shell *shell, int fd, char *input,
+							char *limiter);
 
 /*Execute_close_file*/
 int						manage_path(t_shell *shell, int change);
