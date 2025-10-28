@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/28 15:26:12 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/28 15:45:41 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,8 @@ char					*expand_dollard(t_shell *shell, char *string);
 void					expand_path_all(t_shell *shell, char *change);
 
 /*Remove quote*/
-char					*remove_quote(t_shell *shell, char *string);
+char					*remove_single_quote(t_shell *shell, char *string);
+char					*remove_double_quote(t_shell *shell, char *string);
 
 /*Wildcard*/
 char					**wilcard(t_shell *shell, char *string);

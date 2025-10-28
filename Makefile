@@ -53,7 +53,8 @@ FILE_NAMES = 	built-in \
 				parser \
 				parser_utils \
 				redir_utils \
-				remove_quote \
+				remove_single_quote \
+				remove_double_quote \
 				signal \
 				syntax \
 				syntax_err \

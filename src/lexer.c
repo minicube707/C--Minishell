@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/28 00:41:33 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/28 16:15:18 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,10 @@ char	*duparg(char *str, int *j)
 
 	if (*str == '"')
 	{
-		//*j += 2;
 		return (dup_quote(str, j, 0));
 	}
 	if (*str == '\'')
 		return (dup_quote(str, j, 1));
-	//	return (strcdup(str, '\''));
 	if (*str == '(')
 	{
 		arg = dup_subshell(str);

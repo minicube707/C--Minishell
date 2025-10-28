@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   remove_quote.c                                     :+:      :+:    :+:   */
+/*   remove_double_quote.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 19:58:14 by florent           #+#    #+#             */
-/*   Updated: 2025/10/26 20:01:09 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/28 15:38:53 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*remove_quote1(char *string, char *tmp1, char **after)
 		free(string);
 		return (NULL);
 	}
-	*after = ft_strchr(tmp1 + 1, '\'');
+	*after = ft_strchr(tmp1 + 1, '"');
 	middle = ft_substr(tmp1, 1, ft_strlen(tmp1) - ft_strlen(*after) - 1);
 	if (middle == NULL)
 	{
@@ -56,13 +56,13 @@ static char	*remove_quote2(char *string, char *tmp2, char *after)
 	return (string);
 }
 
-char	*remove_quote(t_shell *shell, char *string)
+char	*remove_double_quote(t_shell *shell, char *string)
 {
 	char	*after;
 	char	*tmp1;
 	char	*tmp2;
 
-	tmp1 = ft_strchr(string, '\'');
+	tmp1 = ft_strchr(string, '"');
 	while (tmp1 != NULL)
 	{
 		after = NULL;
@@ -78,7 +78,7 @@ char	*remove_quote(t_shell *shell, char *string)
 			print_error(shell, "Error malloc");
 			return (NULL);
 		}
-		tmp1 = ft_strchr(string, '\'');
+		tmp1 = ft_strchr(string, '"');
 	}
 	return (string);
 }
