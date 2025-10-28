@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 09:42:26 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/20 03:07:00 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/28 12:38:27 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,12 @@ char	*ft_strncat(char *dest, char *src, unsigned int nb)
 	}
 	dest[i] = '\0';
 	return (dest);
+}
+
+int	ft_isspace(char c)
+{
+	if (c == ' ' || c == '\f' || c == '\n' || c == '\r'
+		|| c == '\t' || c == '\v')
+		return (1);
+	return (0);
 }
