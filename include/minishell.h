@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/29 09:41:29 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/29 16:59:42 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,6 +315,7 @@ int						err_multi_redir(char c, int i);
 /*Free Utils*/
 void					free_env(t_list_env *head);
 t_token					*free_token(t_token *head);
+t_token					*free_token_all(t_token *head);
 void					free_shell(t_shell *shell, int init);
 void					free_env_node(t_list_env *env);
 char					**free_double_array(char **list);

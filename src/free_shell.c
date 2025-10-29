@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:06:44 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 01:06:24 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/29 17:15:01 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	free_shell(t_shell *shell, int exit_code)
 	tmp = shell->parent_shell;
 	free_env(shell->env);
 	free_double_array(shell->environment);
-	dlist_clear(shell->head);
+	shell->head = dlist_clear(shell->head);
 	if (shell->token)
 		free_token(*shell->token);
 	if (tmp != NULL)

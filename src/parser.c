@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:05:15 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/16 09:41:03 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/29 14:17:16 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,9 @@ t_list	*parsing(char *line)
 {
 	t_list	*list;
 	t_token	*token;
+	t_shell	*shell;
 
+	shell = get_shell(NULL);
 	token = lexer(line);
 	if (!token)
 		return (NULL);
@@ -104,5 +106,6 @@ t_list	*parsing(char *line)
 	if (!list)
 		return (NULL);
 	free_token(token);
+	shell->token = NULL;
 	return (list);
 }

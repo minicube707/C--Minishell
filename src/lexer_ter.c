@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 15:01:39 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/29 09:38:22 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/29 17:08:49 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,13 @@
 
 void	free_get_arg(char *res, char *prev, char *new)
 {
+	t_shell	*shell;
+
+	shell = get_shell(NULL);
 	free(res);
 	free(prev);
 	free(new);
+	*shell->token = free_token_all(*shell->token);
 	free_shell(NULL, 1);
 }
 
