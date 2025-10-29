@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 01:50:32 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/27 02:04:53 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/29 09:40:40 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,25 @@
 
 void	print_sort(t_list_env **arr, int size, int i)
 {
+	t_shell	*shell;
+
+	shell = get_shell(NULL);
 	i = -1;
 	while (++i < size)
 	{
 		if (arr[i]->content)
-			printf("export %s=\"%s\"\n", arr[i]->name, arr[i]->content);
+		{
+			ft_putstr_fd("export ", shell->head->in_out[1]);
+			ft_putstr_fd(arr[i]->name, shell->head->in_out[1]);
+			ft_putstr_fd("=\"", shell->head->in_out[1]);
+			ft_putstr_fd(arr[i]->content, shell->head->in_out[1]);
+			ft_putstr_fd("\"\n", shell->head->in_out[1]);
+		}
 		else
-			printf("export %s\n", arr[i]->name);
+		{
+			ft_putstr_fd("export ", shell->head->in_out[1]);
+			ft_putstr_fd(arr[i]->name, shell->head->in_out[1]);
+			ft_putstr_fd("\n", shell->head->in_out[1]);
+		}
 	}
 }

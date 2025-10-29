@@ -29,6 +29,8 @@ void	in_quote(char *str, int *i)
 	(*i)++;
 	while (str[(*i)] && str[(*i)] != '"')
 		(*i)++;
+	if (str[(*i)] == '"')
+		i++;
 }
 
 char	*dup_shell_return(int op, int cl, char *str, int i)
@@ -50,7 +52,10 @@ char	*dup_subshell(char *str)
 	while (str[i] && op != cl)
 	{
 		if (str[i] == '"')
+		{
 			in_quote(str, &i);
+			i++;
+		}
 		else if (str[i] == '(')
 		{
 			op++;

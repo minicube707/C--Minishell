@@ -6,17 +6,17 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 05:23:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/21 14:51:00 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/28 17:41:09 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_delimiter(char c)
+int	is_delimiter(char *c)
 {
-	if (c == ' ' || c == '<' || c == '>' || c == ';' || c == '|')
+	if (ft_isspace(*c) || *c == '<' || *c == '>' || *c == ';' || *c == '|')
 		return (1);
-	if (c == '&' || c == '(' || c == ')')
+	if ((*c == '&' && c[1] == '&'))
 		return (1);
 	return (0);
 }
@@ -34,23 +34,24 @@ char	*dup_unquote(char *str, int *j)
 {
 	t_escape_utils	var;
 
+	(void)j;
 	var.i = 0;
 	var.len = 0;
 	var.buff = 11;
 	var.arg = ft_calloc(sizeof(char), var.buff);
 	if (!var.arg)
 		free_shell(NULL, 1);
-	while (str[var.i] && !is_delimiter(str[var.i]))
+	while (str[var.i] && !is_delimiter(&str[var.i]))
 	{
-		if (escape_in_no_quote(&str[var.i]))
+	/*	if (escape_in_no_quote(&str[var.i]))
 		{
 			add_escape_char(str, j, &var);
 		}
 		else
-		{
+		{*/
 			var.i++;
 			var.len++;
-		}
+		//}
 	}
 	append_chars(str, &var);
 	return (var.arg);
