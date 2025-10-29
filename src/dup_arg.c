@@ -16,7 +16,7 @@ int	is_delimiter(char *c)
 {
 	if (ft_isspace(*c) || *c == '<' || *c == '>' || *c == ';' || *c == '|')
 		return (1);
-	if ((*c == '&' && c[1] == '&') || *c == '(' || *c == ')')
+	if ((*c == '&' && c[1] == '&'))
 		return (1);
 	return (0);
 }

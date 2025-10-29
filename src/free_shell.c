@@ -22,6 +22,8 @@ void	free_shell(t_shell *shell, int exit_code)
 	free_env(shell->env);
 	free_double_array(shell->environment);
 	dlist_clear(shell->head);
+	if (shell->token)
+		free_token(*shell->token);
 	if (tmp != NULL)
 		free_shell(tmp, exit_code);
 	if (shell->parent_shell == NULL)

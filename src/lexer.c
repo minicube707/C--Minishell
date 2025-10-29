@@ -86,7 +86,8 @@ char	*duparg(char *str, int *j)
 		return (arg);
 	}
 	i = 0;
-	while (str[i] && is_op(&str[i]) == -1 && !is_delimiter(&str[i]))
+	while (str[i] && is_op(&str[i]) == -1 && !is_delimiter(&str[i])
+		&& str[i] != '\'' && str[i] != '"')
 		i++;
 	//return (dup_unquote(str, j));
 	return (ft_substr(str, 0, i));
@@ -121,7 +122,10 @@ t_token	*lexer(char *str)
 {
 	t_token	*result;
 	int		i;
+	t_shell	*shell;
 
+	shell = get_shell(NULL);
+	shell->token = &result;
 	i = 0;
 	result = NULL;
 	while (str[i])

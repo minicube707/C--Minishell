@@ -95,6 +95,7 @@ typedef struct s_shell
 	char				**environment;
 	t_list_env			*env;
 	t_list				*head;
+	t_token				**token;
 	struct s_shell		*parent_shell;
 	int					exit_code;
 }						t_shell;
@@ -284,7 +285,7 @@ char					*dup_subshell(char *str);
 void					append_chars(char *str, t_escape_utils *var);
 char					*dup_unquote(char *str, int *j);
 void					add_escape_char(char *str, int *j, t_escape_utils *var);
-char					*free_get_arg(char *res, char *prev, char *new);
+void					free_get_arg(char *res, char *prev, char *new);
 char					*get_arg(char *str, int *i);
 
 /*Token Utils*/

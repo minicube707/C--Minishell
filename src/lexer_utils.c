@@ -57,12 +57,19 @@ int	escape_char_len(char *str)
 void	append_escaped_char(char **arg, char *str, size_t *buff, size_t s)
 {
 	size_t	l_arg;
+	char	*tmp;
 
 	l_arg = ft_strlen(*arg);
 	if (l_arg + 2 > *buff)
 	{
 		*buff += 10;
-		*arg = ft_realloc(*arg, *buff, l_arg);
+		tmp = ft_realloc(*arg, *buff, l_arg);
+		if (!arg)
+		{
+			free(*arg);
+			free_shell(NULL, 1);
+		}
+		*arg = tmp;
 	}
 	/*if (str[s + 1] && str[s] == '>' && str[s + 1] == '>')
 	{

@@ -40,7 +40,7 @@ t_list	*new_list(t_token *token, t_list *prev)
 	o = count_option(token);
 	new = malloc(sizeof(t_list));
 	if (!new)
-		return (NULL);
+		free_shell(NULL, 1);
 	ft_bzero(new, sizeof(t_list));
 	if (token->op >= -1 && token->op <= 3)
 		new->pre_redir = EMPTY;

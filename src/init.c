@@ -29,5 +29,6 @@ void	init_shell(t_shell *shell, char **envp, t_shell *parent_shell,
 	shell->environment = NULL;
 	shell->environment = make_env(shell, shell->env);
 	shell->parent_shell = parent_shell;
+	shell->token = NULL;
 	shell->exit_code = exit_code;
 }
