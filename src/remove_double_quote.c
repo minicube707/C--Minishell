@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 19:58:14 by florent           #+#    #+#             */
-/*   Updated: 2025/10/28 15:38:53 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/29 15:35:53 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,29 +56,23 @@ static char	*remove_quote2(char *string, char *tmp2, char *after)
 	return (string);
 }
 
-char	*remove_double_quote(t_shell *shell, char *string)
+char	*remove_double_quote(t_shell *shell, char *string, char *tmp1)
 {
 	char	*after;
-	char	*tmp1;
 	char	*tmp2;
 
-	tmp1 = ft_strchr(string, '"');
-	while (tmp1 != NULL)
+	after = NULL;
+	tmp2 = remove_quote1(string, tmp1, &after);
+	if (tmp2 == NULL)
 	{
-		after = NULL;
-		tmp2 = remove_quote1(string, tmp1, &after);
-		if (tmp2 == NULL)
-		{
-			print_error(shell, "Error malloc");
-			return (NULL);
-		}
-		string = remove_quote2(string, tmp2, after);
-		if (string == NULL)
-		{
-			print_error(shell, "Error malloc");
-			return (NULL);
-		}
-		tmp1 = ft_strchr(string, '"');
+		print_error(shell, "Error malloc");
+		return (NULL);
+	}
+	string = remove_quote2(string, tmp2, after);
+	if (string == NULL)
+	{
+		print_error(shell, "Error malloc");
+		return (NULL);
 	}
 	return (string);
 }

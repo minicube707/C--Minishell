@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/27 23:09:53 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/29 14:29:04 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,16 +81,14 @@ void	execution(t_shell *shell, int shell_channel[2])
 	t_list	*last_head;
 	int		prev_redir;
 
+	last_head = NULL;
 	execute_here_doc(shell, shell->head);
 	if (g_status != 0)
 		shell->exit_code = g_status;
 	while (shell->head != NULL)
 	{
 		set_signal_action(sighandler);
-		if (g_status != 0)
-			shell->exit_code = g_status;
-		if (pipe(shell->head->mypipe))
-			return ((void)print_error(shell, "failure creation of pipe"));
+		execution_middle(shell);
 		exit_code = execution_manage_redir(shell, shell_channel, &prev_redir);
 		if (exit_code == 0 && ((prev_redir == AND && shell->exit_code == 0)
 				|| (prev_redir == OR && shell->exit_code != 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 22:27:02 by florent           #+#    #+#             */
-/*   Updated: 2025/10/27 23:00:21 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/29 17:21:46 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 static int	write_content(t_shell *shell, int fd, char *input)
 {
+	input = expand_path(shell, input, "");
+	if (input == NULL)
+	{
+		close(fd);
+		return (1);
+	}
 	if (write(fd, input, ft_strlen(input)) == -1)
 	{
 		free(input);
@@ -21,6 +27,7 @@ static int	write_content(t_shell *shell, int fd, char *input)
 		close(fd);
 		return (1);
 	}
+	free(input);
 	return (0);
 }
 
@@ -41,6 +48,5 @@ int	here_doc_loop_end(t_shell *shell, int fd, char *input, char *limiter)
 		if (write_content(shell, fd, input))
 			return (0);
 	}
-	free(input);
 	return (1);
 }

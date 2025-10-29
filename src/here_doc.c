@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 17:22:05 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 23:22:41 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/29 17:11:20 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	here_doc_loop(t_shell *shell, int fd, char *limiter)
 
 	two_int.int1 = STDIN_FILENO;
 	if (write_here_doc(shell, fd))
-		return (1);
+		return (0);
 	input = get_next_line(shell, &two_int);
 	if (input == NULL && two_int.int2 == -1 && errno == EINTR)
 		return (0);
