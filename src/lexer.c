@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/28 16:15:18 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/29 17:03:16 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,11 @@ char	*duparg(char *str, int *j)
 		return (arg);
 	}
 	i = 0;
-	while (str[i] && is_op(&str[i]) == -1 && !ft_isspace(str[i]))
+	while (str[i] && is_op(&str[i]) == -1 && !is_delimiter(&str[i])
+		&& str[i] != '\'' && str[i] != '"')
 		i++;
-	return (dup_unquote(str, j));
+	//return (dup_unquote(str, j));
+	return (ft_substr(str, 0, i));
 }
 
 static int	set_token(t_token **result, char *str, int *i)
@@ -120,7 +122,10 @@ t_token	*lexer(char *str)
 {
 	t_token	*result;
 	int		i;
+	t_shell	*shell;
 
+	shell = get_shell(NULL);
+	shell->token = &result;
 	i = 0;
 	result = NULL;
 	while (str[i])

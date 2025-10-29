@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 22:55:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/14 17:00:11 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/29 17:14:05 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,21 @@ t_token	*free_token(t_token *head)
 	while (head)
 	{
 		next = head->next;
+		free(head);
+		head = next;
+	}
+	return (NULL);
+}
+
+t_token	*free_token_all(t_token *head)
+{
+	t_token	*next;
+
+	while (head)
+	{
+		next = head->next;
+		if (head->content)
+			free(head->content);
 		free(head);
 		head = next;
 	}

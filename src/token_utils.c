@@ -42,14 +42,14 @@ int	add_back(t_token **head, char *content, int op)
 	{
 		*head = new_token(content, op);
 		if (!head)
-			return (0);
+			free_shell(NULL, 1);
 	}
 	else
 	{
 		end = end_list(*head);
 		end->next = new_token(content, op);
 		if (!end->next)
-			return (0);
+			free_shell(NULL, 1);
 	}
 	return (1);
 }

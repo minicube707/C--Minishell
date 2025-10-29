@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:05:15 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/16 09:41:03 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/29 14:17:16 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_list	*new_list(t_token *token, t_list *prev)
 	o = count_option(token);
 	new = malloc(sizeof(t_list));
 	if (!new)
-		return (NULL);
+		free_shell(NULL, 1);
 	ft_bzero(new, sizeof(t_list));
 	if (token->op >= -1 && token->op <= 3)
 		new->pre_redir = EMPTY;
@@ -93,7 +93,9 @@ t_list	*parsing(char *line)
 {
 	t_list	*list;
 	t_token	*token;
+	t_shell	*shell;
 
+	shell = get_shell(NULL);
 	token = lexer(line);
 	if (!token)
 		return (NULL);
@@ -104,5 +106,6 @@ t_list	*parsing(char *line)
 	if (!list)
 		return (NULL);
 	free_token(token);
+	shell->token = NULL;
 	return (list);
 }

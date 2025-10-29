@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/28 15:45:41 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/29 16:59:42 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_shell
 	char				**environment;
 	t_list_env			*env;
 	t_list				*head;
+	t_token				**token;
 	struct s_shell		*parent_shell;
 	int					exit_code;
 }						t_shell;
@@ -277,6 +278,7 @@ t_token					*lexer(char *str);
 
 /*Lexer Utils*/
 int						is_op(char *str);
+int						is_delimiter(char *c);
 size_t					op_len(int op);
 void					in_quote(char *str, int *i);
 int						escape_in_double_quote(char *str);
@@ -292,7 +294,7 @@ char					*dup_subshell(char *str);
 void					append_chars(char *str, t_escape_utils *var);
 char					*dup_unquote(char *str, int *j);
 void					add_escape_char(char *str, int *j, t_escape_utils *var);
-char					*free_get_arg(char *res, char *prev, char *new);
+void					free_get_arg(char *res, char *prev, char *new);
 char					*get_arg(char *str, int *i);
 
 /*Token Utils*/
@@ -313,6 +315,7 @@ int						err_multi_redir(char c, int i);
 /*Free Utils*/
 void					free_env(t_list_env *head);
 t_token					*free_token(t_token *head);
+t_token					*free_token_all(t_token *head);
 void					free_shell(t_shell *shell, int init);
 void					free_env_node(t_list_env *env);
 char					**free_double_array(char **list);
