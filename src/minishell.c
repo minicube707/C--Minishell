@@ -6,15 +6,14 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/28 12:53:32 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/29 09:39:43 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		g_status = 0;
-
-
+int			g_status = 0;
+/*
 void	print_file_info(t_file_info **tab_file)
 {
 	int	i;
@@ -64,7 +63,7 @@ void	print_list(t_list *head)
 		head = head->next;
 		index++;
 	}
-}
+}*/
 
 static int	minishell_loop(t_shell *shell, int shell_channel[2])
 {
@@ -81,7 +80,6 @@ static int	minishell_loop(t_shell *shell, int shell_channel[2])
 	{
 		add_history(line);
 		shell->head = parsing(line);
-		print_list(shell->head);
 		free(line);
 		if (!shell->head)
 			shell->exit_code = 2;

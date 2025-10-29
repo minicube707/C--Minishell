@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_built_in.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 13:33:03 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/27 23:05:54 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static void	manage_pipe(t_shell *shell)
 {
 	int	exit_code;
 
+	printf("FORK \n");
 	exit_code = 0;
 	if (shell->head->in_out[0] != STDIN_FILENO)
 	{
@@ -96,17 +97,19 @@ int	execute_built_in(t_shell *shell)
 	pid_t	pid;
 
 	manage_fork(shell, &pid);
-	if (pid != -1 && waitpid(pid, &status, WNOHANG))
-	{
-		if (WIFEXITED(status))
-			shell->exit_code = WEXITSTATUS(status);
-		else if (WIFEXITED(status))
-			shell->exit_code = 128 + WTERMSIG(status);
-	}
-	else if (pid != -1 && !waitpid(pid, &status, WNOHANG))
-		shell->exit_code = 0;
 	if (shell->head->next == NULL || shell->head->next->pre_redir == AND
 		|| shell->head->next->pre_redir == OR || shell->parent_shell != NULL)
-		waitpid(pid, NULL, 0);
+	{
+		if (pid != -1 && waitpid(pid, &status, 0))
+		{
+			printf("EVENT \n");
+			if (WIFEXITED(status))
+				shell->exit_code = WEXITSTATUS(status);
+			else if (WIFEXITED(status))
+				shell->exit_code = 128 + WTERMSIG(status);
+		}
+		else if (pid != -1 && !waitpid(pid, &status, 0))
+			shell->exit_code = 0;
+	}
 	return (0);
 }

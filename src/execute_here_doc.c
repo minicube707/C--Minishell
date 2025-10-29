@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_here_doc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:07:51 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 15:02:46 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/27 23:18:52 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	execute_here_doc(t_shell *shell, t_list *head)
 		{
 			if (tmp_ptr->type == HERE_DOC)
 			{
-				here_doc(shell, &ptr, tmp_ptr->file_name);
+				if (here_doc(shell, &ptr, tmp_ptr->file_name))
+					free_shell(shell, 1);
 				head->tab_file[i]->fd = ptr;
 				if (shell->exit_code == 130)
 					free_shell(shell, shell->exit_code);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollar_utils_utils.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 15:03:30 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 15:11:58 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/29 09:35:23 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,33 @@ static void	expand_path_all_end(t_shell *shell, char **new_tab)
 	shell->head->command = new_tab[0];
 }
 
+static char	**expand_path_wildcard(t_shell *shell, int i)
+{
+	char	**tab;
+	char	*string;
+	char	*new_string;
+	char	*tmp;
+
+	if (ft_strchr(shell->head->option[i], '\'') == NULL
+		&& ft_strchr(shell->head->option[i], '"') == NULL)
+		tab = wilcard(shell, shell->head->option[i]);
+	else
+	{
+		tmp = ft_strdup(shell->head->option[i]);
+		if (tmp == NULL)
+			return (NULL);
+		string = remove_double_quote(shell, tmp);
+		if (string == NULL)
+			return (NULL);
+		new_string = remove_single_quote(shell, string);
+		if (new_string == NULL)
+			return (NULL);
+		tab = ft_realloc_flo(NULL, new_string, 0);
+		free(new_string);
+	}
+	return (tab);
+}
+
 void	expand_path_all(t_shell *shell, char *change)
 {
 	int		i;
@@ -73,7 +100,7 @@ void	expand_path_all(t_shell *shell, char *change)
 	new_tab = NULL;
 	while (shell->head->option[i] != NULL)
 	{
-		tab = wilcard(shell, shell->head->option[i]);
+		tab = expand_path_wildcard(shell, i);
 		free(shell->head->option[i]);
 		if (tab == NULL)
 		{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/28 17:23:12 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/29 09:41:29 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,12 @@ typedef struct s_struc
 	char				*string2;
 }						t_struc;
 
+typedef struct s_two_int
+{
+	int					int1;
+	int					int2;
+}						t_two_int;
+
 /*===================*/
 /*=====TAB_CHAR======*/
 /*===================*/
@@ -169,6 +175,8 @@ void					print_list(t_list *head);
 
 /*Here_doc*/
 int						here_doc(t_shell *shell, int *file_fd, char *limiter);
+int						here_doc_loop_end(t_shell *shell, int fd, char *input,
+							char *limiter);
 
 /*Execute_close_file*/
 int						manage_path(t_shell *shell, int change);
@@ -197,7 +205,8 @@ char					*expand_dollard(t_shell *shell, char *string);
 void					expand_path_all(t_shell *shell, char *change);
 
 /*Remove quote*/
-char					*remove_quote(t_shell *shell, char *string);
+char					*remove_single_quote(t_shell *shell, char *string);
+char					*remove_double_quote(t_shell *shell, char *string);
 
 /*Wildcard*/
 char					**wilcard(t_shell *shell, char *string);
