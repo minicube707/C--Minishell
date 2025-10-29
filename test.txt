@@ -20,6 +20,3 @@ Invalid Read of size --> mkdir dir 1; cd dir1; mkdir dir2; cd dir2; rm -rf ../..
 make test --> ./minishell dans ./minishell Invalid read of size
 export TATA --> Ne devrait pas s'afficher dans l'env
 CTRL + D dans le heredoc
-
-
-echo $USER'"'$USER'"'$USER

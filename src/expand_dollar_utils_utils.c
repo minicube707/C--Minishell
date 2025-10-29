@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 15:03:30 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/28 16:59:09 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/29 17:06:08 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,23 +59,17 @@ static char	**expand_path_wildcard_utils(t_shell *shell, int i)
 	char	**tab;
 	char	*string;
 	char	*tmp;
+	int		j;
 
-	
-	tmp = ft_strdup(shell->head->option[i]);
-	if (tmp == NULL)
+	string = ft_strdup(shell->head->option[i]);
+	if (string == NULL)
 		return (NULL);
-	if (*shell->head->option[i] == '"')
-	{
-		string = remove_double_quote(shell, tmp);
-		if (string == NULL)
-			return (NULL);
-	}
-	if (*shell->head->option[i] == '\'')
-	{
-		string = remove_single_quote(shell, tmp);
-		if (string == NULL)
-			return (NULL);
-	}
+	j = 0;
+	tmp = ft_strdup(string);
+	while (tmp != NULL && tmp[j] != '\0')
+		tmp = expand_path_wildcard_utils_utils(shell, tmp, &string, &j);
+	if (tmp != NULL)
+		free(tmp);
 	if (string == NULL)
 		return (NULL);
 	tab = ft_realloc_flo(NULL, string, 0);
@@ -86,40 +80,41 @@ static char	**expand_path_wildcard_utils(t_shell *shell, int i)
 static char	**expand_path_wildcard(t_shell *shell, int i)
 {
 	char	**tab;
-	
+
 	if (ft_strchr(shell->head->option[i], '\'') == NULL
 		&& ft_strchr(shell->head->option[i], '"') == NULL)
 		tab = wilcard(shell, shell->head->option[i]);
 	else
 		tab = expand_path_wildcard_utils(shell, i);
+	free(shell->head->option[i]);
 	return (tab);
 }
 
-void	expand_path_all(t_shell *shell, char *change)
+int	expand_path_all(t_shell *shell, char *change)
 {
 	int		i;
 	char	**tab;
 	char	**new_tab;
 
 	if (expand_path_all_utils(shell, change))
-		return ;
+		return (1);
 	i = -1;
 	new_tab = NULL;
 	while (shell->head->option[++i] != NULL)
 	{
 		tab = expand_path_wildcard(shell, i);
-		free(shell->head->option[i]);
 		if (tab == NULL)
 		{
 			free(shell->head->option);
 			shell->head->option = new_tab;
-			return ;
+			return (1);
 		}
 		new_tab = copy_tab_option(shell, tab, new_tab);
 		if (new_tab == NULL)
-			return ;
+			return (1);
 	}
 	free(shell->head->option);
 	shell->head->option = new_tab;
 	shell->head->command = new_tab[0];
+	return (0);
 }

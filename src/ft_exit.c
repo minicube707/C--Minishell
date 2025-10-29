@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 17:44:44 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/28 17:10:47 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/29 14:05:44 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_string_isalpha(char *string)
 
 void	ft_exit(t_shell *shell, char **tab_option)
 {
-	int fd_tty;
+	int	fd_tty;
 
 	fd_tty = open("/dev/tty", O_RDWR);
 	if (fd_tty != -1)

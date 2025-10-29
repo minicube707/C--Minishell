@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 17:05:40 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 13:41:52 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/29 14:26:07 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,13 @@ void	ft_cd_utils(t_shell *shell, char *pwd)
 		free(pwd);
 		return ((void)print_error_env_not_set(shell, "cd", "HOME"));
 	}
-	expand_path_all(shell, change);
+	if (expand_path_all(shell, change))
+	{
+		free(change);
+		free(pwd);
+		print_error(shell, "Error Malloc");
+		free_shell(shell, shell->exit_code);
+	}
 	chdir2(shell, pwd);
 	free(change);
 	free(pwd);

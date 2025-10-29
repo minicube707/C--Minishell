@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 10:19:36 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/29 14:12:54 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@ static void	manage_pipe(t_shell *shell)
 		close(shell->head->in_out[1]);
 	}
 	execute_close_all_fd(shell);
-	expand_path_all(shell, "");
+	if (expand_path_all(shell, ""))
+	{
+		print_error(shell, "Error Malloc");
+		free_shell(shell, shell->exit_code);
+	}
 	execute_programm(shell);
 }
 

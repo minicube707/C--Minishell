@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/28 15:45:41 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/29 17:05:40 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,8 +170,6 @@ int						print_error_nuremic_re(t_shell *shell, char *cmd,
 /*=====EXECUTION=====*/
 /*===================*/
 
-void					print_list(t_list *head);
-
 /*Here_doc*/
 int						here_doc(t_shell *shell, int *file_fd, char *limiter);
 int						here_doc_loop_end(t_shell *shell, int fd, char *input,
@@ -198,14 +196,19 @@ int						execute_built_in(t_shell *shell);
 
 /*Main Execution*/
 void					execution(t_shell *shell, int shell_channel[2]);
+void					execution_middle(t_shell *shell);
 
 /*Expand dollar*/
+char					*expand_path_wildcard_utils_utils(t_shell *shell,
+							char *tmp, char **string, int *j);
 char					*expand_dollard(t_shell *shell, char *string);
-void					expand_path_all(t_shell *shell, char *change);
+int						expand_path_all(t_shell *shell, char *change);
 
 /*Remove quote*/
-char					*remove_single_quote(t_shell *shell, char *string);
-char					*remove_double_quote(t_shell *shell, char *string);
+char					*remove_single_quote(t_shell *shell, char *string,
+							char *tmp1);
+char					*remove_double_quote(t_shell *shell, char *string,
+							char *tmp1);
 
 /*Wildcard*/
 char					**wilcard(t_shell *shell, char *string);

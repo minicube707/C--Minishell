@@ -924,7 +924,7 @@ inside the
 heredoc
 
 IN:
-echo hello | cat | << stop cat| cat
+echo hello | cat | << stop cat | cat
 
 OUT:
 I am

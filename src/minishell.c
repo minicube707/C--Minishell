@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/28 17:46:07 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/29 14:42:38 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,35 +65,35 @@ void	print_list(t_list *head)
 	}
 }
 
+static void	minishell_execution(t_shell *shell, int shell_channel[2],
+		int tty_mod, char *line)
+{
+	if (tty_mod == 1)
+		add_history(line);
+	shell->head = parsing(line);
+	free(line);
+	if (!shell->head)
+		shell->exit_code = 2;
+	if (shell->head)
+		execution(shell, shell_channel);
+	dlist_clear(shell->head);
+}
+
 static int	minishell_loop(t_shell *shell, int shell_channel[2], int tty_mod)
 {
-	char	*line;
+	char		*line;
 	t_two_int	two_int;
 
 	g_status = 0;
 	two_int.int1 = STDIN_FILENO;
 	set_signal_action(sighandler);
-	if (tty_mod == 1)
-		line = readline("\033[1;94mMinishell >\033[0m ");
-	else
-		line = get_next_line(shell, &two_int);
+	line = readline("\033[1;94mMinishell >\033[0m ");
 	if (g_status != 0)
 		shell->exit_code = g_status;
 	if (!line)
 		return (0);
 	if (*line)
-	{
-		if (tty_mod == 1)
-			add_history(line);
-		shell->head = parsing(line);
-		print_list(shell->head);	
-		free(line);
-		if (!shell->head)
-			shell->exit_code = 2;
-		if (shell->head)
-			execution(shell, shell_channel);
-		dlist_clear(shell->head);
-	}
+		minishell_execution(shell, shell_channel, tty_mod, line);
 	return (1);
 }
 
