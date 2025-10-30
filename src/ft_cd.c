@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 17:05:40 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 13:41:52 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/30 00:43:04 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,11 @@ void	cd_minus(t_shell *shell, char **tab_option)
 	if (ft_strncmp("$OLDPWD", pwd, 7) == 0)
 		print_error_env_not_set(shell, "cd", "OLDPWD");
 	else
-		chdir2(shell, pwd);
+	{
+		write(shell->head->in_out[1], pwd, ft_strlen(pwd));
+		write(shell->head->in_out[1], "\n", 1);
+		chdir2(shell, pwd);	
+	}
 	free(pwd);
 	ft_cd_change_env(shell);
 }
@@ -85,7 +89,13 @@ void	ft_cd_utils(t_shell *shell, char *pwd)
 		free(pwd);
 		return ((void)print_error_env_not_set(shell, "cd", "HOME"));
 	}
-	expand_path_all(shell, change);
+	if (expand_path_all(shell, change))
+	{
+		free(change);
+		free(pwd);
+		print_error(shell, "Error Malloc");
+		free_shell(shell, shell->exit_code);
+	}
 	chdir2(shell, pwd);
 	free(change);
 	free(pwd);

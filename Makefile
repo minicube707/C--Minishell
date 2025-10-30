@@ -25,6 +25,7 @@ FILE_NAMES = 	built-in \
 				execute_here_doc \
 				execute_open_file \
 				execution \
+				execution_utils \
 				expand_dollar \
 				expand_dollar_utils \
 				expand_dollar_utils_utils \

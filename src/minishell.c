@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/29 16:12:53 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/30 13:11:27 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int			g_status = 0;
-/*
+
 void	print_file_info(t_file_info **tab_file)
 {
 	int	i;
@@ -63,11 +63,25 @@ void	print_list(t_list *head)
 		head = head->next;
 		index++;
 	}
-}*/
+}
 
-static int	minishell_loop(t_shell *shell, int shell_channel[2])
+static void	minishell_execution(t_shell *shell, int shell_channel[2],
+		int tty_mod, char *line)
 {
-	char	*line;
+	if (tty_mod == 1)
+		add_history(line);
+	shell->head = parsing(line);
+	free(line);
+	if (!shell->head)
+		shell->exit_code = 2;
+	if (shell->head)
+		execution(shell, shell_channel);
+	dlist_clear(shell->head);
+}
+
+static int	minishell_loop(t_shell *shell, int shell_channel[2], int tty_mod)
+{
+	char		*line;
 
 	g_status = 0;
 	set_signal_action(sighandler);
@@ -77,16 +91,7 @@ static int	minishell_loop(t_shell *shell, int shell_channel[2])
 	if (!line)
 		return (0);
 	if (*line)
-	{
-		add_history(line);
-		shell->head = parsing(line);
-		free(line);
-		if (!shell->head)
-			shell->exit_code = 2;
-		if (shell->head)
-			execution(shell, shell_channel);
-		shell->head = dlist_clear(shell->head);
-	}
+		minishell_execution(shell, shell_channel, tty_mod, line);
 	return (1);
 }
 
@@ -95,21 +100,21 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	shell;
 	int		shell_channel[2];
 	int		res;
+	int		tty_mod;
 
 	(void)argc;
 	(void)argv;
-	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
-	{
-		shell_channel[0] = STDIN_FILENO;
-		shell_channel[1] = STDOUT_FILENO;
-		init_shell(&shell, envp, NULL, 0);
-		res = 1;
-		get_shell(&shell);
-		while (res)
-			res = minishell_loop(&shell, shell_channel);
-		free_env(shell.env);
-		free_double_array(shell.environment);
-		return (shell.exit_code);
-	}
-	return (0);
+	tty_mod = 0;
+	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO) && isatty(STDERR_FILENO))
+		tty_mod = 1;
+	shell_channel[0] = STDIN_FILENO;
+	shell_channel[1] = STDOUT_FILENO;
+	init_shell(&shell, envp, NULL, 0);
+	res = 1;
+	get_shell(&shell);
+	while (res)
+		res = minishell_loop(&shell, shell_channel, tty_mod);
+	free_env(shell.env);
+	free_double_array(shell.environment);
+	return (shell.exit_code);
 }

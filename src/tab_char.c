@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tab_char.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 17:30:41 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/24 19:04:48 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/30 01:31:51 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	tab_char_clear(char **tab)
 	int	i;
 
 	i = 0;
+	if (tab == NULL)
+		return ;
 	while (tab[i] != NULL)
 	{
 		free(tab[i]);

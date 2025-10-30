@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_built_in.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 23:05:54 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/29 14:36:08 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,11 @@ void	execute_correct_built_in(t_shell *shell)
 		ft_pwd(shell);
 	else if (ft_strncmp(cp_command, "export", ft_strlen(cp_command)) == 0)
 	{
-		expand_path_all(shell, "");
+		if (expand_path_all(shell, ""))
+		{
+			print_error(shell, "Error Malloc");
+			free_shell(shell, shell->exit_code);
+		}
 		ft_export(shell, shell->head->option);
 	}
 	else if (ft_strncmp(cp_command, "unset", ft_strlen(cp_command)) == 0)
@@ -51,7 +55,6 @@ static void	manage_pipe(t_shell *shell)
 {
 	int	exit_code;
 
-	printf("FORK \n");
 	exit_code = 0;
 	if (shell->head->in_out[0] != STDIN_FILENO)
 	{
@@ -102,7 +105,6 @@ int	execute_built_in(t_shell *shell)
 	{
 		if (pid != -1 && waitpid(pid, &status, 0))
 		{
-			printf("EVENT \n");
 			if (WIFEXITED(status))
 				shell->exit_code = WEXITSTATUS(status);
 			else if (WIFEXITED(status))

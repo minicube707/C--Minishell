@@ -3,14 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollar.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 14:55:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/23 22:11:58 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/29 17:05:47 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*expand_path_wildcard_utils_utils_utils(t_shell *shell, char *tmp,
+		char *string, int *j)
+{
+	char	*tmpsq;
+	char	*tmpdq;
+
+	tmpsq = ft_strchr(&tmp[*j], '\'');
+	tmpdq = ft_strchr(&tmp[*j], '"');
+	if (ft_strlen(tmpsq) > ft_strlen(tmpdq))
+	{
+		*j += ft_strlen(tmpsq) - ft_strlen(ft_strchr(&tmp[*j + 1], '\'')) - 1;
+		string = remove_single_quote(shell, string, tmpsq);
+	}
+	else
+	{
+		*j += ft_strlen(tmpdq) - ft_strlen(ft_strchr(&tmp[*j + 1], '"')) - 1;
+		string = remove_double_quote(shell, string, tmpdq);
+	}
+	return (string);
+}
+
+char	*expand_path_wildcard_utils_utils(t_shell *shell, char *tmp,
+		char **string, int *j)
+{
+	char	*tmpsq;
+	char	*tmpdq;
+
+	tmpsq = ft_strchr(&tmp[*j], '\'');
+	tmpdq = ft_strchr(&tmp[*j], '"');
+	while (tmp[*j] != '\0')
+	{
+		tmpsq = ft_strchr(&tmp[*j], '\'');
+		tmpdq = ft_strchr(&tmp[*j], '"');
+		if (ft_strlen(tmpsq) == 0 && ft_strlen(tmpdq) == 0)
+			break ;
+		*string = expand_path_wildcard_utils_utils_utils(shell, tmp, *string,
+				j);
+		free(tmp);
+		if (*string == NULL)
+			return (NULL);
+		tmp = ft_strdup(*string);
+		if (tmp == NULL)
+			return (NULL);
+	}
+	return (tmp);
+}
 
 char	*expand_dollard_status(t_shell *shell, char *suffix)
 {
