@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 17:22:05 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/29 17:11:20 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/30 13:45:54 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	here_doc_loop(t_shell *shell, int fd, char *limiter)
 	input = get_next_line(shell, &two_int);
 	if (input == NULL && two_int.int2 == -1 && errno == EINTR)
 		return (0);
-	if (input == NULL && two_int.int2 == -1)
+	if (input == NULL && two_int.int2 != 0)
 	{
 		print_error(shell, "Error read");
 		return (0);
