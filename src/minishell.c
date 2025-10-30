@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/29 17:26:32 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/30 01:54:03 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,8 @@ static void	minishell_execution(t_shell *shell, int shell_channel[2],
 static int	minishell_loop(t_shell *shell, int shell_channel[2], int tty_mod)
 {
 	char		*line;
-	t_two_int	two_int;
 
 	g_status = 0;
-	two_int.int1 = STDIN_FILENO;
 	set_signal_action(sighandler);
 	line = readline("\033[1;94mMinishell >\033[0m ");
 	if (g_status != 0)
