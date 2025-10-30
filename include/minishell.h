@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/29 17:25:56 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/30 14:34:21 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ int						print_error_to_much(t_shell *shell, char *file);
 int						print_error_env_not_set(t_shell *shell, char *file,
 							char *env);
 int						print_error_access_denied(t_shell *shell, char *file,
-							char *path);
+							char *path, int exit_code);
 int						print_error_invalide_option(t_shell *shell, char *cmd,
 							char *file);
 int						print_error_nuremic_re(t_shell *shell, char *cmd,

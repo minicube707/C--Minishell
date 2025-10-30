@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/29 14:12:54 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/30 15:33:43 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,15 @@
 
 static void	execute_programm(t_shell *shell)
 {
-	int	exit_code;
-
-	exit_code = manage_path(shell, 1);
-	if (exit_code)
+	if (access(shell->head->command, F_OK) == 0)
+	{
+		if (access(shell->head->command, X_OK) == -1)
+		{
+			print_error_access_denied(shell, NULL, shell->head->command, 126);
+			free_shell(shell, shell->exit_code);
+		}
+	}
+	if (manage_path(shell, 1))
 		free_shell(shell, shell->exit_code);
 	if (shell->head->command != NULL)
 	{
