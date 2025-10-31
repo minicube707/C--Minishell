@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:33:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/21 10:26:06 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/30 15:07:37 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,13 @@ int	open_infile(t_shell *shell, t_file_info *tmp_tab)
 {
 	int		fd;
 	int		flags;
-	int		get_access;
 	char	*file_name;
 
 	file_name = tmp_tab->file_name;
-	get_access = access(file_name, F_OK);
-	if (get_access == -1)
-	{
-		shell->exit_code = 1;
+	if (access(file_name, F_OK) == -1)
 		return (print_error_file(shell, NULL, file_name));
-	}
+	if (access(file_name, R_OK) == -1)
+		return (print_error_access_denied(shell, NULL, file_name, 1));
 	shell->exit_code = 0;
 	flags = O_RDONLY;
 	fd = open(file_name, flags);
@@ -33,7 +30,7 @@ int	open_infile(t_shell *shell, t_file_info *tmp_tab)
 	return (fd);
 }
 
-int	open_outfile(t_file_info *tmp_tab)
+int	open_outfile(t_shell *shell, t_file_info *tmp_tab)
 {
 	int		fd;
 	int		flags;
@@ -42,6 +39,11 @@ int	open_outfile(t_file_info *tmp_tab)
 
 	type = tmp_tab->type;
 	file_name = tmp_tab->file_name;
+	if (access(file_name, F_OK) == 0)
+	{
+		if (access(file_name, W_OK) == -1)
+			return (print_error_access_denied(shell, NULL, file_name, 1));
+	}
 	if (type == OUTPUT)
 		flags = O_CREAT | O_WRONLY | O_TRUNC;
 	else
@@ -60,7 +62,7 @@ int	open_redirection(t_shell *shell, t_list *head, t_file_info *tmp_tab)
 	if (type == INPUT)
 		fd = open_infile(shell, tmp_tab);
 	else if (type == OUTPUT || type == APPEND)
-		fd = open_outfile(tmp_tab);
+		fd = open_outfile(shell, tmp_tab);
 	else
 		fd = tmp_tab->fd;
 	if (fd == -1)

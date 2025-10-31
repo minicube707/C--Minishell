@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/31 06:46:35 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/31 14:13:03 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void	minishell_execution(t_shell *shell, int shell_channel[2],
 		shell->exit_code = 2;
 	if (shell->head)
 		execution(shell, shell_channel);
-	dlist_clear(shell->head);
+	shell->head = dlist_clear(shell->head);
 }
 
 static int	minishell_loop(t_shell *shell, int shell_channel[2], int tty_mod)

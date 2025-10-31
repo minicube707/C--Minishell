@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:24:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/26 18:19:52 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/30 14:37:36 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	chdir2(t_shell *shell, char *pwd)
 	if (chdir(pwd))
 	{
 		if (errno == EACCES)
-			print_error_access_denied(shell, "cd", pwd);
+			print_error_access_denied(shell, "cd", pwd, 1);
 		if (errno == ENOTDIR)
 			print_error_not_directory(shell, "cd", pwd);
 		if (errno == ENOENT)

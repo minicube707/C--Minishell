@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_error_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 17:00:57 by florent           #+#    #+#             */
-/*   Updated: 2025/10/26 17:04:36 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/30 15:34:46 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	print_error_env_not_set(t_shell *shell, char *file, char *env)
 	return (-1);
 }
 
-int	print_error_access_denied(t_shell *shell, char *file, char *path)
+int	print_error_access_denied(t_shell *shell, char *file, char *path,
+		int exit_code)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(file, 2);
@@ -32,7 +33,7 @@ int	print_error_access_denied(t_shell *shell, char *file, char *path)
 	ft_putstr_fd(path, 2);
 	ft_putstr_fd(": Permission denied", 2);
 	ft_putstr_fd("\n", 2);
-	shell->exit_code = 126;
+	shell->exit_code = exit_code;
 	return (-1);
 }
 
