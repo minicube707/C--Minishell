@@ -6,14 +6,14 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/31 14:13:03 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/31 23:23:20 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int			g_status = 0;
-
+/*
 void	print_file_info(t_file_info **tab_file)
 {
 	int	i;
@@ -63,7 +63,7 @@ void	print_list(t_list *head)
 		head = head->next;
 		index++;
 	}
-}
+}*/
 
 static void	minishell_execution(t_shell *shell, int shell_channel[2],
 		int tty_mod, char *line)
@@ -75,7 +75,10 @@ static void	minishell_execution(t_shell *shell, int shell_channel[2],
 	if (!shell->head)
 		shell->exit_code = 2;
 	if (shell->head)
+	{
+		set_signal_action(handlexec);
 		execution(shell, shell_channel);
+	}
 	shell->head = dlist_clear(shell->head);
 }
 
@@ -85,7 +88,7 @@ static int	minishell_loop(t_shell *shell, int shell_channel[2], int tty_mod)
 
 	g_status = 0;
 	set_signal_action(sighandler);
-	line = readline("\033[1;94mMinishell >\033[0m ");
+	line = readline("Minishell >");
 	if (g_status != 0)
 		shell->exit_code = g_status;
 	if (!line)

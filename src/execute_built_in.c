@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_built_in.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/29 14:36:08 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/31 23:06:36 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,22 @@ void	execute_correct_built_in(t_shell *shell)
 		ft_echo(shell);
 	else if (ft_strncmp(cp_command, "pwd", ft_strlen(cp_command)) == 0)
 		ft_pwd(shell);
-	else if (ft_strncmp(cp_command, "export", ft_strlen(cp_command)) == 0)
-	{
-		if (expand_path_all(shell, ""))
-		{
-			print_error(shell, "Error Malloc");
-			free_shell(shell, shell->exit_code);
-		}
-		ft_export(shell, shell->head->option);
-	}
-	else if (ft_strncmp(cp_command, "unset", ft_strlen(cp_command)) == 0)
-		ft_unset(shell, shell->head->option);
 	else if (ft_strncmp(cp_command, "env", ft_strlen(cp_command)) == 0)
 		ft_env(shell, shell->environment);
 	else if (ft_strncmp(cp_command, "exit", ft_strlen(cp_command)) == 0)
 		ft_exit(shell, shell->head->option);
 	else if (ft_strncmp(cp_command, "cd", ft_strlen(cp_command)) == 0)
 		ft_cd(shell, shell->head->option);
+	if (expand_path_all(shell, ""))
+	{
+		print_error(shell, "Error Malloc");
+		free_shell(shell, shell->exit_code);
+	}
+	cp_command = shell->head->command;
+	if (ft_strncmp(cp_command, "export", ft_strlen(cp_command)) == 0)
+		ft_export(shell, shell->head->option);
+	else if (ft_strncmp(cp_command, "unset", ft_strlen(cp_command)) == 0)
+		ft_unset(shell, shell->head->option);
 }
 
 static void	execute_programm(t_shell *shell)
@@ -79,18 +78,18 @@ static void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 {
 	pid_t	pid;
 
-	if ((shell->head->next != NULL && shell->head->next->pre_redir == PIPE)
-		|| shell->parent_shell != NULL)
+	if (shell->head->next == NULL && shell->head->pre_redir == EMPTY
+		&& shell->parent_shell == NULL)
+	{
+		execute_correct_built_in(shell);
+		*ptr_pid = -1;
+	}
+	else
 	{
 		pid = fork();
 		if (pid == 0)
 			manage_pipe(shell);
 		*ptr_pid = pid;
-	}
-	else
-	{
-		execute_correct_built_in(shell);
-		*ptr_pid = -1;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/30 15:33:43 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/31 16:36:01 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static void	execute_programm(t_shell *shell)
 {
+	if (manage_path(shell, 1))
+		free_shell(shell, shell->exit_code);
 	if (access(shell->head->command, F_OK) == 0)
 	{
 		if (access(shell->head->command, X_OK) == -1)
@@ -22,8 +24,6 @@ static void	execute_programm(t_shell *shell)
 			free_shell(shell, shell->exit_code);
 		}
 	}
-	if (manage_path(shell, 1))
-		free_shell(shell, shell->exit_code);
 	if (shell->head->command != NULL)
 	{
 		execve(shell->head->command, shell->head->option, shell->environment);
@@ -76,6 +76,7 @@ int	execute_command(t_shell *shell)
 	int		status;
 	pid_t	pid;
 
+	set_signal_action(handlexec);
 	manage_fork(shell, &pid);
 	if (shell->head->next == NULL || shell->head->next->pre_redir == AND
 		|| shell->head->next->pre_redir == OR)

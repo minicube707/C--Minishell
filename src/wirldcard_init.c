@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wirldcard_init.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 22:58:16 by florent           #+#    #+#             */
-/*   Updated: 2025/10/26 20:25:51 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/31 16:37:00 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,17 @@ static int	wildcard_init_utils21(t_shell *shell, char *buff, char **tmp4,
 		print_error(shell, "Cannot get current working directory path");
 		return (1);
 	}
-	tmp2 = ft_strjoin("/", *tmp4);
-	free(*tmp4);
-	if (tmp2 == NULL)
+	if (*tmp4 == NULL)
+		*path = ft_strdup(buff);
+	else
 	{
-		print_error(shell, "Error malloc");
-		return (1);
+		tmp2 = ft_strjoin("/", *tmp4);
+		free(*tmp4);
+		if (tmp2 == NULL)
+			return (print_error(shell, "Error malloc"));
+		*path = ft_strjoin(buff, tmp2);
+		free(tmp2);
 	}
-	*path = ft_strjoin(buff, tmp2);
-	free(tmp2);
 	if (*path == NULL)
 	{
 		print_error(shell, "Error malloc");
@@ -43,7 +45,7 @@ static int	wildcard_init_utils2(t_shell *shell, char **tmp4, char **path)
 {
 	char	buff[1024];
 
-	if (**tmp4 != '/')
+	if (*tmp4 == NULL || **tmp4 != '/')
 	{
 		if (wildcard_init_utils21(shell, buff, tmp4, path))
 			return (1);
@@ -69,17 +71,19 @@ static int	wildcard_init_utils1(t_shell *shell, char *string, char **tmp4)
 		return (1);
 	tmp2 = ft_substr(string, 0, ft_strlen(string) - ft_strlen(tmp1));
 	if (tmp2 == NULL)
-	{
-		print_error(shell, "Error malloc");
-		return (1);
-	}
+		return (print_error(shell, "Error malloc"));
 	tmp3 = ft_strrchr(tmp2, '/');
-	*tmp4 = ft_substr(tmp2, 0, ft_strlen(tmp2) - ft_strlen(tmp3) + 1);
-	free(tmp2);
-	if (*tmp4 == NULL)
+	if (tmp3 == NULL)
 	{
-		print_error(shell, "Error malloc");
-		return (1);
+		free(tmp2);
+		*tmp4 = NULL;
+	}
+	else
+	{
+		*tmp4 = ft_substr(tmp2, 0, ft_strlen(tmp2) - ft_strlen(tmp3) + 1);
+		free(tmp2);
+		if (*tmp4 == NULL)
+			return (print_error(shell, "Error malloc"));
 	}
 	return (0);
 }

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute_here_doc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:07:51 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 23:18:52 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/31 13:40:22 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_here_doc(t_shell *shell, t_list *head)
+int	execute_here_doc(t_shell *shell, t_list *head)
 {
 	t_file_info	*tmp_ptr;
 	int			i;
@@ -31,11 +31,12 @@ void	execute_here_doc(t_shell *shell, t_list *head)
 					free_shell(shell, 1);
 				head->tab_file[i]->fd = ptr;
 				if (shell->exit_code == 130)
-					free_shell(shell, shell->exit_code);
+					return (1);
 			}
 			i++;
 			tmp_ptr = head->tab_file[i];
 		}
 		head = head->next;
 	}
+	return (0);
 }
