@@ -24,8 +24,6 @@ void	init_fo(t_list *new, int r, int o)
 		free(new);
 		free_shell(NULL, 1);
 	}
-	//ft_bzero(new->tab_file, sizeof(t_file_info *) * (r + 1));
-	//ft_bzero(new->option, sizeof(char *) * (o + 1));
 	new->tab_file[r] = NULL;
 	new->option[o] = NULL;
 }
@@ -41,7 +39,6 @@ t_list	*new_list(t_token *token, t_list *prev)
 	new = ft_calloc(sizeof(t_list), 1);
 	if (!new)
 		free_shell(NULL, 1);
-	//ft_bzero(new, sizeof(t_list));
 	if (token->op >= -1 && token->op <= 3)
 		new->pre_redir = EMPTY;
 	else

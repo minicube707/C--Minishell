@@ -26,6 +26,8 @@ static void	execution_subshell(t_shell *shell)
 {
 	t_shell	sub_shell;
 
+	ft_bzero(&sub_shell, sizeof(sub_shell));
+	get_shell(&sub_shell);
 	init_shell(&sub_shell, shell->environment, shell, 0);
 	sub_shell.head = parsing(shell->head->subshell);
 	if (sub_shell.head)

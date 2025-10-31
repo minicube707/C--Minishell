@@ -95,7 +95,7 @@ char	**make_env(t_shell *shell, t_list_env *list)
 	size = list_size(list);
 	shell->environment = ft_calloc(sizeof(char *), (size + 1));
 	if (!shell->environment)
-		return (NULL);
+		free_shell(NULL, 1);
 	make_env_loop(shell->environment, list);
 	return (shell->environment);
 }

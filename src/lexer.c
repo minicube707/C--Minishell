@@ -89,7 +89,6 @@ char	*duparg(char *str, int *j)
 	while (str[i] && is_op(&str[i]) == -1 && !is_delimiter(&str[i])
 		&& str[i] != '\'' && str[i] != '"')
 		i++;
-	//return (dup_unquote(str, j));
 	return (ft_substr(str, 0, i));
 }
 
