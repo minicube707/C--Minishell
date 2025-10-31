@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/30 13:11:27 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/31 06:46:35 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,14 +104,15 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	ft_bzero(&shell, sizeof(shell));
 	tty_mod = 0;
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO) && isatty(STDERR_FILENO))
 		tty_mod = 1;
 	shell_channel[0] = STDIN_FILENO;
 	shell_channel[1] = STDOUT_FILENO;
+	get_shell(&shell);
 	init_shell(&shell, envp, NULL, 0);
 	res = 1;
-	get_shell(&shell);
 	while (res)
 		res = minishell_loop(&shell, shell_channel, tty_mod);
 	free_env(shell.env);

@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:38:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/21 16:33:30 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/31 05:15:12 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,35 +16,37 @@ static void	set_new_env(t_list_env *new, char *envp)
 {
 	new->name = ft_substr(envp, 0, strlenc(envp, '='));
 	if (!new->name)
-		write(1, "Error env-name\n", 15);
+		free_shell(NULL, 1);
 	new->content = ft_strdup(getenv(new->name));
 }
 
-t_list_env	*set_env(char **envp)
+t_list_env	*set_env(char **envp, t_shell *shell)
 {
 	t_list_env	*new;
-	t_list_env	*head;
 
 	new = NULL;
-	head = NULL;
 	while (*envp)
 	{
-		if (!head)
+		if (!shell->env)
 		{
 			new = malloc(sizeof(t_list_env));
+			if (!new)
+				free_shell(NULL, 1);
 			new->next = NULL;
-			head = new;
+			shell->env = new;
 		}
 		else
 		{
 			new->next = malloc(sizeof(t_list_env));
+			if (!new->next)
+				free_shell(NULL, 1);
 			new = new->next;
 			new->next = NULL;
 		}
 		set_new_env(new, *envp);
 		envp++;
 	}
-	return (head);
+	return (shell->env);
 }
 
 int	list_size(t_list_env *list)
@@ -60,31 +62,40 @@ int	list_size(t_list_env *list)
 	return (s);
 }
 
-char	**make_env(t_shell *shell, t_list_env *list)
+void	make_env_loop(char **env, t_list_env *list)
 {
-	char	**env;
-	int		size;
 	int		i;
 	char	*p;
 
 	i = 0;
-	shell->environment = free_double_array(shell->environment);
-	size = list_size(list);
-	env = ft_calloc(sizeof(char *), (size + 1));
-	if (!env)
-		return (NULL);
 	while (list)
 	{
 		p = ft_strjoin(list->name, "=");
+		if (!p)
+			free_shell(NULL, 1);
 		if (list->content)
 		{
 			env[i] = ft_strjoin(p, list->content);
 			free(p);
+			if (!env[i])
+				free_shell(NULL, 1);
 		}
 		else
 			env[i] = p;
 		i++;
 		list = list->next;
 	}
-	return (env);
+}
+
+char	**make_env(t_shell *shell, t_list_env *list)
+{
+	int		size;
+
+	shell->environment = free_double_array(shell->environment);
+	size = list_size(list);
+	shell->environment = ft_calloc(sizeof(char *), (size + 1));
+	if (!shell->environment)
+		return (NULL);
+	make_env_loop(shell->environment, list);
+	return (shell->environment);
 }

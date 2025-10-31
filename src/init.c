@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 16:45:32 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/27 01:11:57 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/31 06:44:35 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,21 @@ t_shell	*get_shell(t_shell *shell)
 	return (ptr);
 }
 
+void	init_zero(t_shell *shell)
+{
+	shell->env = NULL;
+	shell->head = NULL;
+	shell->environment = NULL;
+	shell->environment = NULL;
+	shell->parent_shell = NULL;
+	shell->token = NULL;
+	shell->exit_code = 0;
+}
+
 void	init_shell(t_shell *shell, char **envp, t_shell *parent_shell,
 		int exit_code)
 {
-	shell->env = set_env(envp);
+	shell->env = set_env(envp, shell);
 	shell->head = NULL;
 	shell->environment = NULL;
 	shell->environment = make_env(shell, shell->env);
