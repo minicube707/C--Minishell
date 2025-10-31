@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 22:34:24 by florent           #+#    #+#             */
-/*   Updated: 2025/10/26 17:13:56 by florent          ###   ########.fr       */
+/*   Updated: 2025/10/31 14:00:19 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	print_error_unknow_cmd(char *string)
 	return (-1);
 }
 
-int	print_error_file(t_shell *shell, char *cmd, char *file)
+int	print_error_file(t_shell *shell, char *cmd, char *file, int exit_code)
 {
 	ft_putstr_fd("minishell: ", 2);
 	if (cmd != NULL)
@@ -40,7 +40,7 @@ int	print_error_file(t_shell *shell, char *cmd, char *file)
 	ft_putstr_fd(file, 2);
 	ft_putstr_fd(": No such file or directory", 2);
 	ft_putstr_fd("\n", 2);
-	shell->exit_code = 1;
+	shell->exit_code = exit_code;
 	return (-1);
 }
 

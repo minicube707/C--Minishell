@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/29 14:36:08 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/31 16:35:52 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,18 @@ static void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 {
 	pid_t	pid;
 
-	if ((shell->head->next != NULL && shell->head->next->pre_redir == PIPE)
-		|| shell->parent_shell != NULL)
+	if (shell->head->next == NULL && shell->head->pre_redir == EMPTY
+		&& shell->parent_shell == NULL)
+	{
+		execute_correct_built_in(shell);
+		*ptr_pid = -1;
+	}
+	else
 	{
 		pid = fork();
 		if (pid == 0)
 			manage_pipe(shell);
 		*ptr_pid = pid;
-	}
-	else
-	{
-		execute_correct_built_in(shell);
-		*ptr_pid = -1;
 	}
 }
 

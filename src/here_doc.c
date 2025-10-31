@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 17:22:05 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/30 13:45:54 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/31 16:38:42 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static int	here_doc_loop(t_shell *shell, int fd, char *limiter)
 	}
 	if (input == NULL && two_int.int2 == 0)
 	{
-		write(1, "\nminishell: warning: here-document at line delimited"
+		write(1,
+			"\nminishell: warning: here-document at line delimited"
 			"by end-of-file (wanted `", 77);
 		write(1, limiter, ft_strlen(limiter));
 		write(1, "')\n", 3);
@@ -52,8 +53,8 @@ static int	here_doc_loop(t_shell *shell, int fd, char *limiter)
 
 int	here_doc_unlink(t_shell *shell, char *name_file)
 {
-	int		fd;
-	int		new_fd[2];
+	int	fd;
+	int	new_fd[2];
 
 	fd = open(name_file, 0644);
 	if (unlink(name_file))
@@ -65,10 +66,33 @@ int	here_doc_unlink(t_shell *shell, char *name_file)
 			print_error(shell, "failure creation of pipe");
 			return (0);
 		}
-		close (new_fd[1]);
+		close(new_fd[1]);
 		return (new_fd[0]);
 	}
 	return (fd);
+}
+
+static char	*here_doc_utils(t_shell *shell, char *limiter)
+{
+	char	*string;
+	char	*tmp;
+	int		j;
+
+	string = ft_strdup(limiter);
+	if (string == NULL)
+		return (NULL);
+	j = 0;
+	if (ft_strchr(limiter, '\'') != NULL || ft_strchr(limiter, '"') != NULL)
+	{
+		tmp = ft_strdup(string);
+		while (tmp != NULL && tmp[j] != '\0')
+			tmp = expand_path_wildcard_utils_utils(shell, tmp, &string, &j);
+		if (tmp != NULL)
+			free(tmp);
+		if (string == NULL)
+			return (NULL);
+	}
+	return (string);
 }
 
 int	here_doc(t_shell *shell, int *file_fd, char *limiter)
@@ -81,14 +105,15 @@ int	here_doc(t_shell *shell, int *file_fd, char *limiter)
 	true = 1;
 	g_status = 0;
 	shell->exit_code = 0;
+	limiter = here_doc_utils(shell, limiter);
+	if (limiter == NULL)
+		return (print_error(shell, "Error malloc"));
 	fd = open(name_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
-	{
-		print_error(shell, "failure creation here_doc file");
-		return (1);
-	}
+		return (print_error(shell, "failure creation here_doc file"));
 	while (true)
 		true = here_doc_loop(shell, fd, limiter);
+	free(limiter);
 	close(fd);
 	fd = here_doc_unlink(shell, name_file);
 	if (fd == 0)
