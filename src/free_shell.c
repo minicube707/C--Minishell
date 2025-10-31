@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:06:44 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/29 17:15:01 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/31 06:33:23 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	free_shell(t_shell *shell, int exit_code)
 	free_double_array(shell->environment);
 	shell->head = dlist_clear(shell->head);
 	if (shell->token)
-		free_token(*shell->token);
+		shell->token = free_token_all(shell->token);
 	if (tmp != NULL)
 		free_shell(tmp, exit_code);
 	if (shell->parent_shell == NULL)

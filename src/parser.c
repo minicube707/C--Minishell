@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:05:15 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/29 14:17:16 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/31 06:16:52 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 void	init_fo(t_list *new, int r, int o)
 {
-	new->tab_file = malloc(sizeof(t_file_info *) * (r + 1));
-	new->option = malloc(sizeof(char *) * (o + 1));
+	new->tab_file = ft_calloc(sizeof(t_file_info *), (r + 1));
+	new->option = ft_calloc(sizeof(char *), (o + 1));
 	if (!new->tab_file || !new->option)
 	{
 		free(new->tab_file);
@@ -24,8 +24,6 @@ void	init_fo(t_list *new, int r, int o)
 		free(new);
 		free_shell(NULL, 1);
 	}
-	ft_bzero(new->tab_file, sizeof(t_file_info *) * (r + 1));
-	ft_bzero(new->option, sizeof(char *) * (o + 1));
 	new->tab_file[r] = NULL;
 	new->option[o] = NULL;
 }
@@ -38,10 +36,9 @@ t_list	*new_list(t_token *token, t_list *prev)
 
 	r = count_redir(token);
 	o = count_option(token);
-	new = malloc(sizeof(t_list));
+	new = ft_calloc(sizeof(t_list), 1);
 	if (!new)
 		free_shell(NULL, 1);
-	ft_bzero(new, sizeof(t_list));
 	if (token->op >= -1 && token->op <= 3)
 		new->pre_redir = EMPTY;
 	else

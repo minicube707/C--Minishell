@@ -43,15 +43,8 @@ char	*dup_unquote(char *str, int *j)
 		free_shell(NULL, 1);
 	while (str[var.i] && !is_delimiter(&str[var.i]))
 	{
-	/*	if (escape_in_no_quote(&str[var.i]))
-		{
-			add_escape_char(str, j, &var);
-		}
-		else
-		{*/
-			var.i++;
-			var.len++;
-		//}
+		var.i++;
+		var.len++;
 	}
 	append_chars(str, &var);
 	return (var.arg);

@@ -61,7 +61,9 @@ t_list	*new_node(t_list *curr, t_list *prev, t_token *token)
 
 int	new_tab_file(t_list *curr, t_token **token, int f)
 {
-	curr->tab_file[f] = malloc(sizeof(t_file_info)); // a proteger segafault sur la ligne suivante
+	curr->tab_file[f] = malloc(sizeof(t_file_info));
+	if (!curr->tab_file[f])
+		free_shell(NULL, 1);
 	curr->tab_file[f]->type = (*token)->op;
 	if ((*token)->next && (*token)->next->op == -1)
 	{
@@ -78,6 +80,8 @@ void	option_or_subs(t_list *curr, int *o, t_token *token)
 	{
 		curr->subshell = ft_substr(token->content, 1, ft_strlen(token->content)
 				- 2);
+		if (!curr->subshell)
+			free_shell(NULL, 1);
 		free(token->content);
 	}
 	else

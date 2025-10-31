@@ -71,17 +71,5 @@ void	append_escaped_char(char **arg, char *str, size_t *buff, size_t s)
 		}
 		*arg = tmp;
 	}
-	/*if (str[s + 1] && str[s] == '>' && str[s + 1] == '>')
-	{
-		ft_strncat(*arg, ">>", 2);
-	}
-	if (str[s] == 'n')
-	{
-		ft_strncat(*arg, "\n", 2);
-	}
-	else if (str[s] == 't')
-	{
-		ft_strncat(*arg, "\t", 2);
-	}*/
 	ft_strncat(*arg, &str[s], 1);
 }

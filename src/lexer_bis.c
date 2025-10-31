@@ -52,22 +52,15 @@ char	*dup_subshell(char *str)
 	while (str[i] && op != cl)
 	{
 		if (str[i] == '"')
-		{
 			in_quote(str, &i);
-			i++;
-		}
-		else if (str[i] == '(')
+		else if (str[i] == '(' || str[i] == ')')
 		{
-			op++;
-			i++;
+			if (str[i] == '(')
+				op++;
+			else
+				cl++;
 		}
-		else if (str[i] == ')')
-		{
-			cl++;
-			i++;
-		}
-		else
-			i++;
+		i++;
 	}
 	return (dup_shell_return(op, cl, str, i));
 }

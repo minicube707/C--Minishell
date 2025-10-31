@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 01:50:32 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/29 09:40:40 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/10/31 05:49:01 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_sort(t_list_env **arr, int size, int i)
 
 	shell = get_shell(NULL);
 	i = -1;
-	while (++i < size)
+	while (++i < size && arr[i]->name)
 	{
 		if (arr[i]->content)
 		{

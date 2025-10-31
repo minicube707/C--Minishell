@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 15:01:39 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/29 17:26:49 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/31 06:33:49 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	free_get_arg(char *res, char *prev, char *new)
 	free(res);
 	free(prev);
 	free(new);
-	*shell->token = free_token_all(*shell->token);
+	shell->token = free_token_all(shell->token);
 	free_shell(NULL, 1);
 }
 

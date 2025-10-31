@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/31 16:35:33 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/31 23:22:50 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ typedef struct s_shell
 	char				**environment;
 	t_list_env			*env;
 	t_list				*head;
-	t_token				**token;
+	t_token				*token;
 	struct s_shell		*parent_shell;
 	int					exit_code;
 }						t_shell;
@@ -263,7 +263,7 @@ int						add_expand(t_shell *shell, char **pwd, char *string,
 /*===================*/
 
 /*Environment*/
-t_list_env				*set_env(char **envp);
+t_list_env				*set_env(char **envp, t_shell *shell);
 char					**make_env(t_shell *shell, t_list_env *list);
 char					*ft_getenv(t_shell *shell, char *name);
 char					*ft_join_env(char *name, char *content);
