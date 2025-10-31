@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/30 14:34:21 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/31 16:35:33 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,8 @@ t_shell					*get_shell(t_shell *shell);
 /*Manage Error*/
 int						print_error(t_shell *shell, char *string);
 int						print_error_unknow_cmd(char *string);
-int						print_error_file(t_shell *shell, char *cmd, char *file);
+int						print_error_file(t_shell *shell, char *cmd, char *file,
+							int exit_code);
 int						print_error_is_directory(t_shell *shell, char *file);
 int						print_error_not_directory(t_shell *shell, char *cmd,
 							char *file);
@@ -180,7 +181,7 @@ int						here_doc_loop_end(t_shell *shell, int fd, char *input,
 int						manage_path(t_shell *shell, int change);
 
 /*Execute_here_doc*/
-void					execute_here_doc(t_shell *shell, t_list *head);
+int						execute_here_doc(t_shell *shell, t_list *head);
 
 /*Execute_close_file*/
 void					execute_close_fd(t_list *head);
@@ -197,7 +198,7 @@ int						execute_built_in(t_shell *shell);
 
 /*Main Execution*/
 void					execution(t_shell *shell, int shell_channel[2]);
-void					execution_middle(t_shell *shell);
+int						execution_middle(t_shell *shell);
 
 /*Expand dollar*/
 char					*expand_path_wildcard_utils_utils(t_shell *shell,

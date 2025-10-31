@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 17:39:03 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/21 10:50:03 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/31 15:30:50 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,10 @@ int	manage_path(t_shell *shell, int change)
 		else
 			free(path);
 	}
-	else if (shell->head->command != NULL)
+	if (shell->head->command != NULL && change == 1)
 	{
 		if (access(shell->head->command, F_OK) == -1)
-			return (print_error_file(shell, NULL, shell->head->command));
+			return (print_error_file(shell, NULL, shell->head->command, 127));
 		stat(shell->head->command, &buff);
 		if (S_ISDIR(buff.st_mode))
 			return (print_error_is_directory(shell, shell->head->command));

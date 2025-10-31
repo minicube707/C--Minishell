@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:33:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/30 15:07:37 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/10/31 14:00:41 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	open_infile(t_shell *shell, t_file_info *tmp_tab)
 
 	file_name = tmp_tab->file_name;
 	if (access(file_name, F_OK) == -1)
-		return (print_error_file(shell, NULL, file_name));
+		return (print_error_file(shell, NULL, file_name, 1));
 	if (access(file_name, R_OK) == -1)
 		return (print_error_access_denied(shell, NULL, file_name, 1));
 	shell->exit_code = 0;
