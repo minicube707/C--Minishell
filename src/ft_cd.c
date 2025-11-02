@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 17:05:40 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/30 00:43:04 by florent          ###   ########.fr       */
+/*   Updated: 2025/11/01 20:27:16 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	cd_minus(t_shell *shell, char **tab_option)
 	{
 		write(shell->head->in_out[1], pwd, ft_strlen(pwd));
 		write(shell->head->in_out[1], "\n", 1);
-		chdir2(shell, pwd);	
+		chdir2(shell, pwd);
 	}
 	free(pwd);
 	ft_cd_change_env(shell);
