@@ -29,23 +29,3 @@ void	add_escape_char(char *str, int *j, t_escape_utils *var)
 	var->i += 1 + escape_char_len(&str[var->i]);
 	var->len = 0;
 }
-
-char	*dup_unquote(char *str, int *j)
-{
-	t_escape_utils	var;
-
-	(void)j;
-	var.i = 0;
-	var.len = 0;
-	var.buff = 11;
-	var.arg = ft_calloc(sizeof(char), var.buff);
-	if (!var.arg)
-		free_shell(NULL, 1);
-	while (str[var.i] && !is_delimiter(&str[var.i]))
-	{
-		var.i++;
-		var.len++;
-	}
-	append_chars(str, &var);
-	return (var.arg);
-}

@@ -296,7 +296,6 @@ char					*dup_shell_return(int op, int cl, char *str, int i);
 char					*dup_subshell(char *str);
 
 void					append_chars(char *str, t_escape_utils *var);
-char					*dup_unquote(char *str, int *j);
 void					add_escape_char(char *str, int *j, t_escape_utils *var);
 void					free_get_arg(char *res, char *prev, char *new);
 char					*get_arg(char *str, int *i);
