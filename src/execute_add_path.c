@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_add_path.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 17:39:03 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/31 15:30:50 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/11/04 00:06:59 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,22 @@ char	*execute_add_path(t_shell *shell, char *name_env)
 	return (new_path);
 }
 
-int	manage_path(t_shell *shell, int change)
+int	manage_path_utils(t_shell *shell)
 {
 	struct stat	buff;
+
+	if (ft_strchr(shell->head->command, '/') == NULL)
+		return (0);
+	if (access(shell->head->command, F_OK) == -1)
+		return (print_error_file(shell, NULL, shell->head->command, 127));
+	stat(shell->head->command, &buff);
+	if (S_ISDIR(buff.st_mode))
+		return (print_error_is_directory(shell, shell->head->command));
+	return (0);
+}
+
+int	manage_path(t_shell *shell, int change)
+{
 	char		*path;
 
 	if (shell->head->command[0] != '/')
@@ -82,12 +95,6 @@ int	manage_path(t_shell *shell, int change)
 			free(path);
 	}
 	if (shell->head->command != NULL && change == 1)
-	{
-		if (access(shell->head->command, F_OK) == -1)
-			return (print_error_file(shell, NULL, shell->head->command, 127));
-		stat(shell->head->command, &buff);
-		if (S_ISDIR(buff.st_mode))
-			return (print_error_is_directory(shell, shell->head->command));
-	}
+		return (manage_path_utils(shell));
 	return (0);
 }
