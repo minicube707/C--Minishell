@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollar_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 18:04:55 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/28 15:42:18 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/11/03 22:49:21 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	add_expand(t_shell *shell, char **pwd, char *string, char *change)
 	cp_pwd = add_expand_utils(shell, string, before, change);
 	free(before);
 	if (cp_pwd == NULL)
-		return (print_error(shell, "Error malloc"));
+		return (1);
 	after = ft_substr(string, i, ft_strlen(string) + 1);
 	if (after == NULL)
 		return (print_error(shell, "Error malloc"));
@@ -75,18 +75,29 @@ int	add_expand(t_shell *shell, char **pwd, char *string, char *change)
 
 static char	*search_dollars(char *string)
 {
-	int	i;
-	int	count;
+	int		i;
+	char	first;
+	char	second;
 
-	i = 0;
-	count = 0;
-	while (string[i] != '\0')
+	i = -1;
+	first = '\0';
+	second = '\0';
+	while (string[++i] != '\0')
 	{
-		if (string[i] == '\'')
-			count++;
-		if (string[i] == '$' && count % 2 == 0)
+		if (string[i] == '\'' && first == '\0' && second == '\0')
+			first = '\'';
+		else if (string[i] == '\'' && first == '\'')
+			first = '\0';
+		else if (string[i] == '\'' && second == '\'')
+			second = '\0';
+		if (string[i] == '"' && first == '\0' && second == '\0')
+			first = '"';
+		else if (string[i] == '"' && first == '"')
+			first = '\0';
+		else if (string[i] == '"' && second == '"')
+			second = '\0';
+		if (string[i] == '$' && first != '\'')
 			return (&string[i]);
-		i++;
 	}
 	return (NULL);
 }
@@ -98,7 +109,8 @@ char	*expand_path(t_shell *shell, char *pwd, char *change)
 	string = search_dollars(pwd);
 	while (string != NULL)
 	{
-		add_expand(shell, &pwd, string, change);
+		if (add_expand(shell, &pwd, string, change))
+			return (NULL);
 		if (pwd == NULL)
 		{
 			print_error(shell, "Error malloc");

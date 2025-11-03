@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 18:16:22 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/31 23:23:20 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/11/03 21:33:46 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static int	minishell_loop(t_shell *shell, int shell_channel[2], int tty_mod)
 
 	g_status = 0;
 	set_signal_action(sighandler);
-	line = readline("Minishell >");
+	line = readline("Minishell> ");
 	if (g_status != 0)
 		shell->exit_code = g_status;
 	if (!line)

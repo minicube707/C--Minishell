@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built-in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:27:57 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/29 14:29:27 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/11/03 22:46:36 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,7 @@ void	ft_echo(t_shell *shell)
 	int	i;
 
 	if (expand_path_all(shell, ""))
-	{
-		print_error(shell, "Error Malloc");
 		free_shell(shell, shell->exit_code);
-	}
 	i = ft_echo_utils(shell->head->option, &add_back_slash);
 	while (shell->head->option[i] != NULL)
 	{
