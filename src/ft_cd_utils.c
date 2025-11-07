@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:24:12 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/31 14:00:34 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/11/07 22:51:13 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,18 @@
 
 void	chdir2(t_shell *shell, char *pwd)
 {
+	char	*string;
+	char	*tmp;
+	int		j;
+
+	j = 0;
+	string = ft_strdup(pwd);
+	tmp = ft_strdup(string);
+	while (tmp != NULL && tmp[j] != '\0')
+		tmp = expand_path_wildcard_utils_utils(shell, tmp, &string, &j);
+	if (tmp != NULL)
+		free(tmp);
+	pwd = string;
 	if (chdir(pwd))
 	{
 		if (errno == EACCES)
@@ -23,6 +35,7 @@ void	chdir2(t_shell *shell, char *pwd)
 		if (errno == ENOENT)
 			print_error_file(shell, "cd", pwd, 1);
 	}
+	free(string);
 }
 
 char	*cd_expand_home_utils(t_shell *shell, char *target, int *i)

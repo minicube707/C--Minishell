@@ -27,6 +27,7 @@ FILE_NAMES = 	built-in \
 				execution \
 				execution_utils \
 				expand_dollar \
+				expand_dollar_help_me \
 				expand_dollar_utils \
 				expand_dollar_utils_utils \
 				export \

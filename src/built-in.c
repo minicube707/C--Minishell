@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:27:57 by fmotte            #+#    #+#             */
-/*   Updated: 2025/11/03 22:46:36 by florent          ###   ########.fr       */
+/*   Updated: 2025/11/07 22:49:34 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ void	ft_echo(t_shell *shell)
 	{
 		write(shell->head->in_out[1], shell->head->option[i],
 			ft_strlen(shell->head->option[i]));
-		write(shell->head->in_out[1], " ", 1);
+		if (shell->head->option[i + 1] != NULL)
+			write(shell->head->in_out[1], " ", 1);
 		i++;
 	}
 	if (add_back_slash)

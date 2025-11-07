@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/31 23:22:50 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/11/07 23:10:13 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,8 @@ void					wildcard_add_path(t_shell *shell, char **tab_file,
 							char *path);
 char					**wildcard_end(t_shell *shell, char *string,
 							char *path);
+int						expand_path_wildcard_i_want_to_die(char *tmpsq,
+							char *tmpdq);
 
 /*===================*/
 /*======BUILTIN======*/

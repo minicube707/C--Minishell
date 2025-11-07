@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/31 16:36:01 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/11/07 22:45:01 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	execute_programm(t_shell *shell)
 {
+	signal(SIGQUIT, SIG_DFL);
 	if (manage_path(shell, 1))
 		free_shell(shell, shell->exit_code);
 	if (access(shell->head->command, F_OK) == 0)
@@ -90,6 +91,8 @@ int	execute_command(t_shell *shell)
 		}
 		else
 			shell->exit_code = 0;
+		if (shell->exit_code == 131)
+			free_shell(shell, shell->exit_code);
 	}
 	return (0);
 }

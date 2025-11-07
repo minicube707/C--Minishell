@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 14:55:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/31 22:47:15 by florent          ###   ########.fr       */
+/*   Updated: 2025/11/07 23:08:23 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ static char	*expand_path_wildcard_utils_utils_utils(t_shell *shell, char *tmp,
 
 	tmpsq = ft_strchr(&tmp[*j], '\'');
 	tmpdq = ft_strchr(&tmp[*j], '"');
+	if (expand_path_wildcard_i_want_to_die(tmpsq, tmpdq))
+	{
+		(*j)++;
+		return (string);
+	}
 	if (ft_strlen(tmpsq) > ft_strlen(tmpdq))
 	{
 		*j += ft_strlen(tmpsq) - ft_strlen(ft_strchr(&tmpsq[1], '\'')) - 1;
@@ -66,7 +71,8 @@ char	*search_expand(t_list_env *noeud, char *suffix)
 {
 	while (noeud != NULL)
 	{
-		if (ft_strncmp(noeud->name, suffix, ft_strlen(suffix)) == 0)
+		if (ft_strncmp(noeud->name, suffix, ft_strlen(suffix)) == 0
+			&& ft_strlen(noeud->name) == ft_strlen(suffix))
 			return (noeud->content);
 		noeud = noeud->next;
 	}

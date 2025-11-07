@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/31 23:06:36 by florent          ###   ########.fr       */
+/*   Updated: 2025/11/07 22:49:16 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static void	execute_programm(t_shell *shell)
 {
 	int	exit_code;
 
+	signal(SIGQUIT, SIG_DFL);
 	exit_code = manage_path(shell, 0);
 	if (exit_code)
 		free_shell(shell, shell->exit_code);
