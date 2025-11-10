@@ -14,7 +14,6 @@
 
 static void	execute_programm(t_shell *shell)
 {
-	signal(SIGQUIT, SIG_DFL);
 	if (manage_path(shell, 1))
 		free_shell(shell, shell->exit_code);
 	if (access(shell->head->command, F_OK) == 0)
@@ -64,20 +63,27 @@ static void	manage_pipe(t_shell *shell)
 
 static void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 {
-	pid_t	pid;
+	pid_t				pid;
+	struct sigaction	qt;
 
 	pid = fork();
 	if (pid == 0)
+	{
+		qt.sa_handler = SIG_DFL;
+		sigemptyset(&qt.sa_mask);
+		qt.sa_flags = SA_RESTART;
+		sigaction(SIGQUIT, &qt, NULL);
 		manage_pipe(shell);
+	}
 	*ptr_pid = pid;
 }
 
 int	execute_command(t_shell *shell)
 {
 	int		status;
+	int		sig;
 	pid_t	pid;
 
-	set_signal_action(handlexec);
 	manage_fork(shell, &pid);
 	if (shell->head->next == NULL || shell->head->next->pre_redir == AND
 		|| shell->head->next->pre_redir == OR)
@@ -87,12 +93,15 @@ int	execute_command(t_shell *shell)
 			if (WIFEXITED(status))
 				shell->exit_code = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
+			{
+				sig = WTERMSIG(status);
 				shell->exit_code = 128 + WTERMSIG(status);
+				if (sig == SIGQUIT)
+					write(1, "Quit (core dumped)\n", 19);
+			}
 		}
 		else
 			shell->exit_code = 0;
-		if (shell->exit_code == 131)
-			free_shell(shell, shell->exit_code);
 	}
 	return (0);
 }

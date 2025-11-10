@@ -80,7 +80,6 @@ char	*loop(t_shell *shell, t_two_int *two_int, t_struc var, int first_loop)
 {
 	char	*buffer;
 
-	set_signal_kill(sigintheredoc);
 	while (!ft_strchr(var.string1, '\n')
 		&& shell->exit_code == 0 && var.string1 != NULL)
 	{
@@ -126,6 +125,7 @@ char	*get_next_line(t_shell *shell, t_two_int *two_int)
 	}
 	easter_egg.string1 = res;
 	easter_egg.string2 = stock[two_int->int1];
+	set_signal_action(sigintheredoc);
 	res = loop(shell, two_int, easter_egg, first_loop);
 	return (res);
 }
