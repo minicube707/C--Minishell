@@ -38,12 +38,6 @@ void	handlexec(int signal)
 	return ;
 }
 
-void	g_status_quit(int signal)
-{
-	(void)signal;
-	g_status = SIGQUIT;
-}
-
 void	set_signal_action(void (*handler)(int))
 {
 	struct sigaction	qt;
@@ -52,18 +46,6 @@ void	set_signal_action(void (*handler)(int))
 	sigemptyset(&qt.sa_mask);
 	qt.sa_flags = 0;
 	sigaction(SIGINT, &qt, NULL);
-	qt.sa_handler = g_status_quit;
+	qt.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &qt, NULL);
-	//signal(SIGQUIT, SIG_IGN);
-}
-
-void	reset_signal(void)
-{
-	struct sigaction	qt;
-
-	qt.sa_handler = handlexec;
-	sigemptyset(&qt.sa_mask);
-	qt.sa_flags = 0;
-	sigaction(SIGINT, &qt, NULL);
-	signal(SIGQUIT, SIG_DFL);
 }

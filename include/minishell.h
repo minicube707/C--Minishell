@@ -335,7 +335,6 @@ char					*ft_strncat(char *dest, char *src, unsigned int nb);
 int						ft_isspace(char c);
 
 /*Signal*/
-void					reset_signal(void);
 void					set_signal_action(void (*handler)(int));
 void					sighandler(int signal);
 void					sigintheredoc(int signal);
