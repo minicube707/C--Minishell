@@ -15,6 +15,7 @@
 void	sigintheredoc(int signal)
 {
 	(void)signal;
+	write(1, "\n", 1);
 	g_status = 130;
 	return ;
 }
@@ -37,18 +38,13 @@ void	handlexec(int signal)
 	return ;
 }
 
-void	set_signal_action(void (*handler)(int))
+void	g_status_quit(int signal)
 {
-	struct sigaction	qt;
-
-	qt.sa_handler = handler;
-	sigemptyset(&qt.sa_mask);
-	qt.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &qt, NULL);
-	signal(SIGQUIT, SIG_IGN);
+	(void)signal;
+	g_status = SIGQUIT;
 }
 
-void	set_signal_kill(void (*handler)(int))
+void	set_signal_action(void (*handler)(int))
 {
 	struct sigaction	qt;
 
@@ -56,5 +52,18 @@ void	set_signal_kill(void (*handler)(int))
 	sigemptyset(&qt.sa_mask);
 	qt.sa_flags = 0;
 	sigaction(SIGINT, &qt, NULL);
-	signal(SIGQUIT, SIG_IGN);
+	qt.sa_handler = g_status_quit;
+	sigaction(SIGQUIT, &qt, NULL);
+	//signal(SIGQUIT, SIG_IGN);
+}
+
+void	reset_signal(void)
+{
+	struct sigaction	qt;
+
+	qt.sa_handler = handlexec;
+	sigemptyset(&qt.sa_mask);
+	qt.sa_flags = 0;
+	sigaction(SIGINT, &qt, NULL);
+	signal(SIGQUIT, SIG_DFL);
 }

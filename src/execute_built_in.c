@@ -43,7 +43,7 @@ static void	execute_programm(t_shell *shell)
 {
 	int	exit_code;
 
-	signal(SIGQUIT, SIG_DFL);
+	//signal(SIGQUIT, SIG_DFL);
 	exit_code = manage_path(shell, 0);
 	if (exit_code)
 		free_shell(shell, shell->exit_code);

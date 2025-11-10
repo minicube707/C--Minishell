@@ -90,7 +90,7 @@ void	execution(t_shell *shell, int shell_channel[2])
 		shell->exit_code = g_status;
 	while (shell->head != NULL)
 	{
-		set_signal_action(sighandler);
+		//set_signal_action(sighandler);
 		if (execution_middle(shell))
 			return ;
 		exit_code = execution_manage_redir(shell, shell_channel, &prev_redir);
