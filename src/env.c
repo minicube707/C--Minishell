@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:38:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/31 05:15:12 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/11/10 23:43:50 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ static void	set_new_env(t_list_env *new, char *envp)
 	new->name = ft_substr(envp, 0, strlenc(envp, '='));
 	if (!new->name)
 		free_shell(NULL, 1);
-	new->content = ft_strdup(getenv(new->name));
+	if (ft_strncmp(new->name, "SHLVL", ft_strlen(new->name)) == 0)
+		new->content = ft_itoa(ft_atoi(getenv(new->name)) + 1);
+	else
+		new->content = ft_strdup(getenv(new->name));
 }
 
 t_list_env	*set_env(char **envp, t_shell *shell)
