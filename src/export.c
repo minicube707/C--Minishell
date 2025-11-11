@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:51:49 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/27 02:03:42 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/11/11 16:50:19 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	handle_arg(t_shell *shell, char **arg, t_list_env *curr, char **name_value)
 		curr = shell->env;
 		name_value = get_name_value(*arg);
 		if (!name_is_valid(name_value[0]))
-			return (error_id(*arg));
+			return (error_id(*arg, name_value));
 		while (curr)
 		{
 			if (!ft_strcmp(curr->name, name_value[0]))

@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 14:29:02 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/31 06:32:32 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/11/11 16:38:22 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ t_token	*lexer(char *str)
 		{
 			if (!set_token(&result, str, &i))
 			{
-				result = free_token(result);
+				result = free_token_all(result);
 				break ;
 			}
 			shell->token = result;

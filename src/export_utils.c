@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 14:58:34 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/27 01:14:55 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/11/11 16:54:21 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,11 @@ int	name_is_valid(char *arg)
 	return (1);
 }
 
-int	error_id(char *arg)
+int	error_id(char *arg, char **name_value)
 {
+	free(name_value[0]);
+	free(name_value[1]);
+	free(name_value);
 	ft_putstr_fd("minishell: export '", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd("' is not a valid identifier\n", 2);

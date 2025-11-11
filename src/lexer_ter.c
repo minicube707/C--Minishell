@@ -3,25 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_ter.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 15:01:39 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/31 06:33:49 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/11/11 16:35:55 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_get_arg(char *res, char *prev, char *new)
+char	*free_get_arg(char *res, char *prev, char *new)
 {
-	t_shell	*shell;
-
-	shell = get_shell(NULL);
 	free(res);
 	free(prev);
 	free(new);
-	shell->token = free_token_all(shell->token);
-	free_shell(NULL, 1);
+	return (NULL);
 }
 
 char	*get_arg(char *str, int *i)
@@ -39,14 +35,14 @@ char	*get_arg(char *str, int *i)
 	{
 		new = duparg(&str[*i], i);
 		if (!new)
-			free_get_arg(res, prev, new);
+			return (free_get_arg(res, prev, new));
 		*i += ft_strlen(new);
 		prev = res;
 		res = ft_strjoin(prev, new);
 		if (!res)
-			free_get_arg(res, prev, new);
-		free(prev);
-		free(new);
+			return (free_get_arg(res, prev, new));
+		prev = (free(prev), NULL);
+		new = (free(new), NULL);
 	}
 	return (res);
 }
