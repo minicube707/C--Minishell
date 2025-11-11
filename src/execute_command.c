@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/11/11 01:30:03 by florent          ###   ########.fr       */
+/*   Updated: 2025/11/11 17:53:48 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ static void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 		sigemptyset(&qt.sa_mask);
 		qt.sa_flags = SA_RESTART;
 		sigaction(SIGQUIT, &qt, NULL);
+		sigaction(SIGINT, &qt, NULL);
 		manage_pipe(shell);
 	}
 	*ptr_pid = pid;
@@ -84,6 +85,7 @@ int	execute_command(t_shell *shell)
 	int		sig;
 	pid_t	pid;
 
+	signal(SIGINT, SIG_IGN);
 	manage_fork(shell, &pid);
 	shell->head->mypid = pid;
 	if (shell->head->next == NULL || shell->head->next->pre_redir == AND

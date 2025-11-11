@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 15:54:56 by lupayet           #+#    #+#             */
-/*   Updated: 2025/10/24 15:54:59 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/11/11 16:36:38 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	append_chars(char *str, t_escape_utils *var)
 	if (l_arg + var->len > var->buff)
 	{
 		while (l_arg + var->len >= var->buff)
-			var->buff += 10;
+			var->buff += 20;
 		var->arg = ft_realloc(var->arg, var->buff, l_arg);
 	}
 	ft_strncat(var->arg, &str[var->i - var->len], var->len);
