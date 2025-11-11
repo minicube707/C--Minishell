@@ -3,10 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/11/11 18:28:12 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/11/11 16:49:00 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +249,7 @@ int						size_t_list_env(t_list_env *env);
 t_list_env				**set_export_list(t_list_env *env, int size);
 int						ft_strcmp(const char *s1, const char *s2);
 int						name_is_valid(char *arg);
-int						error_id(char *arg);
+int						error_id(char *arg, char **name_value);
 void					ft_exit(t_shell *shell, char **tab_option);
 void					ft_cd(t_shell *shell, char **tab_option);
 void					chdir2(t_shell *shell, char *pwd);
@@ -301,7 +298,7 @@ char					*dup_subshell(char *str);
 
 void					append_chars(char *str, t_escape_utils *var);
 void					add_escape_char(char *str, int *j, t_escape_utils *var);
-void					free_get_arg(char *res, char *prev, char *new);
+char					*free_get_arg(char *res, char *prev, char *new);
 char					*get_arg(char *str, int *i);
 
 /*Token Utils*/
