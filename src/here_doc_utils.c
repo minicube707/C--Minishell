@@ -6,32 +6,34 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 22:27:02 by florent           #+#    #+#             */
-/*   Updated: 2025/10/29 17:21:46 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/11/11 09:51:53 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	write_content(t_shell *shell, int fd, char *input)
+static int	write_content(t_shell *shell, t_two_int abc, char *input)
 {
-	input = expand_path(shell, input, "");
+	printf("ABC %d \n", abc.int2);
+	if (abc.int2)
+		input = expand_path(shell, input, "");
 	if (input == NULL)
 	{
-		close(fd);
+		close(abc.int1);
 		return (1);
 	}
-	if (write(fd, input, ft_strlen(input)) == -1)
+	if (write(abc.int1, input, ft_strlen(input)) == -1)
 	{
 		free(input);
 		print_error(shell, "failure writing in here_doc");
-		close(fd);
+		close(abc.int1);
 		return (1);
 	}
 	free(input);
 	return (0);
 }
 
-int	here_doc_loop_end(t_shell *shell, int fd, char *input, char *limiter)
+int	here_doc_loop_end(t_shell *shell, t_two_int abc, char *input, char *limiter)
 {
 	int	condition1;
 	int	condition2;
@@ -45,7 +47,7 @@ int	here_doc_loop_end(t_shell *shell, int fd, char *input, char *limiter)
 	}
 	else
 	{
-		if (write_content(shell, fd, input))
+		if (write_content(shell, abc, input))
 			return (0);
 	}
 	return (1);

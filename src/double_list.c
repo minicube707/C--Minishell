@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   double_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:45:15 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/29 17:14:49 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/11/11 01:25:14 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_list	*dlist_pop_front(t_list *pop_head)
 		close(pop_head->mypipe[1]);
 	if (pop_head->subshell != NULL)
 		free(pop_head->subshell);
+	waitpid(pop_head->mypid, NULL, 0);
 	pop_head->subshell = NULL;
 	pop_head->next = NULL;
 	pop_head->previous = NULL;

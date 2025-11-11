@@ -6,7 +6,7 @@
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/11/11 17:45:47 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/11/11 17:53:48 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int	execute_command(t_shell *shell)
 
 	signal(SIGINT, SIG_IGN);
 	manage_fork(shell, &pid);
+	shell->head->mypid = pid;
 	if (shell->head->next == NULL || shell->head->next->pre_redir == AND
 		|| shell->head->next->pre_redir == OR)
 	{

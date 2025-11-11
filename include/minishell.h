@@ -3,6 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
 /*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
@@ -81,6 +82,7 @@ typedef struct s_list
 {
 	int					pre_redir;
 	int					mypipe[2];
+	pid_t				mypid;
 	char				*command;
 	char				**option;
 	t_file_info			**tab_file;
@@ -174,8 +176,8 @@ int						print_error_nuremic_re(t_shell *shell, char *cmd,
 
 /*Here_doc*/
 int						here_doc(t_shell *shell, int *file_fd, char *limiter);
-int						here_doc_loop_end(t_shell *shell, int fd, char *input,
-							char *limiter);
+int						here_doc_loop_end(t_shell *shell, t_two_int abc,
+							char *input, char *limiter);
 
 /*Execute_close_file*/
 int						manage_path(t_shell *shell, int change);
