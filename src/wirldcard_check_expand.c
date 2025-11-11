@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wirldcard_check_expand.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 13:13:26 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/27 00:23:15 by florent          ###   ########.fr       */
+/*   Updated: 2025/11/11 16:27:28 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ int	check_expand_middle_loop(t_struc hate, char *tmp, int *i, int *j)
 	int	not_ok;
 
 	not_ok = 1;
-	while (hate.string2[(*i) + 1] != '*' && hate.string2[(*i) + 1] != '\0'
-		&& not_ok)
+	while (ft_strlen(hate.string2) > (*i) + 1 && hate.string2[(*i) + 1] != '*'
+		&& hate.string2[(*i) + 1] != '\0' && not_ok)
 	{
-		while (hate.string1[(*j)] != '\0'
-			&& hate.string2[(*i) + 1] != hate.string1[(*j)])
+		while (hate.string1[(*j)] != '\0' && hate.string2[(*i)
+			+ 1] != hate.string1[(*j)])
 			(*j)++;
 		if (ft_strncmp(&(hate.string1)[(*j)], tmp, ft_strlen(tmp)) == 0)
 			not_ok = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_built_in.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/11/11 01:30:36 by florent          ###   ########.fr       */
+/*   Updated: 2025/11/11 16:24:11 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,12 @@ static void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 
 	if (shell->head->next == NULL && shell->head->pre_redir == EMPTY
 		&& shell->parent_shell == NULL)
+	{
+		execute_correct_built_in(shell);
+		*ptr_pid = -1;
+	}
+	else if (shell->head->next != NULL && (shell->head->next->pre_redir == AND
+			|| shell->head->next->pre_redir == OR))
 	{
 		execute_correct_built_in(shell);
 		*ptr_pid = -1;

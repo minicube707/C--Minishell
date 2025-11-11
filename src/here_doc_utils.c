@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 22:27:02 by florent           #+#    #+#             */
-/*   Updated: 2025/11/11 09:51:53 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/11/11 14:42:49 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static int	write_content(t_shell *shell, t_two_int abc, char *input)
 {
-	printf("ABC %d \n", abc.int2);
 	if (abc.int2)
 		input = expand_path(shell, input, "");
 	if (input == NULL)
