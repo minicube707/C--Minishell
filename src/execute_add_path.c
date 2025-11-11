@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_add_path.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 17:39:03 by fmotte            #+#    #+#             */
-/*   Updated: 2025/11/04 00:06:59 by florent          ###   ########.fr       */
+/*   Updated: 2025/11/11 18:10:49 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	manage_path(t_shell *shell, int change)
 {
 	char		*path;
 
-	if (shell->head->command[0] != '/')
+	if (shell->head->command[0] != '/' && *shell->head->command != '.')
 	{
 		path = execute_add_path(shell, "PATH=");
 		if (shell->head->command != NULL && change && path != NULL)

@@ -6,24 +6,25 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 14:23:21 by fmotte            #+#    #+#             */
-/*   Updated: 2025/11/11 16:06:36 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/11/11 18:13:01 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void 	env_display(t_shell *shell, char **environment)
+void	env_display(t_shell *shell, char **environment)
 {
-	int 	i;
+	int		i;
 	char	*env;
 	char	*content;
-	char	*name;	
-	
+	char	*name;
+
 	i = 0;
 	while (environment[i] != NULL)
 	{
 		env = environment[i];
-		name = ft_substr(env, 0, ft_strlen(env) - ft_strlen(ft_strchr(env, '=')));
+		name = ft_substr(env, 0, ft_strlen(env) - ft_strlen(ft_strchr(env,
+						'=')));
 		if (name == NULL)
 		{
 			print_error(shell, "Error Malloc");
@@ -42,8 +43,8 @@ void 	env_display(t_shell *shell, char **environment)
 
 void	ft_env(t_shell *shell, char **environment)
 {
-	int		i;
-	
+	int	i;
+
 	i = 1;
 	while (shell->head->option[i] != NULL && ft_strncmp(shell->head->option[i],
 			"env", ft_strlen(shell->head->option[i])) == 0)

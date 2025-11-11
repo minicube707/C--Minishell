@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 22:34:24 by florent           #+#    #+#             */
-/*   Updated: 2025/10/31 14:00:19 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/11/11 18:27:36 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@ int	print_error(t_shell *shell, char *string)
 	return (-1);
 }
 
-int	print_error_unknow_cmd(char *string)
+int	print_error_unknow_cmd(t_shell *shell, char *string)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(string, 2);
 	ft_putstr_fd(": command not found\n", 2);
+	shell->exit_code = 127;
 	return (-1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/11/11 09:47:28 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/11/11 18:28:12 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ t_shell					*get_shell(t_shell *shell);
 
 /*Manage Error*/
 int						print_error(t_shell *shell, char *string);
-int						print_error_unknow_cmd(char *string);
+int						print_error_unknow_cmd(t_shell *shell, char *string);
 int						print_error_file(t_shell *shell, char *cmd, char *file,
 							int exit_code);
 int						print_error_is_directory(t_shell *shell, char *file);
@@ -168,6 +168,7 @@ int						print_error_invalide_option(t_shell *shell, char *cmd,
 							char *file);
 int						print_error_nuremic_re(t_shell *shell, char *cmd,
 							char *file);
+int						print_error_not_exec_bin(t_shell *shell, char *string);
 
 /*===================*/
 /*=====EXECUTION=====*/

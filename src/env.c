@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:38:53 by lupayet           #+#    #+#             */
-/*   Updated: 2025/11/10 23:43:50 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/11/11 18:12:51 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	make_env_loop(char **env, t_list_env *list)
 
 char	**make_env(t_shell *shell, t_list_env *list)
 {
-	int		size;
+	int	size;
 
 	shell->environment = free_double_array(shell->environment);
 	size = list_size(list);
