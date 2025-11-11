@@ -88,7 +88,9 @@ static int	minishell_loop(t_shell *shell, int shell_channel[2], int tty_mod)
 
 	g_status = 0;
 	set_signal_action(sighandler);
-	line = readline("Minishell> ");
+	line = NULL;
+	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO) && isatty(STDERR_FILENO))
+		line = readline("Minishell> ");
 	if (g_status != 0)
 		shell->exit_code = g_status;
 	if (!line)

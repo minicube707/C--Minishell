@@ -6,7 +6,8 @@
 # =======================================
 #                FLAGS
 # =======================================
-CC = cc -Wall -Wextra -Werror -MMD -MP -g
+CC = cc -Wall -Wextra -Werror -MMD -MP -g 
+
 
 
 # =======================================
@@ -50,6 +51,7 @@ FILE_NAMES = 	built-in \
 				syntax_bis \
 				manage_error \
 				manage_error_utils \
+				manage_error_utils2 \
 				minishell \
 				norme_env \
 				parser \

@@ -26,9 +26,15 @@ static void	execute_programm(t_shell *shell)
 	}
 	if (shell->head->command != NULL)
 	{
-		execve(shell->head->command, shell->head->option, shell->environment);
-		print_error_unknow_cmd(shell->head->command);
-		free_shell(shell, 127);
+		if (execve(shell->head->command, shell->head->option,
+				shell->environment))
+		{
+			if (errno == ENOENT)
+				print_error_unknow_cmd(shell, shell->head->command);
+			else if (errno == ENOEXEC)
+				print_error_not_exec_bin(shell, shell->head->command);
+			free_shell(shell, shell->exit_code);
+		}
 	}
 	free_shell(shell, EXIT_SUCCESS);
 }
