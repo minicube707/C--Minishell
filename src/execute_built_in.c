@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:24:50 by fmotte            #+#    #+#             */
-/*   Updated: 2025/11/07 22:49:16 by florent          ###   ########.fr       */
+/*   Updated: 2025/11/11 01:30:36 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int	execute_built_in(t_shell *shell)
 	pid_t	pid;
 
 	manage_fork(shell, &pid);
+	shell->head->mypid = pid;
 	if (shell->head->next == NULL || shell->head->next->pre_redir == AND
 		|| shell->head->next->pre_redir == OR || shell->parent_shell != NULL)
 	{

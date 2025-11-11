@@ -6,7 +6,7 @@
 /*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/11/07 23:10:13 by florent          ###   ########.fr       */
+/*   Updated: 2025/11/11 01:22:38 by florent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_list
 {
 	int					pre_redir;
 	int					mypipe[2];
+	pid_t				mypid;
 	char				*command;
 	char				**option;
 	t_file_info			**tab_file;
