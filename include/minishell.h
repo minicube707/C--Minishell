@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: florent <florent@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:18:58 by fmotte            #+#    #+#             */
-/*   Updated: 2025/11/11 01:22:38 by florent          ###   ########.fr       */
+/*   Updated: 2025/11/11 09:47:28 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,8 +175,8 @@ int						print_error_nuremic_re(t_shell *shell, char *cmd,
 
 /*Here_doc*/
 int						here_doc(t_shell *shell, int *file_fd, char *limiter);
-int						here_doc_loop_end(t_shell *shell, int fd, char *input,
-							char *limiter);
+int						here_doc_loop_end(t_shell *shell, t_two_int abc,
+							char *input, char *limiter);
 
 /*Execute_close_file*/
 int						manage_path(t_shell *shell, int change);

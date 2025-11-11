@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 17:22:05 by fmotte            #+#    #+#             */
-/*   Updated: 2025/10/31 16:38:42 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/11/11 09:53:34 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ static int	write_here_doc(t_shell *shell, int fd)
 	return (0);
 }
 
-static int	here_doc_loop(t_shell *shell, int fd, char *limiter)
+static int	here_doc_loop(t_shell *shell, t_two_int abc, char *limiter)
 {
 	char		*input;
 	t_two_int	two_int;
 
 	two_int.int1 = STDIN_FILENO;
-	if (write_here_doc(shell, fd))
+	if (write_here_doc(shell, abc.int1))
 		return (0);
 	input = get_next_line(shell, &two_int);
 	if (input == NULL && two_int.int2 == -1 && errno == EINTR)
@@ -41,14 +41,13 @@ static int	here_doc_loop(t_shell *shell, int fd, char *limiter)
 	}
 	if (input == NULL && two_int.int2 == 0)
 	{
-		write(1,
-			"\nminishell: warning: here-document at line delimited"
+		write(1, "\nminishell: warning: here-document at line delimited"
 			"by end-of-file (wanted `", 77);
 		write(1, limiter, ft_strlen(limiter));
 		write(1, "')\n", 3);
 		return (0);
 	}
-	return (here_doc_loop_end(shell, fd, input, limiter));
+	return (here_doc_loop_end(shell, abc, input, limiter));
 }
 
 int	here_doc_unlink(t_shell *shell, char *name_file)
@@ -72,7 +71,7 @@ int	here_doc_unlink(t_shell *shell, char *name_file)
 	return (fd);
 }
 
-static char	*here_doc_utils(t_shell *shell, char *limiter)
+static char	*here_doc_utils(t_shell *shell, char *limiter, int *exp)
 {
 	char	*string;
 	char	*tmp;
@@ -82,8 +81,10 @@ static char	*here_doc_utils(t_shell *shell, char *limiter)
 	if (string == NULL)
 		return (NULL);
 	j = 0;
+	*exp = 1;
 	if (ft_strchr(limiter, '\'') != NULL || ft_strchr(limiter, '"') != NULL)
 	{
+		*exp = 0;
 		tmp = ft_strdup(string);
 		while (tmp != NULL && tmp[j] != '\0')
 			tmp = expand_path_wildcard_utils_utils(shell, tmp, &string, &j);
@@ -97,27 +98,27 @@ static char	*here_doc_utils(t_shell *shell, char *limiter)
 
 int	here_doc(t_shell *shell, int *file_fd, char *limiter)
 {
-	char	*name_file;
-	int		true;
-	int		fd;
+	char		*name_file;
+	int			true;
+	t_two_int	abc;
 
 	name_file = ".here_doc";
 	true = 1;
 	g_status = 0;
 	shell->exit_code = 0;
-	limiter = here_doc_utils(shell, limiter);
+	limiter = here_doc_utils(shell, limiter, &abc.int2);
 	if (limiter == NULL)
 		return (print_error(shell, "Error malloc"));
-	fd = open(name_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (fd == -1)
+	abc.int1 = open(name_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (abc.int1 == -1)
 		return (print_error(shell, "failure creation here_doc file"));
 	while (true)
-		true = here_doc_loop(shell, fd, limiter);
+		true = here_doc_loop(shell, abc, limiter);
 	free(limiter);
-	close(fd);
-	fd = here_doc_unlink(shell, name_file);
-	if (fd == 0)
+	close(abc.int1);
+	abc.int1 = here_doc_unlink(shell, name_file);
+	if (abc.int1 == 0)
 		return (1);
-	*file_fd = fd;
+	*file_fd = abc.int1;
 	return (0);
 }
