@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lupayet <lupayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:38:39 by fmotte            #+#    #+#             */
-/*   Updated: 2025/11/11 17:53:48 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/11/12 14:28:17 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,20 @@ static void	manage_fork(t_shell *shell, pid_t *ptr_pid)
 	*ptr_pid = pid;
 }
 
+static void	manage_signal(int status)
+{
+	int	sig;
+
+	sig = WTERMSIG(status);
+	if (sig == SIGQUIT)
+		write(1, "Quit (core dumped)\n", 19);
+	if (sig == SIGINT)
+		write(STDOUT_FILENO, "\n", 1);
+}
+
 int	execute_command(t_shell *shell)
 {
 	int		status;
-	int		sig;
 	pid_t	pid;
 
 	signal(SIGINT, SIG_IGN);
@@ -103,10 +113,8 @@ int	execute_command(t_shell *shell)
 				shell->exit_code = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
 			{
-				sig = WTERMSIG(status);
 				shell->exit_code = 128 + WTERMSIG(status);
-				if (sig == SIGQUIT)
-					write(1, "Quit (core dumped)\n", 19);
+				manage_signal(status);
 			}
 		}
 		else

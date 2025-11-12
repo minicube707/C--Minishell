@@ -6,7 +6,7 @@
 /*   By: fmotte <fmotte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:03:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/31 15:04:15 by fmotte           ###   ########.fr       */
+/*   Updated: 2025/11/12 14:39:29 by fmotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ static void	execution_subshell(t_shell *shell)
 	init_shell(&sub_shell, shell->environment, shell, 0);
 	sub_shell.head = parsing(shell->head->subshell);
 	if (sub_shell.head)
-	{
 		execution(&sub_shell, shell->head->in_out);
-		write(1, "\n", 1);
-	}
 	shell->exit_code = sub_shell.exit_code;
 	dlist_clear(sub_shell.head);
 	free_env(sub_shell.env);
