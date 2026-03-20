@@ -1,0 +1,199 @@
+Command
+-----------------
+./none
+-> affiche
+minishell: ./none: No such file or directory (code erreur 127)
+
+-----------------
+ ./src/
+-> affiche 
+minishell:  ./src: Is directory (code erreur 126)
+
+-----------------
+./a.out (permision 000)
+-> affiche 
+minishell:  ./src: ./a.out: Permission denied (code erreur 126)
+
+
+Pipe
+-----------------
+cat | cat | ls
+-> affiche ls, attend input pour le premier cat, attend input pour le deuxieme cat
+
+-----------------
+exit | exit
+-> ne quite pas minishell
+
+-----------------
+echo hello | cd 
+-> ne change pas de directory
+
+
+Built-in
+-----------------
+echo "cat lol.c | cat > lol.c"
+-> affiche 
+cat lol.c | cat > lol.c
+
+-----------------
+echo "'$USER'"
+-> affiche
+'student42'
+
+-----------------
+echo '"$USER"'
+-> affiche
+"$USER"
+
+-----------------
+echo "'"
+-> affiche
+'
+
+-----------------
+echo '"'
+-> affiche
+"
+
+-----------------
+echo ~ (expand ~ to $HOME)
+-> affiche
+/home/user
+
+echo "$USER"'$USER'"$USER" 
+-> affiche
+student42$USERstudent42
+
+-----------------
+echo hello world > outfile
+-> ecrit hello world dans le fichiers outfile
+
+-----------------
+exit 100000000000000000000000000000000000000000000000000000000000000 (number > 2147483647)
+-> affiche et quite
+minishell: 100000000000000000000000000000000000000000000000000000000000000: numeric argument required (code erreur 2)
+
+-----------------
+exit -100000000000000000000000000000000000000000000000000000000000000 (number < -2147483648)
+-> affiche et quite
+minishell: -100000000000000000000000000000000000000000000000000000000000000: numeric argument required (code erreur 2)
+
+-----------------
+exit a b c
+-> affiche et quite
+minishell: a b c: numeric argument required (code erreur 2)
+
+-----------------
+exit 42
+-> affiche et quite (le cannaux d'affichage d'exit se fait sur "/dev/tty")
+exit (code erreur 42)
+
+-----------------
+exit 42 42
+-> affiche
+minishell: too many arguments (code erreur 1)
+
+
+========================
+Pour cd update les variables env PWD et OLPDPWD
+========================
+-----------------
+cd $HOME
+-> change le directory a HOME
+
+-----------------
+cd 
+-> change le directory a HOME
+
+-----------------
+cd $NONE
+-> change le directory a HOME
+
+-----------------
+cd -
+-> affiche OLDPWD et change le directory to OLDPWD
+
+-----------------
+mkdir -p a/b
+cd a/b
+rm -rf ../../a
+-> Commade a proteger des cd et pwd
+
+Redirection
+-----------------
+cat < infile | cat > outfile
+-> deplace le contenu de infile dans outfile
+
+-----------------
+cat < infile1 < infile2 | cat > outfile1 > outfile2
+-> deplace le contenu de infile2 dans outfile2 et créer le dossier outfile1
+ 
+========================
+Minishell lance avec cette commande env -i ./minishell
+
+-----------------
+echo $USER
+-> affiche rien
+
+
+cd $HOME
+minishell: $HOME: not set (code erreur 1)
+
+cd $OLDPWD
+minishell: $HOME: not set (code erreur 1)
+
+========================
+
+Operation
+< infile && echo "Fichier inifle exite" || echo "Fichier infile n'exite pas"
+-> si infile exite affiche 
+Fichier inifle exite
+-> sinon 
+Fichier infile n'exite pas
+
+-----------------
+< infile && echo "Fichier inifle exite" || echo "Fichier infile n'exite pas" | cat -e
+-> si infile exite affiche 
+Fichier inifle exite
+-> sinon 
+Fichier infile n'exite pas$
+
+-----------------
+echo $NEW && export NEW=hello && echo $NEW && unset NEW && echo $NEW
+-> affiche
+
+hello
+
+-----------------
+cat | ls && cat | cat | ls
+-> affiche le premier ls, attend input pour le premier cat, affiche le deuxieme ls, attend input pour le deuxieme cat, attend input pour le troisieme cat
+
+
+
+Wildcard
+-----------------
+echo *
+-> affiche tout le contenu du dossier
+
+-----------------
+echo */
+-> affiche uniquement les dossiers suivit d'un /
+
+-----------------
+echo M*
+-> affiche 
+Makefile
+
+-----------------
+echo *e*
+-> affiche toute se qui contient un e
+
+-----------------
+echo *.c | tr ' ' '\n' | wc -l
+-> doit afficher le nombre de fichier .c dans le repertoire
+
+-----------------
+cat M*
+-> affiche le contenu du Makefile
+
+
